@@ -55,10 +55,31 @@ export const addRandomObjects = (scene, isOcean = false) => {
     scene.add(ball);
   }
 
+  function interpolateColor() {
+
+  const color1 = 0x00ff00;
+  const color2 = 0x2B1B17;
+  const factor = Math.random();
+    const r1 = (color1 >> 16) & 0xff;
+    const g1 = (color1 >> 8) & 0xff;
+    const b1 = color1 & 0xff;
+  
+    const r2 = (color2 >> 16) & 0xff;
+    const g2 = (color2 >> 8) & 0xff;
+    const b2 = color2 & 0xff;
+  
+    const r = Math.round(r1 + factor * (r2 - r1));
+    const g = Math.round(g1 + factor * (g2 - g1));
+    const b = Math.round(b1 + factor * (b2 - b1));
+  
+    return (r << 16) + (g << 8) + b;
+  }
+  
+
   // Add trees
   for (let i = 0; i < OBJECTS_TO_RENDER; i++) { // Increased number of objects
     const treeGeometry = new THREE.ConeGeometry(150, 1000+Math.random()*2000, 64); // Reduced size
-    const treeMaterial = new THREE.MeshStandardMaterial({ color: Math.random() > 0.5 ? 0x2B1B17 : 0x00ff00 });
+    const treeMaterial = new THREE.MeshStandardMaterial({ color: interpolateColor() });
     const tree = new THREE.Mesh(treeGeometry, treeMaterial);
     const x = Math.random() * worldX - worldX / 2;
     const z = Math.random() * worldY - worldY / 2;
