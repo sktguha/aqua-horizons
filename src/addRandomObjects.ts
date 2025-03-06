@@ -135,8 +135,8 @@ export const addRandomObjects = (scene, isOcean = false) => {
       generatePatch(m, 0, i);
     }
 
-  island.position.set(0, 25, 0); // Adjusted position to match reduced height
-  // scene.add(island);
+  island.position.set(-20, -20, -20); // Adjusted position to match reduced height
+  scene.add(island);
 
   // Add trees on the single island
   const islandTreeGeometry = new THREE.ConeGeometry(25, 125, 32); // Reduced size
