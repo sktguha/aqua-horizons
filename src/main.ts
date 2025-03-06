@@ -214,6 +214,10 @@ function initOceanScene(){
 
   // animate
   let y = 0;
+  let z = 0;
+  let x = 0;
+  const zRot = 0.02;
+  const xRot = 0.02;
   const animate = () => {
     stats.begin();
     fpControls.update(1);
@@ -230,8 +234,20 @@ function initOceanScene(){
       camera.rotation.y = y;
       console.log({y});
     }
-    camera.rotation.x = 0;
-    camera.rotation.z = 0;
+    if(keyState['v']){
+      z -= zRot;
+    }
+    if(keyState['b']){
+      z += zRot;
+    }
+    if(keyState['f']){
+      x -= xRot;
+    }
+    if(keyState['g']){
+      x += xRot;
+    }
+    camera.rotation.x = x;
+    camera.rotation.z = z;
     camera.rotation.y = y;
 
     // Move balls up and down
