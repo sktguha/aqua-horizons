@@ -163,6 +163,47 @@ function initOceanScene(){
   lamp2.position.set(-50, 50, -50);
   scene.add(lamp2);
 
+  // Add fireflies
+  const fireflies: THREE.Mesh[] = [];
+  const numFireflies = 20;
+  const fireflyGeometry = new THREE.SphereGeometry(0.5, 8, 8);
+  for (let i = 0; i < numFireflies; i++) {
+    // Use a basic material; we add a point light for glow emission.
+    const fireflyMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 });
+    const firefly = new THREE.Mesh(fireflyGeometry, fireflyMaterial);
+    // Add a point light to simulate emission from the firefly
+    const fireflyLight = new THREE.PointLight(0xffff00, 1.5, 30);
+    firefly.add(fireflyLight);
+    
+    firefly.position.set(
+      (Math.random() - 0.5) * 200,
+      Math.random() * 50 + 20,
+      (Math.random() - 0.5) * 200
+    );
+    firefly.userData.offset = Math.random() * Math.PI * 2;
+    scene.add(firefly);
+    fireflies.push(firefly);
+  }
+
+  // Add lamps similar to fireflies
+  const lamps: THREE.Mesh[] = [];
+  const numLamps = 5;
+  const lampGeometry = new THREE.CylinderGeometry(0.5, 0.5, 2, 8);
+  for (let i = 0; i < numLamps; i++) {
+    const lampMaterial = new THREE.MeshBasicMaterial({ color: 0xffa726 });
+    const lamp = new THREE.Mesh(lampGeometry, lampMaterial);
+    // Attach a point light for emission
+    const lampLight = new THREE.PointLight(0xffa726, 2, 50);
+    lamp.add(lampLight);
+    lamp.position.set(
+      (Math.random() - 0.5) * 200,
+      Math.random() * 30 + 10,
+      (Math.random() - 0.5) * 200
+    );
+    scene.add(lamp);
+    lamps.push(lamp);
+  }
+
   const {balls, trees, ballSpeeds, treeSpeeds} = addRandomObjects(scene, true);
 
   // Create X and Z speed arrays for balloons
@@ -278,6 +319,13 @@ function initOceanScene(){
     camera.rotation.x = x;
     camera.rotation.z = z;
     camera.rotation.y = y;
+
+    // Update fireflies' flicker effect
+    const t = performance.now() * 0.001;
+    fireflies.forEach(firefly => {
+      const flicker = 1 + Math.sin(t + firefly.userData.offset) * 0.3;
+      firefly.scale.set(flicker, flicker, flicker);
+    });
 
     // Move balls up and down , sideways also
     balls.forEach((ball, index) => {
