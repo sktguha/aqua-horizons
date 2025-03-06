@@ -55,11 +55,12 @@ let activeControls = fpControls;
 // toggle controls
 window.addEventListener('keydown', (event) => {
   if (event.key === 'Shift') {
-    const currentPosition = camera.position.clone();
-    const currentRotation = camera.rotation.clone();
-    activeControls = (activeControls === fpControls) ? orbitControls : fpControls;
-    camera.position.copy(currentPosition);
-    camera.rotation.copy(currentRotation);
+    // const currentPosition = camera.position.clone();
+    // const currentRotation = camera.rotation.clone();
+    // activeControls = (activeControls === fpControls) ? orbitControls : fpControls;
+    // camera.position.copy(currentPosition);
+    // camera.rotation.copy(currentRotation);
+    fpControls.lookSpeed = fpControls.lookSpeed === 0 ? 0.001 : 0;
     camera.updateProjectionMatrix(); // Ensure the camera's projection matrix is updated
   }
 });
