@@ -1,7 +1,7 @@
 // @ts-nocheck
 import * as THREE from 'three';
 // import { colors, worldX, worldY, balls, speedRanges, ballSpeeds, scene, trees, treeSpeeds, squares, rectangles } from './main';
-import { createPatch, generatePatch } from './noisePatch';
+import { createPatch, generatePatch } from './patchUtils';
 
 export const balls: THREE.Mesh[] = [];
 export const trees: THREE.Mesh[] = [];
