@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import Stats from 'stats.js';
 import { Water } from 'three/examples/jsm/objects/Water';
+import { FirstPersonControls } from 'three/examples/jsm/controls/FirstPersonControls';
 
 // stats
 const stats = new Stats();
@@ -33,8 +34,16 @@ camera.position.set(0, 10, 30);
 scene.add(camera);
 
 // controls
-const controls = new OrbitControls(camera, canvas);
-controls.enableDamping = true;
+const controls = new FirstPersonControls(camera, canvas);
+controls.lookSpeed = 0.1;
+controls.movementSpeed = 20;
+controls.noFly = true;
+controls.lookVertical = true;
+controls.constrainVertical = true;
+controls.verticalMin = 1.0;
+controls.verticalMax = 2.0;
+controls.lon = -150;
+controls.lat = 120;
 
 // texture loader
 const textureLoader = new THREE.TextureLoader();
@@ -87,7 +96,7 @@ window.addEventListener('dblclick', () => {
 const MOVE_STEP = 3;
 
 // keyboard listener
-window.addEventListener('keydown', (event) => {
+window.addEventListener('keydown2', (event) => {
   switch (event.key) {
     case 'ArrowRight':
       camera.position.x += MOVE_STEP;
@@ -107,7 +116,7 @@ window.addEventListener('keydown', (event) => {
 // animate
 const animate = () => {
   stats.begin();
-  controls.update();
+  controls.update(1); // Pass delta time to update method
   water.material.uniforms['time'].value += 1.0 / 60.0;
   
   // Ensure camera responds to changes
