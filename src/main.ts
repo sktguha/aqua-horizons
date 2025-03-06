@@ -26,6 +26,8 @@ export function createControlButton(id, text, onMouseDown, onMouseUp) {
   // button.style.pointerEvents = 'none';
   button.addEventListener('mousedown', onMouseDown);
   button.addEventListener('mouseup', onMouseUp);
+  button.addEventListener('touchstart', onMouseDown);
+  button.addEventListener('touchend', onMouseUp);
   document.body.appendChild(button);
 }
 

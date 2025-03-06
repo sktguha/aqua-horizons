@@ -111,9 +111,27 @@ export const addRandomObjects = (scene) => {
   const islandMaterial = new THREE.MeshStandardMaterial({
     vertexColors: true // Use face colors
   });
+  
   const island = new THREE.Mesh(islandGeometry, islandMaterial);
+  
+  const material = new THREE.MeshStandardMaterial({
+      color: '#ffbe67',
+      dithering: true
+    });
+  
+    let lods = [];
+    for (let i = 0; i < 4; i++) {
+      let m = createPatch(scene, material);
+      let scl = (i + 1) ** 3;
+      m.scale.x = scl;
+      m.scale.z = scl;
+      m.scale.y = i + 1;
+      lods.push(m);
+      generatePatch(m, 0, i);
+    }
+
   island.position.set(0, 25, 0); // Adjusted position to match reduced height
-  scene.add(island);
+  // scene.add(island);
 
   // Add trees on the single island
   const islandTreeGeometry = new THREE.ConeGeometry(100, 250, 32); // Reduced height
