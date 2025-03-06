@@ -31,7 +31,7 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   1000
 );
-camera.position.set(0, 10, 30);
+camera.position.set(0, 60, 60);
 scene.add(camera);
 const cameraRotationSpeed = 0.005;
 // first person controls
