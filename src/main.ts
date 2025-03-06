@@ -15,7 +15,7 @@ const canvas = document.getElementsByClassName('webgl')[0] as HTMLCanvasElement;
 
 // scene
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0xE0FFFF); // Light cyan color for the sky
+scene.background = new THREE.Color(0x9ACDE5); // Light cyan color for the sky
 
 // sizes
 const sizes = {
@@ -81,7 +81,7 @@ const water = new Water(waterGeometry, {
   waterNormals: textureLoader.load('textures/waternormals.jpg', (texture) => {
     texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
   }),
-  sunDirection: new THREE.Vector3(),
+  sunDirection: new THREE.Vector3(1, 0.1, 0),
   sunColor: 0xffddaa, // Brighter sun color
   waterColor: 0xADD8E6, // Light blue water color
   distortionScale: 3.7,
@@ -107,6 +107,7 @@ const colors = [
   0xffff00,
   0xff00ff,
   0x00ffff, 0x00ffff, 0x00ffff, 0x00ffff, 0x00ffff, // Replicate cyan multiple times
+  0x00ffff, 0x00ffff, 0x00ffff, 0x00ffff, 0x00ffff,
   0xffa500,
   0x800080,
   0x008000
