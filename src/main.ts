@@ -74,8 +74,8 @@ function initOceanScene(){
   const camera = new THREE.PerspectiveCamera(
     75,
     sizes.width / sizes.height,
-    0.1,
-    1000
+    0.1, // Near clipping plane
+    1000 // Far clipping plane (view distance)
   );
   camera.position.set(0, 60, 60);
   scene.add(camera);
