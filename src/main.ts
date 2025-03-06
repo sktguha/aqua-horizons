@@ -108,9 +108,9 @@ const addRandomObjects = () => {
   for (let i = 0; i < 50; i++) { // Increased number of objects
     const tree = new THREE.Mesh(treeGeometry, treeMaterial);
     tree.position.set(
-      Math.random() * 1000 - 500, // Increased spread
-      Math.random() * 100 + 10, // Increased spread
-      Math.random() * 1000 - 500 // Increased spread
+      Math.random() * 2000 - 1000, // Increased spread
+      Math.random() * 200 + 10, // Increased spread
+      Math.random() * 2000 - 1000 // Increased spread
     );
     scene.add(tree);
   }
