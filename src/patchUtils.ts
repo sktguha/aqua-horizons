@@ -1,7 +1,7 @@
 // @ts-nocheck
 import * as THREE from 'three';
 
-const USE_ROUNDED_DUNES = false;
+const USE_ROUNDED_DUNES = true;
 const BASE_HEIGHT = 20; // Increase base height for rounded dunes
 
 let v0 = new THREE.Vector3();
