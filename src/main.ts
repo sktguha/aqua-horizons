@@ -35,7 +35,14 @@ scene.add(camera);
 
 // first person controls
 const fpControls = new FirstPersonControls(camera, canvas);
-fpControls.lookSpeed = 0;
+fpControls.lookSpeed = 0.1; // Adjust look speed for rotation
+fpControls.movementSpeed = 0.2;
+fpControls.noFly = true;
+fpControls.lookVertical = true; // Enable vertical look
+fpControls.constrainVertical = true; // Enable vertical constraints
+fpControls.verticalMin = Math.PI / 4; // Constrain vertical rotation
+fpControls.verticalMax = Math.PI / 2; // Constrain vertical rotation
+
 // toggle controls
 window.addEventListener('keydown', (event) => {
   if (event.key === 'Shift') {
