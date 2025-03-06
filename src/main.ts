@@ -35,11 +35,11 @@ scene.add(camera);
 
 // controls
 const controls = new FirstPersonControls(camera, canvas);
-controls.lookSpeed = 0.1;
+controls.lookSpeed = 0.001; // Reduced look speed for less sensitivity
 controls.movementSpeed = 20;
 controls.noFly = true;
 controls.lookVertical = true;
-controls.constrainVertical = true;
+controls.constrainVertical = false;
 controls.verticalMin = 1.0;
 controls.verticalMax = 2.0;
 controls.lon = -150;
@@ -96,22 +96,22 @@ window.addEventListener('dblclick', () => {
 const MOVE_STEP = 3;
 
 // keyboard listener
-window.addEventListener('keydown2', (event) => {
-  switch (event.key) {
-    case 'ArrowRight':
-      camera.position.x += MOVE_STEP;
-      break;
-    case 'ArrowLeft':
-      camera.position.x -= MOVE_STEP;
-      break;
-    case 'ArrowUp':
-      camera.position.z -= MOVE_STEP;
-      break;
-    case 'ArrowDown':
-      camera.position.z += MOVE_STEP;
-      break;
-  }
-});
+// window.addEventListener('keydown2', (event) => {
+//   switch (event.key) {
+//     case 'ArrowRight':
+//       camera.position.x += MOVE_STEP;
+//       break;
+//     case 'ArrowLeft':
+//       camera.position.x -= MOVE_STEP;
+//       break;
+//     case 'ArrowUp':
+//       camera.position.z -= MOVE_STEP;
+//       break;
+//     case 'ArrowDown':
+//       camera.position.z += MOVE_STEP;
+//       break;
+//   }
+// });
 
 // animate
 const animate = () => {
