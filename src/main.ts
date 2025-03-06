@@ -148,42 +148,55 @@ window.addEventListener('keydown', (event) => {
   switch (event.key) {
     case 'Q':
     case 'q':
-      fpControls.lon -= ROTATE_STEP;
-      camera.position.setFromEuler(new THREE.Euler(0, 12, 0));
+      camera.rotateOnAxis(new THREE.Vector3(0, 1, 0), ROTATE_STEP * Math.PI / 180);
       camera.updateMatrixWorld();
       break;
     case 'E':
     case 'e':
-      fpControls.lon += ROTATE_STEP;
+      camera.rotateOnAxis(new THREE.Vector3(0, 1, 0), -ROTATE_STEP * Math.PI / 180);
       camera.updateMatrixWorld();
-      camera.position.setFromEuler(new THREE.Euler(0, 40, 0));
       break;
   }
 });
 
-// keyboard listener
-// window.addEventListener('keydown2', (event) => {
-//   switch (event.key) {
-//     case 'ArrowRight':
-//       camera.position.x += MOVE_STEP;
-//       break;
-//     case 'ArrowLeft':
-//       camera.position.x -= MOVE_STEP;
-//       break;
-//     case 'ArrowUp':
-//       camera.position.z -= MOVE_STEP;
-//       break;
-//     case 'ArrowDown':
-//       camera.position.z += MOVE_STEP;
-//       break;
-//   }
-// });
+const keyState: { [key: string]: boolean } = {};
+const cameraRotationSpeed = 0.05;
+
+// keyboard event listeners
+window.addEventListener('keydown', (event) => {
+  keyState[event.key] = true;
+});
+
+window.addEventListener('keyup', (event) => {
+  keyState[event.key] = false;
+});
 
 // animate
 const animate = () => {
   stats.begin();
   fpControls.update(1);
   water.material.uniforms['time'].value += 1.0 / 60.0;
+
+  // camera rotation logic
+  if (keyState['ArrowLeft']) {
+    camera.rotation.y += cameraRotationSpeed;
+  }
+  if (keyState['ArrowRight']) {
+    camera.rotation.y -= cameraRotationSpeed;
+  }
+  if (keyState['ArrowUp']) {
+    camera.rotation.x += cameraRotationSpeed;
+  }
+  if (keyState['ArrowDown']) {
+    camera.rotation.x -= cameraRotationSpeed;
+  }
+  if (keyState['Q'] || keyState['q']) {
+    camera.rotation.z += cameraRotationSpeed;
+  }
+  if (keyState['E'] || keyState['e']) {
+    camera.rotation.z -= cameraRotationSpeed;
+  }
+
   camera.updateMatrixWorld();
   renderer.render(scene, camera);
   stats.end();
