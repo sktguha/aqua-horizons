@@ -40,7 +40,7 @@ fpControls.lookSpeed = 0.0001; // Adjust look speed for rotation
 fpControls.movementSpeed = 0.001;
 fpControls.noFly = true;
 fpControls.lookVertical = true; // Enable vertical look
-fpControls.constrainVertical = false; // Disable vertical constraints
+fpControls.constrainVertical = true; // Disable vertical constraints
 
 // orbit controls
 const orbitControls = new OrbitControls(camera, canvas);
