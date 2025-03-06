@@ -93,15 +93,15 @@ export const addRandomObjects = (scene, isOcean = false) => {
   }
 
   function createNewBigForest(xParam, zParam){
-    for (let i = 0; i < OBJECTS_TO_RENDER/4; i++) { // Increased number of objects
+    for (let i = 0; i < OBJECTS_TO_RENDER/20; i++) { // Increased number of objects
       // Create tree geometry with random height
-      const treeHeight = 1000 + Math.random() * 2000;
+      const treeHeight = 3000 + Math.random() * 2000;
       const treeGeometry = new THREE.ConeGeometry(200, treeHeight, 200); // Reduced size
   
       // Apply biased placement for trees
       const forestCenter = { x:xParam, z: zParam };
       const forestRange = 8000; // Range for tree distribution
-      const biasExponent = 2; // Higher value makes distribution more centered
+      const biasExponent = 0.5; // Higher value makes distribution more centered
       const x = biasedRandom(forestCenter.x, forestRange, biasExponent);
       const z = biasedRandom(forestCenter.z, forestRange, biasExponent);
   
