@@ -2,6 +2,7 @@ import './style.css';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import Stats from 'stats.js';
+import { Water } from 'three/examples/jsm/objects/Water';
 
 // stats
 const stats = new Stats();
@@ -11,14 +12,8 @@ document.body.appendChild(stats.dom);
 // canvas
 const canvas = document.getElementsByClassName('webgl')[0] as HTMLCanvasElement;
 
-// initiate a scene
+// scene
 const scene = new THREE.Scene();
-
-// mesh
-const geometry = new THREE.BoxGeometry(0.75, 0.75, 0.75);
-const material = new THREE.MeshBasicMaterial({ color: 'green' });
-const mesh = new THREE.Mesh(geometry, material);
-scene.add(mesh);
 
 // sizes
 const sizes = {
@@ -26,17 +21,55 @@ const sizes = {
   height: window.innerHeight,
 };
 
+// camera
+const camera = new THREE.PerspectiveCamera(
+  75,
+  sizes.width / sizes.height,
+  0.1,
+  1000
+);
+camera.position.set(0, 10, 30);
+scene.add(camera);
+
+// controls
+const controls = new OrbitControls(camera, canvas);
+controls.enableDamping = true;
+
+// texture loader
+const textureLoader = new THREE.TextureLoader();
+
+// water geometry and material
+const waterGeometry = new THREE.PlaneGeometry(10000, 10000);
+const water = new Water(waterGeometry, {
+  textureWidth: 512,
+  textureHeight: 512,
+  waterNormals: textureLoader.load('textures/waternormals.jpg', (texture) => {
+    texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+  }),
+  sunDirection: new THREE.Vector3(),
+  sunColor: 0xffffff,
+  waterColor: 0x00008B80,
+  distortionScale: 3.7,
+});
+water.rotation.x = -Math.PI / 2;
+scene.add(water);
+
+// light
+const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+directionalLight.position.set(10, 30, 10);
+scene.add(directionalLight);
+
+// renderer
+const renderer = new THREE.WebGLRenderer({ canvas });
+renderer.setSize(sizes.width, sizes.height);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
 // resize handler
 window.addEventListener('resize', () => {
-  // update sizes
   sizes.width = window.innerWidth;
   sizes.height = window.innerHeight;
-
-  // update camera
   camera.aspect = sizes.width / sizes.height;
   camera.updateProjectionMatrix();
-
-  // update renderer and pixel ration
   renderer.setSize(sizes.width, sizes.height);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 });
@@ -49,38 +82,14 @@ window.addEventListener('dblclick', () => {
   return document.exitFullscreen();
 });
 
-// camera
-const camera = new THREE.PerspectiveCamera(
-  75,
-  sizes.width / sizes.height,
-  0.1,
-  1000,
-);
-camera.position.z = 3;
-scene.add(camera);
-
-// controls
-const controls = new OrbitControls(camera, canvas);
-controls.enableDamping = true;
-
-// renderer
-const renderer = new THREE.WebGLRenderer({
-  canvas,
-});
-// add size to renderer to avoid pixelated view
-renderer.setSize(window.innerWidth, window.innerHeight);
-
+// animate
 const animate = () => {
-  // start stats monitoring
   stats.begin();
-  // enable damping
   controls.update();
-  // render scene
+  water.material.uniforms['time'].value += 1.0 / 60.0;
   renderer.render(scene, camera);
-  // end of stats monitoring
   stats.end();
-  // pass reference to itself to create infinite loop of frames
-  window.requestAnimationFrame(animate);
+  requestAnimationFrame(animate);
 };
 
 animate();
