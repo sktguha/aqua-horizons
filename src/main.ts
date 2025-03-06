@@ -140,8 +140,8 @@ function initOceanScene(){
   scene.add(water);
 
   // light
-  const directionalLight = new THREE.DirectionalLight(0xffffff, 3); // Further increase intensity
-  directionalLight.position.set(10, 30, 10);
+  const directionalLight = new THREE.DirectionalLight(0xffffff, 0.2); // Further increase intensity
+  directionalLight.position.set(10, 10, 10);
   scene.add(directionalLight);
 
   const {balls, trees, ballSpeeds, treeSpeeds} = addRandomObjects(scene, true);
