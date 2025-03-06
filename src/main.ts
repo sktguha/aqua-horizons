@@ -42,7 +42,10 @@ fpControls.lookVertical = true; // Enable vertical look
 fpControls.constrainVertical = true; // Enable vertical constraints
 fpControls.verticalMin = Math.PI / 4; // Constrain vertical rotation
 fpControls.verticalMax = Math.PI / 2; // Constrain vertical rotation
-fpControls.heightMax = 10;
+const h = -10;
+fpControls.heightMax = h;
+fpControls.heightMin= h-1;
+
 // toggle controls
 window.addEventListener('keydown', (event) => {
   if (event.key === 'Shift') {
@@ -146,12 +149,14 @@ window.addEventListener('keydown', (event) => {
     case 'Q':
     case 'q':
       fpControls.lon -= ROTATE_STEP;
+      camera.position.setFromEuler(new THREE.Euler(0, 12, 0));
       camera.updateMatrixWorld();
       break;
     case 'E':
     case 'e':
       fpControls.lon += ROTATE_STEP;
       camera.updateMatrixWorld();
+      camera.position.setFromEuler(new THREE.Euler(0, 40, 0));
       break;
   }
 });
