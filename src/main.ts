@@ -60,7 +60,7 @@ orbitControls.maxPolarAngle = Math.PI / 2;
 let activeControls = fpControls;
 
 
-// texture loader
+// texture loader ok
 const textureLoader = new THREE.TextureLoader();
 
 // water geometry and material
