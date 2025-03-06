@@ -57,6 +57,12 @@ window.addEventListener('keydown', (event) => {
     cameraRotationSpeed = 0.01
     // fpControls.lookSpeed = 0.001;
   }
+ else if (event.key === 'x') {
+  fpControls.movementSpeed = START_MOVEMENT_SPEED*2;
+  cameraRotationSpeed = 0.01
+  // fpControls.lookSpeed = 0.001;
+}
+
 });
 const START_MOVEMENT_SPEED = 1.8;
 fpControls.constrainVertical = true;
