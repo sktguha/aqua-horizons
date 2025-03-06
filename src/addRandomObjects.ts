@@ -36,23 +36,24 @@ export const speedRanges = {
 export const worldX = 100000, worldY = 100000;
 // Add random objects
 export const addRandomObjects = (scene, isOcean = false) => {
-  const geometry = new THREE.SphereGeometry(200, 32, 32); // Increased size by 4 times
+  const geometry = new THREE.SphereGeometry(200, 32, 32); // Balloon shape
   const OBJECTS_TO_RENDER = 5000;
 
-  // Add balls
+  // Add balloon-shaped balls
   for (let i = 0; i < OBJECTS_TO_RENDER; i++) { // Increased number of objects
     const color = colors[Math.floor(Math.random() * colors.length)];
     const material = new THREE.MeshStandardMaterial({ color, emissive: color, emissiveIntensity: 0.2 });
-    const ball = new THREE.Mesh(geometry, material);
-    ball.position.set(
+    const balloon = new THREE.Mesh(geometry, material);
+    balloon.scale.set(1, 1.5, 1); // Make it balloon-shaped
+    balloon.position.set(
       Math.random() * worldX - worldX / 2, // Adjusted spread
       Math.random() * 200 + 10, // Increased spread
       Math.random() * worldY - worldY / 2 // Adjusted spread
     );
-    balls.push(ball);
+    balls.push(balloon);
     const [minSpeed, maxSpeed] = speedRanges[color];
     ballSpeeds.push((Math.random() * (maxSpeed - minSpeed)) + minSpeed); // Random speed within range
-    scene.add(ball);
+    scene.add(balloon);
   }
 
   function interpolateColor() {
@@ -187,6 +188,28 @@ export const addRandomObjects = (scene, isOcean = false) => {
       scene.add(tree);
     }
   });
+
+  // Add clusters of small objects
+  const smallObjectGeometry = new THREE.SphereGeometry(50, 16, 16); // Smaller size
+  const smallObjectMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff });
+  for (let i = 0; i < 1000; i++) { // Number of clusters
+    const cluster = new THREE.Group();
+    for (let j = 0; j < 10; j++) { // Number of objects per cluster
+      const smallObject = new THREE.Mesh(smallObjectGeometry, smallObjectMaterial);
+      smallObject.position.set(
+        Math.random() * 200 - 100, // Cluster spread
+        Math.random() * 200 - 100,
+        Math.random() * 200 - 100
+      );
+      cluster.add(smallObject);
+    }
+    cluster.position.set(
+      Math.random() * worldX - worldX / 2,
+      Math.random() * 200 + 10,
+      Math.random() * worldY - worldY / 2
+    );
+    scene.add(cluster);
+  }
 
   const patch = createPatch(scene);
   generatePatch(patch, 0, 0);
