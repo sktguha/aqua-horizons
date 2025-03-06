@@ -281,9 +281,9 @@ function initOceanScene(){
         ball.position.y = 10;
         ballSpeeds[index] = Math.abs(ballSpeeds[index]); // Ensure speed is positive
       }
-      // Update balloon X and Z positions - multiplied by 5 for increased lateral movement
-      ball.position.x += ballXSpeeds[index] * 5;
-      ball.position.z += ballZSpeeds[index] * 5;
+      // Update balloon X and Z positions - increased multiplier to 15 for faster lateral movement
+      ball.position.x += ballXSpeeds[index] * 15;
+      ball.position.z += ballZSpeeds[index] * 15;
     });
 
     // // Move trees up and down
