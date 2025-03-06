@@ -56,15 +56,20 @@ export const addRandomObjects = (scene, isOcean = false) => {
   }
 
   // Add trees
-  const treeGeometry = new THREE.ConeGeometry(200, 1000, 32); // Increased size by 4 times
+  const treeGeometry = new THREE.ConeGeometry(50, 250, 32); // Reduced size
   const treeMaterial = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
   for (let i = 0; i < OBJECTS_TO_RENDER; i++) { // Increased number of objects
     const tree = new THREE.Mesh(treeGeometry, treeMaterial);
-    tree.position.set(
-      Math.random() * worldX - worldX / 2, // Adjusted spread
-      Math.random() * 200 + 10, // Increased spread
-      Math.random() * worldY - worldY / 2 // Adjusted spread
-    );
+    const x = Math.random() * worldX - worldX / 2;
+    const z = Math.random() * worldY - worldY / 2;
+
+    // Prevent trees from being generated near the user's spawn position (within a radius of 1000 units)
+    const distanceFromOrigin = Math.sqrt(x * x + z * z);
+    if (distanceFromOrigin < 1000) {
+      continue;
+    }
+
+    tree.position.set(x, Math.random() * 200 + 10, z);
     trees.push(tree);
     treeSpeeds.push((Math.random() * 0.02) + 0.01); // Random speed
     scene.add(tree);
@@ -134,7 +139,7 @@ export const addRandomObjects = (scene, isOcean = false) => {
   // scene.add(island);
 
   // Add trees on the single island
-  const islandTreeGeometry = new THREE.ConeGeometry(100, 250, 32); // Reduced height
+  const islandTreeGeometry = new THREE.ConeGeometry(25, 125, 32); // Reduced size
   const islandTreeMaterial = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
   for (let i = 0; i < 60; i++) { // Add 60 trees on the island
     const tree = new THREE.Mesh(islandTreeGeometry, islandTreeMaterial);
@@ -147,7 +152,7 @@ export const addRandomObjects = (scene, isOcean = false) => {
   }
 
   // Add forest clusters
-  const forestTreeGeometry = new THREE.ConeGeometry(200, 1000, 32); // Same size as regular trees
+  const forestTreeGeometry = new THREE.ConeGeometry(50, 250, 32); // Reduced size
   const forestTreeMaterial = new THREE.MeshStandardMaterial({ color: 0x228B22 }); // Forest green color
   const forestPositions = [
     { x: -5000, z: -5000 },
