@@ -77,8 +77,8 @@ export const addRandomObjects = (scene, isOcean = false) => {
   
 
   // Add trees
-  for (let i = 0; i < OBJECTS_TO_RENDER; i++) { // Increased number of objects
-    const treeGeometry = new THREE.ConeGeometry(150, 1000+Math.random()*2000, 64); // Reduced size
+  for (let i = 0; i < OBJECTS_TO_RENDER*2; i++) { // Increased number of objects
+    const treeGeometry = new THREE.ConeGeometry(200, 1000+Math.random()*2000, 200); // Reduced size
     const treeMaterial = new THREE.MeshStandardMaterial({ color: interpolateColor() });
     const tree = new THREE.Mesh(treeGeometry, treeMaterial);
     const x = Math.random() * worldX - worldX / 2;
