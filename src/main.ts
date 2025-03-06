@@ -36,11 +36,18 @@ scene.add(camera);
 
 // first person controls
 const fpControls = new FirstPersonControls(camera, canvas);
-fpControls.lookSpeed = 0.0001; // Adjust look speed for rotation
-fpControls.movementSpeed = 0.001;
+fpControls.lookSpeed = 0;
+// toggle controls
+window.addEventListener('keydown', (event) => {
+  if (event.key === 'Shift') {
+    fpControls.lookSpeed = 0;
+  } else if (event.key === 'z') {
+    fpControls.lookSpeed = 0.001;
+  }
+});
+fpControls.constrainVertical = true;
+fpControls.movementSpeed = 0.2;
 fpControls.noFly = true;
-fpControls.lookVertical = true; // Enable vertical look
-fpControls.constrainVertical = true; // Disable vertical constraints
 
 // orbit controls
 const orbitControls = new OrbitControls(camera, canvas);
@@ -52,18 +59,6 @@ orbitControls.maxPolarAngle = Math.PI / 2;
 // choose active controls
 let activeControls = fpControls;
 
-// toggle controls
-window.addEventListener('keydown', (event) => {
-  if (event.key === 'Shift') {
-    // const currentPosition = camera.position.clone();
-    // const currentRotation = camera.rotation.clone();
-    // activeControls = (activeControls === fpControls) ? orbitControls : fpControls;
-    // camera.position.copy(currentPosition);
-    // camera.rotation.copy(currentRotation);
-    fpControls.lookSpeed = fpControls.lookSpeed === 0 ? 0.001 : 0;
-    camera.updateProjectionMatrix(); // Ensure the camera's projection matrix is updated
-  }
-});
 
 // texture loader
 const textureLoader = new THREE.TextureLoader();
