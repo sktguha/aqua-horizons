@@ -140,24 +140,35 @@ window.addEventListener('keyup', (event) => {
 });
 
 // animate
-let y = 0;
+let rotationY = 0;
+let x=0,y=0,z=0;
+const FORWARD_SPEED = 5;
 const animate = () => {
   stats.begin();
   water.material.uniforms['time'].value += 1.0 / 60.0;
 
   // camera rotation logic
   if (keyState['ArrowLeft'] || keyState['A'] || keyState['q']) {
-    y += cameraRotationSpeed;
-    camera.rotation.y = y;
+    rotationY += cameraRotationSpeed;
+    camera.rotation.y = rotationY;
   }
   if (keyState['ArrowRight'] || keyState['D'] || keyState['e']) {
-    y -= cameraRotationSpeed;
-    camera.rotation.y = y;
+    rotationY -= cameraRotationSpeed;
+    camera.rotation.y = rotationY;
+  }
+  if(keyState['w']){
+    x += FORWARD_SPEED;
+  }
+  if(keyState['s']){
+    x -= FORWARD_SPEED;
   }
   camera.rotation.x = 0;
   camera.rotation.z = 0;
-  camera.rotation.y = y;
-
+  camera.rotation.y = rotationY;
+  camera.position.x = x;
+  console.log({x,y,z});
+  // camera.position.y = y;
+  // camera.position.z = z;
   renderer.render(scene, camera);
   stats.end();
   requestAnimationFrame(animate);
