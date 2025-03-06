@@ -154,6 +154,15 @@ function initOceanScene(){
   directionalLight.position.set(10, 10, 10);
   scene.add(directionalLight);
 
+  // Add bright lamp lights (point lights)
+  const lamp1 = new THREE.PointLight(0xffffff, 2, 500);
+  lamp1.position.set(50, 50, 50);
+  scene.add(lamp1);
+
+  const lamp2 = new THREE.PointLight(0xffffff, 2, 500);
+  lamp2.position.set(-50, 50, -50);
+  scene.add(lamp2);
+
   const {balls, trees, ballSpeeds, treeSpeeds} = addRandomObjects(scene, true);
 
   // Create X and Z speed arrays for balloons
