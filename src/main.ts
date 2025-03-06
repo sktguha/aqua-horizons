@@ -156,6 +156,7 @@ window.addEventListener('keyup', (event) => {
 });
 
 // animate
+let y = 0;
 const animate = () => {
   stats.begin();
   fpControls.update(1);
@@ -163,13 +164,15 @@ const animate = () => {
 
   // camera rotation logic
   if (keyState['Q'] || keyState['q']) {
-    camera.rotation.y += cameraRotationSpeed;
+    y += cameraRotationSpeed;
+    camera.rotation.y = y;
   }
   if (keyState['E'] || keyState['e']) {
-    camera.rotation.y -= cameraRotationSpeed;
+    y -= cameraRotationSpeed;
+    camera.rotation.y = y;
   }
 
-  camera.updateMatrixWorld();
+  // camera.updateMatrixWorld();
   renderer.render(scene, camera);
   stats.end();
   requestAnimationFrame(animate);
