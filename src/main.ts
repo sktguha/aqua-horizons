@@ -81,7 +81,7 @@ const water = new Water(waterGeometry, {
   waterNormals: textureLoader.load('textures/waternormals.jpg', (texture) => {
     texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
   }),
-  sunDirection: new THREE.Vector3(1, 0.1, 0),
+  sunDirection: new THREE.Vector3(1, 0.4, 0),
   sunColor: 0xffddaa, // Brighter sun color
   waterColor: 0xADD8E6, // Light blue water color
   distortionScale: 3.7,
