@@ -66,84 +66,24 @@ export const addRandomObjects = (speedRanges) => {
     scene.add(rect);
   }
 
-  // Add islands
+  // Add a single island
   const islandGeometry = new THREE.BoxGeometry(1000, 50, 1000); // Reduced height
   const islandMaterial = new THREE.MeshStandardMaterial({ color: 0x8B4513 }); // Brown color
-  const island1 = new THREE.Mesh(islandGeometry, islandMaterial);
-  island1.position.set(-1500, 25, -30); // Adjusted position to match reduced height
-  scene.add(island1);
+  const island = new THREE.Mesh(islandGeometry, islandMaterial);
+  island.position.set(0, 25, 0); // Adjusted position to match reduced height
+  scene.add(island);
 
-  const island2 = new THREE.Mesh(islandGeometry, islandMaterial);
-  island2.position.set(1500, 25, -30); // Adjusted position to match reduced height
-  scene.add(island2);
-
-  const island3 = new THREE.Mesh(islandGeometry, islandMaterial);
-  island3.position.set(0, 25, 0); // Adjusted position to match reduced height
-  scene.add(island3);
-
-  const island4 = new THREE.Mesh(islandGeometry, islandMaterial);
-  island4.position.set(0, 50, 0);
-  scene.add(island4);
-
-  const island5 = new THREE.Mesh(islandGeometry, islandMaterial);
-  island5.position.set(1500, 50, 0);
-  scene.add(island5);
-
-  const island6 = new THREE.Mesh(islandGeometry, islandMaterial);
-  island6.position.set(-1500, 50, 0);
-  scene.add(island6);
-
-  // Add trees on islands
-  const islandTreeGeometry = new THREE.ConeGeometry(100, 500, 32); // Half the current size
+  // Add trees on the single island
+  const islandTreeGeometry = new THREE.ConeGeometry(100, 250, 32); // Reduced height
   const islandTreeMaterial = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
-  for (let i = 0; i < 10; i++) { // Add 10 trees on each island
-    const tree1 = new THREE.Mesh(islandTreeGeometry, islandTreeMaterial);
-    tree1.position.set(
-      island1.position.x + (Math.random() * 800 - 400), // Random position within island
-      100, // Height of the island
-      island1.position.z + (Math.random() * 800 - 400) // Random position within island
+  for (let i = 0; i < 60; i++) { // Add 60 trees on the island
+    const tree = new THREE.Mesh(islandTreeGeometry, islandTreeMaterial);
+    tree.position.set(
+      island.position.x + (Math.random() * 800 - 400), // Random position within island
+      50, // Height of the island
+      island.position.z + (Math.random() * 800 - 400) // Random position within island
     );
-    scene.add(tree1);
-
-    const tree2 = new THREE.Mesh(islandTreeGeometry, islandTreeMaterial);
-    tree2.position.set(
-      island2.position.x + (Math.random() * 800 - 400), // Random position within island
-      100, // Height of the island
-      island2.position.z + (Math.random() * 800 - 400) // Random position within island
-    );
-    scene.add(tree2);
-
-    const tree3 = new THREE.Mesh(islandTreeGeometry, islandTreeMaterial);
-    tree3.position.set(
-      island3.position.x + (Math.random() * 800 - 400),
-      100,
-      island3.position.z + (Math.random() * 800 - 400)
-    );
-    scene.add(tree3);
-
-    const tree4 = new THREE.Mesh(islandTreeGeometry, islandTreeMaterial);
-    tree4.position.set(
-      island4.position.x + (Math.random() * 800 - 400),
-      100,
-      island4.position.z + (Math.random() * 800 - 400)
-    );
-    scene.add(tree4);
-
-    const tree5 = new THREE.Mesh(islandTreeGeometry, islandTreeMaterial);
-    tree5.position.set(
-      island5.position.x + (Math.random() * 800 - 400),
-      100,
-      island5.position.z + (Math.random() * 800 - 400)
-    );
-    scene.add(tree5);
-
-    const tree6 = new THREE.Mesh(islandTreeGeometry, islandTreeMaterial);
-    tree6.position.set(
-      island6.position.x + (Math.random() * 800 - 400),
-      100,
-      island6.position.z + (Math.random() * 800 - 400)
-    );
-    scene.add(tree6);
+    scene.add(tree);
   }
 
   // Add forest clusters
