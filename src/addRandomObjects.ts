@@ -1,6 +1,7 @@
 // @ts-nocheck
 import * as THREE from 'three';
 import { colors, worldX, worldY, balls, speedRanges, ballSpeeds, scene, trees, treeSpeeds, squares, rectangles } from './main';
+import { createPatch, generatePatch } from './noisePatch';
 
 // Add random objects
 export const addRandomObjects = (speedRanges) => {
@@ -68,7 +69,17 @@ export const addRandomObjects = (speedRanges) => {
 
   // Add a single island
   const islandGeometry = new THREE.BoxGeometry(10000, 50, 1000); // Reduced height
-  const islandMaterial = new THREE.MeshStandardMaterial({ color: 0x8B4513 }); // Brown color
+  // Randomize face colors
+  islandGeometry?.faces?.forEach?.(face => {
+    const color = new THREE.Color(0xC2B280);
+    color.offsetHSL(0, (Math.random() * 0.1) - 0.05, (Math.random() * 0.1) - 0.05);
+    face.color.copy(color);
+  });
+  islandGeometry.elementsNeedUpdate = true;
+
+  const islandMaterial = new THREE.MeshStandardMaterial({
+    vertexColors: true // Use face colors
+  });
   const island = new THREE.Mesh(islandGeometry, islandMaterial);
   island.position.set(0, 25, 0); // Adjusted position to match reduced height
   scene.add(island);
@@ -107,4 +118,7 @@ export const addRandomObjects = (speedRanges) => {
       scene.add(tree);
     }
   });
+
+  const patch = createPatch(scene);
+  generatePatch(patch, 0, 0);
 };
