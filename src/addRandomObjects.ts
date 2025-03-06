@@ -192,21 +192,21 @@ export const addRandomObjects = (scene, isOcean = false) => {
   // Add clusters of small objects
   const smallObjectGeometry = new THREE.SphereGeometry(50, 16, 16); // Smaller size
   const smallObjectMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff });
-  for (let i = 0; i < 1000; i++) { // Number of clusters
+  for (let i = 0; i < 100; i++) { // Number of clusters
     const cluster = new THREE.Group();
     for (let j = 0; j < 10; j++) { // Number of objects per cluster
       const smallObject = new THREE.Mesh(smallObjectGeometry, smallObjectMaterial);
       smallObject.position.set(
-        Math.random() * 200 - 100, // Cluster spread
-        Math.random() * 200 - 100,
-        Math.random() * 200 - 100
+        Math.random() * 10 - 10, // Cluster spread
+        Math.random() * 100 - 10,
+        Math.random() * 100 - 10
       );
       cluster.add(smallObject);
     }
     cluster.position.set(
-      Math.random() * worldX - worldX / 2,
-      Math.random() * 200 + 10,
-      Math.random() * worldY - worldY / 2
+      Math.random() * 200,
+      Math.random() * 200,
+      Math.random() * 200
     );
     scene.add(cluster);
   }
