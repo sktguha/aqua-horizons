@@ -134,7 +134,7 @@ export const addRandomObjects = (scene, isOcean = false) => {
 
   // Add trees on the single island
   const islandTreeGeometry = new THREE.ConeGeometry(25, 125, 32); // Reduced size
-  const islandTreeMaterial = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
+  const islandTreeMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff });
   for (let i = 0; i < 60; i++) { // Add 60 trees on the island
     const tree = new THREE.Mesh(islandTreeGeometry, islandTreeMaterial);
     tree.position.set(

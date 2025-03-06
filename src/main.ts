@@ -242,13 +242,13 @@ function initOceanScene(){
       }
     });
 
-    // Move trees up and down
-    trees.forEach((tree, index) => {
-      tree.position.y += treeSpeeds[index] * 4; // Increase speed by ~4x
-      if (tree.position.y > 200 || tree.position.y < 10) {
-        treeSpeeds[index] = -treeSpeeds[index];
-      }
-    });
+    // // Move trees up and down
+    // trees.forEach((tree, index) => {
+    //   tree.position.y += treeSpeeds[index] * 4; // Increase speed by ~4x
+    //   if (tree.position.y > 200 || tree.position.y < 10) {
+    //     treeSpeeds[index] = -treeSpeeds[index];
+    //   }
+    // });
 
     renderer.render(scene, camera);
     stats.end();
