@@ -42,7 +42,7 @@ fpControls.lookVertical = true; // Enable vertical look
 fpControls.constrainVertical = true; // Enable vertical constraints
 fpControls.verticalMin = Math.PI / 4; // Constrain vertical rotation
 fpControls.verticalMax = Math.PI / 2; // Constrain vertical rotation
-
+fpControls.heightMax = 10;
 // toggle controls
 window.addEventListener('keydown', (event) => {
   if (event.key === 'Shift') {
@@ -141,22 +141,20 @@ const MOVE_STEP = 3;
 const ROTATE_STEP = 1;
 
 // keyboard listener for rotation
-// window.addEventListener('keydown', (event) => {
-//   switch (event.key) {
-//     case 'Q':
-//     case 'q':
-//       camera.rotation.y += ROTATE_STEP;
-//       camera.rotateX(ROTATE_STEP);
-//       console.log("+")
-//       break;
-//     case 'E':
-//     case 'e':
-//       camera.rotation.y -= ROTATE_STEP;
-//       camera.rotateX(-1*ROTATE_STEP);
-//       console.log("+-")
-//       break;
-//   }
-// });
+window.addEventListener('keydown', (event) => {
+  switch (event.key) {
+    case 'Q':
+    case 'q':
+      fpControls.lon -= ROTATE_STEP;
+      camera.updateMatrixWorld();
+      break;
+    case 'E':
+    case 'e':
+      fpControls.lon += ROTATE_STEP;
+      camera.updateMatrixWorld();
+      break;
+  }
+});
 
 // keyboard listener
 // window.addEventListener('keydown2', (event) => {
