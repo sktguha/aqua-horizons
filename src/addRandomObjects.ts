@@ -272,7 +272,7 @@ function getBiasedCoordinate(worldX, worldY) {
     const mountainHeight = 15000 + Math.random() * 3000;
     const mountainRadius = mountainHeight * 0.9;
     const mountainGeometry = new THREE.ConeGeometry(mountainRadius, mountainHeight, 16);
-    const mountainMaterial = new THREE.MeshStandardMaterial({ color: 0x8B4513, roughness: 0.9 });
+    const mountainMaterial = new THREE.MeshStandardMaterial({ color: 0x8B4513, roughness: 0.5 + Math.random()/2 });
     const mountain = new THREE.Mesh(mountainGeometry, mountainMaterial);
     const mountainX = Math.random() * worldX - worldX / 2;
     const mountainZ = Math.random() * worldY - worldY / 2;
