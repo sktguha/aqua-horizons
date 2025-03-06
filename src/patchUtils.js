@@ -7,21 +7,31 @@ let v2 = new THREE.Vector3();
 let v3 = new THREE.Vector3();
 let v4 = new THREE.Vector3();
 
+// Modify noisefn to create much larger sand dunes
 let noisefn = (x, y, seconds, v = v0) => {
-  let z = Math.sin((x * 0.1) + seconds) * Math.cos((y * 0.13) + seconds);
-  let z1 = Math.sin((y * 0.15) + seconds) * Math.cos((x * 0.2) + seconds);
+  // Reduce frequency to create wider dunes (divide by 5)
+  let z = Math.sin((x * 0.02) + seconds) * Math.cos((y * 0.026) + seconds);
+  let z1 = Math.sin((y * 0.03) + seconds) * Math.cos((x * 0.04) + seconds);
   z -= z1;
-  return v.set(x, z * 3, y);
+  
+  // Exaggerate the height by applying a nonlinear transformation
+  z = Math.sign(z) * Math.pow(Math.abs(z), 0.8); // Make dunes smoother with 0.8
+  
+  // Increase height multiplier from 3 to 30 (10x larger)
+  return v.set(x, z * 30, y);
 };
 
+// Function to create a terrain patch
 export const createPatch = (scene, material) => {
-  let patchGeometry = new THREE.PlaneGeometry(50, 50, 99, 99);
+  // Increase the size of the patch to accommodate larger dunes
+  let patchGeometry = new THREE.PlaneGeometry(200, 200, 99, 99);
   patchGeometry.rotateX(Math.PI * -0.5);
-  let m1 = new THREE.Mesh(patchGeometry.clone(), material);
-  scene.add(m1);
-  return m1;
+  let mesh = new THREE.Mesh(patchGeometry.clone(), material);
+  scene.add(mesh);
+  return mesh;
 };
 
+// Function to generate dynamic terrain
 export const generatePatch = (mesh, seconds, lod = 0) => {
   let a = mesh.geometry.attributes.position.array;
   let na = mesh.geometry.attributes.normal.array;
@@ -35,6 +45,7 @@ export const generatePatch = (mesh, seconds, lod = 0) => {
   let cutoff = 6 * lod;
   let outIndex = [];
   let gi = mesh.geometry.index.array;
+
   for (let i = 0, ai = 0, c = (sz * sz); i < c; i++, ai += 3) {
     let ix = (i % sz);
     let iy = ((i / sz) | 0);
@@ -55,20 +66,25 @@ export const generatePatch = (mesh, seconds, lod = 0) => {
       let ei = ((iy * 99) + ix) * 6;
       outIndex.push(gi[ei], gi[ei + 1], gi[ei + 2], gi[ei + 3], gi[ei + 4], gi[ei + 5]);
     }
+
     let nx = (x * mesh.scale.x) + mesh.position.x;
     let ny = (y * mesh.scale.z) + mesh.position.z;
     let pp = noisefn(nx, ny, seconds);
+
     let vx = noisefn(nx + (0.0001 * mesh.scale.x), ny, seconds, v1).sub(pp);
     let vy = noisefn(nx, ny + (0.0001 * mesh.scale.z), seconds, v2).sub(pp);
     let vn = vy.cross(vx);
-    vn.y /= 1 + lod;
+
+    vn.y /= 0.2 + lod; // Reduced divisor from 0.5 to 0.2 to make slopes much steeper
     vn.normalize();
+
     if (!i) {
       v3.y = v4.y = pp.y;
     } else {
-      if (pp.y < v2.y) v3.y = pp.y;
-      if (pp.y > v3.y) v4.y = pp.y;
+      if (pp.y < v3.y) v3.y = pp.y;
+      if (pp.y > v4.y) v4.y = pp.y;
     }
+
     a[ai] = x;
     a[ai + 1] = pp.y;
     a[ai + 2] = y;
@@ -76,6 +92,7 @@ export const generatePatch = (mesh, seconds, lod = 0) => {
     na[ai + 1] = vn.y;
     na[ai + 2] = vn.z;
   }
+
   mesh.geometry.setIndex(outIndex);
   mesh.geometry.boundingBox.set(v3, v4);
   mesh.geometry.attributes.position.needsUpdate = true;
