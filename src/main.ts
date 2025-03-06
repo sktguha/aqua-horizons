@@ -100,7 +100,17 @@ const squares: THREE.Mesh[] = [];
 const rectangles: THREE.Mesh[] = [];
 const ballSpeeds: number[] = [];
 const treeSpeeds: number[] = [];
-const colors = [0xff0000, 0x00ff00, 0x0000ff, 0xffff00, 0xff00ff, 0x00ffff, 0xffa500, 0x800080, 0x008000];
+const colors = [
+  0xff0000,
+  0x00ff00,
+  0x0000ff,
+  0xffff00,
+  0xff00ff,
+  0x00ffff, 0x00ffff, 0x00ffff, 0x00ffff, 0x00ffff, // Replicate cyan multiple times
+  0xffa500,
+  0x800080,
+  0x008000
+];
 const speedRanges = {
   0xff0000: [0.1, 0.02], // Red
   0x00ff00: [0.2, 0.03], // Green
@@ -188,8 +198,24 @@ const addRandomObjects = () => {
   island2.position.set(1500, 50, 1500);
   scene.add(island2);
 
+  const island3 = new THREE.Mesh(islandGeometry, islandMaterial);
+  island3.position.set(0, 50, -1500);
+  scene.add(island3);
+
+  const island4 = new THREE.Mesh(islandGeometry, islandMaterial);
+  island4.position.set(0, 50, 1500);
+  scene.add(island4);
+
+  const island5 = new THREE.Mesh(islandGeometry, islandMaterial);
+  island5.position.set(1500, 50, 0);
+  scene.add(island5);
+
+  const island6 = new THREE.Mesh(islandGeometry, islandMaterial);
+  island6.position.set(-1500, 50, 0);
+  scene.add(island6);
+
   // Add trees on islands
-  const islandTreeGeometry = new THREE.ConeGeometry(200, 1000, 32); // Increased size by 4 times
+  const islandTreeGeometry = new THREE.ConeGeometry(100, 500, 32); // Half the current size
   const islandTreeMaterial = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
   for (let i = 0; i < 10; i++) { // Add 10 trees on each island
     const tree1 = new THREE.Mesh(islandTreeGeometry, islandTreeMaterial);
@@ -207,6 +233,38 @@ const addRandomObjects = () => {
       island2.position.z + (Math.random() * 800 - 400) // Random position within island
     );
     scene.add(tree2);
+
+    const tree3 = new THREE.Mesh(islandTreeGeometry, islandTreeMaterial);
+    tree3.position.set(
+      island3.position.x + (Math.random() * 800 - 400),
+      100,
+      island3.position.z + (Math.random() * 800 - 400)
+    );
+    scene.add(tree3);
+
+    const tree4 = new THREE.Mesh(islandTreeGeometry, islandTreeMaterial);
+    tree4.position.set(
+      island4.position.x + (Math.random() * 800 - 400),
+      100,
+      island4.position.z + (Math.random() * 800 - 400)
+    );
+    scene.add(tree4);
+
+    const tree5 = new THREE.Mesh(islandTreeGeometry, islandTreeMaterial);
+    tree5.position.set(
+      island5.position.x + (Math.random() * 800 - 400),
+      100,
+      island5.position.z + (Math.random() * 800 - 400)
+    );
+    scene.add(tree5);
+
+    const tree6 = new THREE.Mesh(islandTreeGeometry, islandTreeMaterial);
+    tree6.position.set(
+      island6.position.x + (Math.random() * 800 - 400),
+      100,
+      island6.position.z + (Math.random() * 800 - 400)
+    );
+    scene.add(tree6);
   }
 };
 
