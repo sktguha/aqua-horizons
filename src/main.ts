@@ -172,20 +172,6 @@ function initOceanScene(){
 
   const {balls, trees, ballSpeeds, treeSpeeds} = addRandomObjects(scene, true);
 
-  // Add crowns to all trees
-  trees.forEach(tree => {
-    // Compute bounding box to find tree top
-    tree.geometry.computeBoundingBox();
-    const bbox = tree.geometry.boundingBox;
-    const treeTop = bbox ? bbox.max.y : 50; // fallback height if bounding box missing
-    const crownGeometry = new THREE.SphereGeometry(20, 16, 8);
-    const crownMaterial = new THREE.MeshStandardMaterial({ color: 0x228B22 });
-    const crown = new THREE.Mesh(crownGeometry, crownMaterial);
-    // Position crown on top of the tree trunk
-    crown.position.set(0, treeTop + 20, 0);
-    tree.add(crown);
-  });
-
   // Create X and Z speed arrays for balloons
   const ballXSpeeds: number[] = [];
   const ballZSpeeds: number[] = [];

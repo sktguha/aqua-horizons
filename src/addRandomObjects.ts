@@ -90,7 +90,9 @@ export const addRandomObjects = (scene, isOcean = false) => {
 
   // Add trees
   for (let i = 0; i < OBJECTS_TO_RENDER; i++) { // Increased number of objects
-    const treeGeometry = new THREE.ConeGeometry(200, 1000 + Math.random() * 2000, 200); // Reduced size
+    // Create tree geometry with random height
+    const treeHeight = 1000 + Math.random() * 2000;
+    const treeGeometry = new THREE.ConeGeometry(200, treeHeight, 200); // Reduced size
     const x = Math.random() * worldX - worldX / 2;
     const z = Math.random() * worldY - worldY / 2;
     const treeMaterial = new THREE.MeshStandardMaterial({ color: interpolateColor(x, z) });
@@ -102,11 +104,35 @@ export const addRandomObjects = (scene, isOcean = false) => {
       continue;
     }
 
-    tree.position.set(x, Math.random() * 200 + 10, z);
+    tree.position.set(x, treeHeight / 2, z);
+
+    // Add a crown to the tree – crown diameter is ten times larger than the previous crown sphere (diameter 400, radius 200)
+    const crownGeometry = new THREE.SphereGeometry(200, 32, 16);
+    const crownMaterial = new THREE.MeshStandardMaterial({ color: 0x228B22 });
+    const crown = new THREE.Mesh(crownGeometry, crownMaterial);
+    // Position crown atop the tree (tree top equals treeHeight)
+    crown.position.set(0, treeHeight / 2, 0);
+    tree.add(crown);
+
     trees.push(tree);
     treeSpeeds.push((Math.random() * 0.02) + 0.01); // Random speed
     scene.add(tree);
   }
+
+  // Add crowns to all trees
+    trees.forEach(tree => {
+      // Compute bounding box to find tree top
+      tree.geometry.computeBoundingBox();
+      const bbox = tree.geometry.boundingBox;
+      const treeTop = bbox ? bbox.max.y : 50; // fallback height if bounding box missing
+      const crownGeometry = new THREE.SphereGeometry(20, 16, 8);
+      const crownMaterial = new THREE.MeshStandardMaterial({ color: 0x228B22 });
+      const crown = new THREE.Mesh(crownGeometry, crownMaterial);
+      // Position crown on top of the tree trunk
+      crown.position.set(0, treeTop + 20, 0);
+      tree.add(crown);
+    });
+  
 
   // Add squares
   for (let i = 0; i < 0; i++) {
