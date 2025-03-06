@@ -67,7 +67,7 @@ fpControls.noFly = true;
 const textureLoader = new THREE.TextureLoader();
 
 // water geometry and material
-const worldX = 1000000, worldY = 1000000;
+const worldX = 100000, worldY = 100000;
 const waterGeometry = new THREE.PlaneGeometry(worldX, worldY);
 const water = new Water(waterGeometry, {
   textureWidth: 512,
