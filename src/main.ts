@@ -82,11 +82,22 @@ window.addEventListener('dblclick', () => {
   return document.exitFullscreen();
 });
 
+// keyboard listener
+window.addEventListener('keydown', (event) => {
+  if (event.key === 'ArrowRight') {
+    camera.position.x += 1;
+  }
+});
+
 // animate
 const animate = () => {
   stats.begin();
   controls.update();
   water.material.uniforms['time'].value += 1.0 / 60.0;
+  
+  // Ensure camera responds to changes
+  camera.updateMatrixWorld();
+  
   renderer.render(scene, camera);
   stats.end();
   requestAnimationFrame(animate);
