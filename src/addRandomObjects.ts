@@ -106,8 +106,8 @@ export const addRandomObjects = (scene, isOcean = false) => {
 
     tree.position.set(x, treeHeight / 2, z);
 
-    // Add a crown to the tree – crown diameter is ten times larger than the previous crown sphere (diameter 400, radius 200)
-    const crownGeometry = new THREE.SphereGeometry(200, 32, 16);
+    // Add a crown to the tree – make it ten times larger now (radius 2000 instead of 200)
+    const crownGeometry = new THREE.SphereGeometry(500, 32, 16);
     const crownMaterial = new THREE.MeshStandardMaterial({ color: 0x228B22 });
     const crown = new THREE.Mesh(crownGeometry, crownMaterial);
     // Position crown atop the tree (tree top equals treeHeight)
