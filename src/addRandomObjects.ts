@@ -11,15 +11,13 @@ export const ballSpeeds: number[] = [];
 export const treeSpeeds: number[] = [];
 export const colors = [
   0xff0000,
-  0x00ff00,
   0x0000ff,
   0xffff00,
   0xff00ff,
   0x00ffff, 0x00ffff, 0x00ffff, 0x00ffff, 0x00ffff, // Replicate cyan multiple times
   0x00ffff, 0x00ffff, 0x00ffff, 0x00ffff, 0x00ffff,
   0xffa500,
-  0x800080,
-  0x008000
+  0x800080
 ];
 export const speedRanges = {
   0xff0000: [0.1, 0.02], // Red
@@ -107,12 +105,12 @@ export const addRandomObjects = (scene, isOcean = false) => {
     tree.position.set(x, treeHeight / 2, z);
 
     // Consolidate crown addition: crown radius proportional to tree height (e.g. treeHeight/10)
-    const crownRadius = treeHeight / 10;
+    const crownRadius = treeHeight / 5;
     const crownGeometry = new THREE.SphereGeometry(crownRadius, 32, 16);
     const crownMaterial = new THREE.MeshStandardMaterial({ color: 0x228B22 });
     const crown = new THREE.Mesh(crownGeometry, crownMaterial);
     // Position crown at the top of the tree
-    crown.position.set(0, treeHeight / 2 + crownRadius, 0);
+    crown.position.set(0, treeHeight / 2, 0);
     tree.add(crown);
 
     trees.push(tree);
