@@ -10,21 +10,23 @@ let v2 = new THREE.Vector3();
 let v3 = new THREE.Vector3();
 let v4 = new THREE.Vector3();
 
+const IS_MOUNTAIN = false;
+
 // Modify noisefn to lower dune height and round the peaks more
 let noisefn = (x, y, seconds, v = v0) => {
-  // Reduce frequency for wider dunes
-  let z = Math.sin((x * 0.02) + seconds) * Math.cos((y * 0.026) + seconds);
-  let z1 = Math.sin((y * 0.03) + seconds) * Math.cos((x * 0.04) + seconds);
+  // Update frequency multipliers for larger dunes
+  let z = Math.sin((x * 0.01) + seconds) * Math.cos((y * 0.013) + seconds);
+  let z1 = Math.sin((y * 0.015) + seconds) * Math.cos((x * 0.02) + seconds);
   z -= z1;
   
   if (USE_ROUNDED_DUNES) {
     // Lower and rounded dunes with a high ground level.
     z = Math.sign(z) * Math.pow(Math.abs(z), 0.7);
-    return v.set(x, z * 10 + BASE_HEIGHT, y);
+    return v.set(x, z * 60 + BASE_HEIGHT, y); // Increased Y factor by 6 times (10 -> 60)
   } else {
     // Original sharper dunes.
     z = Math.sign(z) * Math.pow(Math.abs(z), 0.8);
-    return v.set(x, z * 30, y);
+    return v.set(x, z * 180, y); // Increased Y factor by 6 times (30 -> 180)
   }
 };
 
