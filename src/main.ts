@@ -114,6 +114,11 @@ function initOceanScene(){
       cameraRotationSpeed = 0.01
       // fpControls.lookSpeed = 0.001;
     }
+    if (event.key === 'n') {
+      fpControls.movementSpeed = START_MOVEMENT_SPEED*8;
+      cameraRotationSpeed = 2;
+      // fpControls.lookSpeed = 0.001;
+    }
   });
   const START_MOVEMENT_SPEED = 1.8;
   fpControls.constrainVertical = true;

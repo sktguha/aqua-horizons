@@ -31,6 +31,9 @@ let noisefn = (x, y, seconds, v = v0) => {
 
 // Function to create a terrain patch
 export const createPatch = (scene, material) => {
+  // Set sand color to dark brown.
+  material.color.set(0x654321);
+  
   // Increase the size of the patch to accommodate larger dunes
   let patchGeometry = new THREE.PlaneGeometry(200, 200, 99, 99);
   patchGeometry.rotateX(Math.PI * -0.5);
