@@ -85,6 +85,38 @@ const directionalLight = new THREE.DirectionalLight(0xffffff, 3); // Further inc
 directionalLight.position.set(10, 30, 10);
 scene.add(directionalLight);
 
+// Add random objects
+const addRandomObjects = () => {
+  const geometry = new THREE.SphereGeometry(1, 32, 32);
+  const material = new THREE.MeshStandardMaterial({ color: 0xff0000 });
+  
+  // Add balls
+  for (let i = 0; i < 10; i++) {
+    const ball = new THREE.Mesh(geometry, material);
+    ball.position.set(
+      Math.random() * 100 - 50,
+      Math.random() * 10 + 1,
+      Math.random() * 100 - 50
+    );
+    scene.add(ball);
+  }
+
+  // Add trees
+  const treeGeometry = new THREE.ConeGeometry(1, 5, 32);
+  const treeMaterial = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
+  for (let i = 0; i < 10; i++) {
+    const tree = new THREE.Mesh(treeGeometry, treeMaterial);
+    tree.position.set(
+      Math.random() * 100 - 50,
+      Math.random() * 10 + 1,
+      Math.random() * 100 - 50
+    );
+    scene.add(tree);
+  }
+};
+
+addRandomObjects();
+
 // renderer
 const renderer = new THREE.WebGLRenderer({ canvas });
 renderer.setSize(sizes.width, sizes.height);
