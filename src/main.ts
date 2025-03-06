@@ -32,11 +32,11 @@ const camera = new THREE.PerspectiveCamera(
 );
 camera.position.set(0, 10, 30);
 scene.add(camera);
-
+const cameraRotationSpeed = 0.005;
 // first person controls
 const fpControls = new FirstPersonControls(camera, canvas);
 fpControls.lookSpeed = 0.1; // Adjust look speed for rotation
-fpControls.movementSpeed = 0.2;
+fpControls.movementSpeed = 0.6;
 fpControls.noFly = true;
 fpControls.lookVertical = true; // Enable vertical look
 fpControls.constrainVertical = true; // Enable vertical constraints
@@ -49,9 +49,13 @@ fpControls.heightMin= h-1;
 // toggle controls
 window.addEventListener('keydown', (event) => {
   if (event.key === 'Shift') {
-    fpControls.lookSpeed = 0;
+    // fpControls.lookSpeed = 0;
+    fpControls.movementSpeed = 0.6;
+    cameraRotationSpeed = 0.005;
   } else if (event.key === 'z') {
-    fpControls.lookSpeed = 0.001;
+    fpControls.movementSpeed = 0.9;
+    cameraRotationSpeed = 0.01
+    // fpControls.lookSpeed = 0.001;
   }
 });
 fpControls.constrainVertical = true;
@@ -144,7 +148,7 @@ const MOVE_STEP = 3;
 const ROTATE_STEP = 1;
 
 const keyState: { [key: string]: boolean } = {};
-const cameraRotationSpeed = 0.05;
+
 
 // keyboard event listeners
 window.addEventListener('keydown', (event) => {
@@ -163,12 +167,12 @@ const animate = () => {
   water.material.uniforms['time'].value += 1.0 / 60.0;
 
   // camera rotation logic
-  if (keyState['Q'] || keyState['q']) {
+  if (keyState['ArrowLeft'] || keyState['A'] || keyState['q']) {
     y += cameraRotationSpeed;
     camera.rotation.y = y;
     console.log({y});
   }
-  if (keyState['E'] || keyState['e']) {
+  if (keyState['ArrowRight'] || keyState['D'] || keyState['e']) {
     y -= cameraRotationSpeed;
     camera.rotation.y = y;
     console.log({y});
