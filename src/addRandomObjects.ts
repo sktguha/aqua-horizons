@@ -137,34 +137,43 @@ export const addRandomObjects = (scene, isOcean = false) => {
   }
 
   // Add a single island
-  const islandShape = new THREE.Shape();
-  islandShape.absarc(0, 0, 5000, 0, Math.PI * 2, false);
-  const extrudeSettings = {
-    depth: 50,
-    bevelEnabled: true
-  };
-  const islandGeometry = new THREE.ExtrudeGeometry(islandShape, extrudeSettings);
+  const islandGeometry = new THREE.BoxGeometry(10000, 50, 2000); // Reduced height
   const islandMaterial = new THREE.MeshStandardMaterial({
-    color: '#C2B280',
-    dithering: true
+    color: '#333333',
+      dithering: true
   });
   
   const island = new THREE.Mesh(islandGeometry, islandMaterial);
-  island.rotation.x = -Math.PI / 2; // Rotate so the island lies flat in the XZ plane
+  
+  const material = new THREE.MeshStandardMaterial({
+      color: '#ffbe67',
+      dithering: true
+    });
+  
+    let lods = [];
+    for (let i = 0; i < 4; i++) {
+      let m = createPatch(scene, material, isOcean);
+      let scl = (i + 1) ** 3;
+      m.scale.x = scl;
+      m.scale.z = scl;
+      m.scale.y = i + 1;
+      lods.push(m);
+      generatePatch(m, 0, i);
+    }
+
   island.position.set(-20, -20, -20); // Adjusted position to match reduced height
   if(isOcean)
   scene.add(island);
 
   // Add a second island
   const island2 = new THREE.Mesh(islandGeometry, islandMaterial.clone());
-  island2.rotation.x = -Math.PI / 2; // Rotate so the island lies flat in the XZ plane
-  island2.position.set(-20, -40, -2020); // Lowered Y position to reduce its height
+  island2.position.set(-20, -20, -2020); // Moved further along z-axis
   if(isOcean)
   scene.add(island2);
 
   // Add trees on the single island
   const islandTreeGeometry = new THREE.ConeGeometry(25, 125, 32); // Reduced size
-  const islandTreeMaterial = new THREE.MeshStandardMaterial({ color: 0xf });
+  const islandTreeMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff });
   for (let i = 0; i < 60; i++) { // Add 60 trees on the island
     const tree = new THREE.Mesh(islandTreeGeometry, islandTreeMaterial);
     tree.position.set(
