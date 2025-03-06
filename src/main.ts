@@ -8,9 +8,9 @@ import { addRandomObjects } from './addRandomObjects';
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
 import { initDesertScene } from './main2Desert';
 
-initDesertScene();
-// throw new Error("lol");
-// stats
+export const worldX = 100000, worldY = 100000;
+// initDesertScene();
+function initOceanScene(){
 const stats = new Stats();
 stats.showPanel(0);
 document.body.appendChild(stats.dom);
@@ -78,7 +78,7 @@ fpControls.noFly = true;
 const textureLoader = new THREE.TextureLoader();
 
 // water geometry and material
-export const worldX = 100000, worldY = 100000;
+
 const waterGeometry = new THREE.PlaneGeometry(worldX, worldY);
 const water = new Water(waterGeometry, {
   textureWidth: 512,
@@ -191,3 +191,5 @@ const animate = () => {
 };
 
 animate();
+}
+initOceanScene();
