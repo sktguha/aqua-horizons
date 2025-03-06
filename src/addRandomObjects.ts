@@ -1,5 +1,6 @@
 // @ts-nocheck
 import * as THREE from 'three';
+import { noise } from 'perlin-noise';
 // import { colors, worldX, worldY, balls, speedRanges, ballSpeeds, scene, trees, treeSpeeds, squares, rectangles } from './main';
 import { createPatch, generatePatch } from './patchUtils';
 
@@ -93,9 +94,10 @@ export const addRandomObjects = (scene, isOcean = false) => {
 }
 
 function getBiasedCoordinate(worldX, worldY) {
-    const x = gaussianRandom(0, worldX / 4); // More trees near the center
-    const z = gaussianRandom(0, worldY / 4);
-    return { x, z };
+  const biasFactor = 0.6; // Higher = more clustering
+  let x = Math.pow(Math.random(), biasFactor) * worldX - worldX / 2;
+  let z = Math.pow(Math.random(), biasFactor) * worldY - worldY / 2;
+  return { x, z };
 }
 
   // Add trees
