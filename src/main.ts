@@ -86,6 +86,11 @@ const directionalLight = new THREE.DirectionalLight(0xffffff, 3); // Further inc
 directionalLight.position.set(10, 30, 10);
 scene.add(directionalLight);
 
+const balls: THREE.Mesh[] = [];
+const trees: THREE.Mesh[] = [];
+const ballSpeeds: number[] = [];
+const treeSpeeds: number[] = [];
+
 // Add random objects
 const addRandomObjects = () => {
   const geometry = new THREE.SphereGeometry(50, 32, 32); // Increased size
@@ -99,6 +104,8 @@ const addRandomObjects = () => {
       Math.random() * 200 + 10, // Increased spread
       Math.random() * 2000 - 1000 // Increased spread
     );
+    balls.push(ball);
+    ballSpeeds.push((Math.random() * 0.02) + 0.01); // Random speed
     scene.add(ball);
   }
 
@@ -112,6 +119,8 @@ const addRandomObjects = () => {
       Math.random() * 200 + 10, // Increased spread
       Math.random() * 2000 - 1000 // Increased spread
     );
+    trees.push(tree);
+    treeSpeeds.push((Math.random() * 0.02) + 0.01); // Random speed
     scene.add(tree);
   }
 };
@@ -180,7 +189,23 @@ const animate = () => {
   camera.rotation.x = 0;
   camera.rotation.z = 0;
   camera.rotation.y = y;
-  // camera.updateMatrixWorld();
+
+  // Move balls up and down
+  balls.forEach((ball, index) => {
+    ball.position.y += ballSpeeds[index];
+    if (ball.position.y > 200 || ball.position.y < 10) {
+      ballSpeeds[index] = -ballSpeeds[index];
+    }
+  });
+
+  // Move trees up and down
+  trees.forEach((tree, index) => {
+    tree.position.y += treeSpeeds[index];
+    if (tree.position.y > 200 || tree.position.y < 10) {
+      treeSpeeds[index] = -treeSpeeds[index];
+    }
+  });
+
   renderer.render(scene, camera);
   stats.end();
   requestAnimationFrame(animate);
