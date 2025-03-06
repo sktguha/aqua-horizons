@@ -138,6 +138,17 @@ const addRandomObjects = () => {
     treeSpeeds.push((Math.random() * 0.02) + 0.01); // Random speed
     scene.add(tree);
   }
+
+  // Add islands
+  const islandGeometry = new THREE.BoxGeometry(1000, 100, 1000); // Large size
+  const islandMaterial = new THREE.MeshStandardMaterial({ color: 0x8B4513 }); // Brown color
+  const island1 = new THREE.Mesh(islandGeometry, islandMaterial);
+  island1.position.set(-1500, 50, -1500);
+  scene.add(island1);
+
+  const island2 = new THREE.Mesh(islandGeometry, islandMaterial);
+  island2.position.set(1500, 50, 1500);
+  scene.add(island2);
 };
 
 addRandomObjects();
