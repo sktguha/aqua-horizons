@@ -96,6 +96,8 @@ scene.add(directionalLight);
 
 const balls: THREE.Mesh[] = [];
 const trees: THREE.Mesh[] = [];
+const squares: THREE.Mesh[] = [];
+const rectangles: THREE.Mesh[] = [];
 const ballSpeeds: number[] = [];
 const treeSpeeds: number[] = [];
 const colors = [0xff0000, 0x00ff00, 0x0000ff, 0xffff00, 0xff00ff, 0x00ffff, 0xffa500, 0x800080, 0x008000];
@@ -119,7 +121,7 @@ const addRandomObjects = () => {
   // Add balls
   for (let i = 0; i < OBJECTS_TO_RENDER; i++) { // Increased number of objects
     const color = colors[Math.floor(Math.random() * colors.length)];
-    const material = new THREE.MeshStandardMaterial({ color });
+    const material = new THREE.MeshStandardMaterial({ color, emissive: color, emissiveIntensity: 0.5 });
     const ball = new THREE.Mesh(geometry, material);
     ball.position.set(
       Math.random() * worldX - worldX / 2, // Adjusted spread
@@ -145,6 +147,34 @@ const addRandomObjects = () => {
     trees.push(tree);
     treeSpeeds.push((Math.random() * 0.02) + 0.01); // Random speed
     scene.add(tree);
+  }
+
+  // Add squares
+  for (let i = 0; i < 50; i++) {
+    const squareGeo = new THREE.BoxGeometry(100, 100, 100);
+    const squareMat = new THREE.MeshStandardMaterial({ color: 0xffffff });
+    const square = new THREE.Mesh(squareGeo, squareMat);
+    square.position.set(
+      Math.random() * worldX - worldX / 2,
+      10 + Math.random() * 100,
+      Math.random() * worldY - worldY / 2
+    );
+    squares.push(square);
+    scene.add(square);
+  }
+
+  // Add rectangles
+  for (let i = 0; i < 50; i++) {
+    const rectGeo = new THREE.BoxGeometry(200, 100, 100);
+    const rectMat = new THREE.MeshStandardMaterial({ color: 0xfff000 });
+    const rect = new THREE.Mesh(rectGeo, rectMat);
+    rect.position.set(
+      Math.random() * worldX - worldX / 2,
+      10 + Math.random() * 100,
+      Math.random() * worldY - worldY / 2
+    );
+    rectangles.push(rect);
+    scene.add(rect);
   }
 
   // Add islands
@@ -247,7 +277,7 @@ const animate = () => {
 
   // Move balls up and down
   balls.forEach((ball, index) => {
-    ball.position.y += ballSpeeds[index];
+    ball.position.y += ballSpeeds[index] * 4; // Increase speed by ~4x
     if (ball.position.y > 200 || ball.position.y < 10) {
       ballSpeeds[index] = -ballSpeeds[index];
     }
@@ -255,7 +285,7 @@ const animate = () => {
 
   // Move trees up and down
   trees.forEach((tree, index) => {
-    tree.position.y += treeSpeeds[index];
+    tree.position.y += treeSpeeds[index] * 4; // Increase speed by ~4x
     if (tree.position.y > 200 || tree.position.y < 10) {
       treeSpeeds[index] = -treeSpeeds[index];
     }
