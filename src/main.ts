@@ -6,7 +6,10 @@ import { Water } from 'three/examples/jsm/objects/Water';
 import { FirstPersonControls } from 'three/examples/jsm/controls/FirstPersonControls';
 import { addRandomObjects } from './addRandomObjects';
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
+import { initDesertScene } from './main2Desert';
 
+initDesertScene();
+throw new Error("lol");
 // stats
 const stats = new Stats();
 stats.showPanel(0);
