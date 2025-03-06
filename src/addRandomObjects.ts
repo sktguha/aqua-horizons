@@ -56,9 +56,9 @@ export const addRandomObjects = (scene, isOcean = false) => {
   }
 
   // Add trees
-  const treeGeometry = new THREE.ConeGeometry(50, 250, 32); // Reduced size
-  const treeMaterial = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
   for (let i = 0; i < OBJECTS_TO_RENDER; i++) { // Increased number of objects
+    const treeGeometry = new THREE.ConeGeometry(150, 1000+Math.random()*2000, 64); // Reduced size
+    const treeMaterial = new THREE.MeshStandardMaterial({ color: Math.random() > 0.5 ? 0x2B1B17 : 0x00ff00 });
     const tree = new THREE.Mesh(treeGeometry, treeMaterial);
     const x = Math.random() * worldX - worldX / 2;
     const z = Math.random() * worldY - worldY / 2;
