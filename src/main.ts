@@ -1,7 +1,6 @@
 // @ts-nocheck
 import './style.css';
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import Stats from 'stats.js';
 import { Water } from 'three/examples/jsm/objects/Water';
 import { FirstPersonControls } from 'three/examples/jsm/controls/FirstPersonControls';
@@ -49,18 +48,7 @@ fpControls.constrainVertical = true;
 fpControls.movementSpeed = 0.2;
 fpControls.noFly = true;
 
-// orbit controls
-const orbitControls = new OrbitControls(camera, canvas);
-orbitControls.enableDamping = true;
-orbitControls.dampingFactor = 0.05;
-orbitControls.screenSpacePanning = false;
-orbitControls.maxPolarAngle = Math.PI / 2;
-
-// choose active controls
-let activeControls = fpControls;
-
-
-// texture loader ok
+// texture loader
 const textureLoader = new THREE.TextureLoader();
 
 // water geometry and material
@@ -184,11 +172,7 @@ window.addEventListener('keydown', (event) => {
 // animate
 const animate = () => {
   stats.begin();
-  if (activeControls === orbitControls) {
-    orbitControls.update();
-  } else {
-    fpControls.update(1);
-  }
+  fpControls.update(1);
   water.material.uniforms['time'].value += 1.0 / 60.0;
   camera.updateMatrixWorld();
   renderer.render(scene, camera);
