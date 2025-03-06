@@ -3,6 +3,7 @@ import * as THREE from 'three';
 
 const USE_ROUNDED_DUNES = true;
 const BASE_HEIGHT = 20; // Increase base height for rounded dunes
+const LARGE_HEIGHT = 500; // New variable for high rounded dunes
 
 let v0 = new THREE.Vector3();
 let v1 = new THREE.Vector3();
@@ -20,7 +21,7 @@ let noisefn = (x, y, seconds, v = v0) => {
   if (USE_ROUNDED_DUNES) {
     // Lower and rounded dunes with a high ground level.
     z = Math.sign(z) * Math.pow(Math.abs(z), 0.7);
-    return v.set(x, z * 10 + BASE_HEIGHT, y);
+    return v.set(x, z * 10 + LARGE_HEIGHT, y);
   } else {
     // Original sharper dunes.
     z = Math.sign(z) * Math.pow(Math.abs(z), 0.8);
