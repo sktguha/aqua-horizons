@@ -204,6 +204,18 @@ function initOceanScene(){
     lamps.push(lamp);
   }
 
+  // Add a collection of ten very bright lamps at height 200
+  const brightLamps: THREE.PointLight[] = [];
+  const NUM_BRIGHT_LAMPS = 10;
+  const spacing = 20; // horizontal spacing between lamps
+  const startX = -((NUM_BRIGHT_LAMPS - 1) * spacing) / 2;
+  for (let i = 0; i < NUM_BRIGHT_LAMPS; i++) {
+    const brightLamp = new THREE.PointLight(0xffffff, 5, 4000); // very bright
+    brightLamp.position.set(startX + i * spacing, 8000, 0);
+    scene.add(brightLamp);
+    brightLamps.push(brightLamp);
+  }
+
   const {balls, trees, ballSpeeds, treeSpeeds} = addRandomObjects(scene, true);
 
   // Create X and Z speed arrays for balloons
