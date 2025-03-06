@@ -279,6 +279,18 @@ function initOceanScene(){
   animate();
 }
 
+function getRandomForestColor() {
+  return Math.floor(Math.random() * 0xffffff); // Random 24-bit color
+}
+
+function varyColor(baseColor: number) {
+  const variation = 100;
+  const r = Math.min(255, Math.max(0, ((baseColor >> 16) & 0xff) + (Math.random() * (2 * variation) - variation)));
+  const g = Math.min(255, Math.max(0, ((baseColor >> 8) & 0xff) + (Math.random() * (2 * variation) - variation)));
+  const b = Math.min(255, Math.max(0, (baseColor & 0xff) + (Math.random() * (2 * variation) - variation)));
+  return (r << 16) + (g << 8) + b;
+}
+
 if(location.href.indexOf('desert') > -1){
   initDesertScene();
 } else {

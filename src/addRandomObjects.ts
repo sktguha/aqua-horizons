@@ -84,7 +84,7 @@ export const addRandomObjects = (scene, isOcean = false) => {
     const g = Math.round(g1 + factor * (g2 - g1));
     const b = Math.round(b1 + factor * (b2 - b1));
   
-    return (r << 16) + (g << 8) + b;
+    return varyColor((r << 16) + (g << 8) + b);
   }
   
 
@@ -183,10 +183,11 @@ export const addRandomObjects = (scene, isOcean = false) => {
   }
   
   function varyColor(baseColor: number) {
-    // Slightly vary each RGB component
-    const r = Math.min(255, Math.max(0, ((baseColor >> 16) & 0xff) + (Math.random() * 60 - 30)));
-    const g = Math.min(255, Math.max(0, ((baseColor >> 8) & 0xff) + (Math.random() * 60 - 30)));
-    const b = Math.min(255, Math.max(0, (baseColor & 0xff) + (Math.random() * 60 - 30)));
+    // More aggressive variation for each RGB component
+    const variation = 100; // Increased variation range
+    const r = Math.min(255, Math.max(0, ((baseColor >> 16) & 0xff) + (Math.random() * (2 * variation) - variation)));
+    const g = Math.min(255, Math.max(0, ((baseColor >> 8) & 0xff) + (Math.random() * (2 * variation) - variation)));
+    const b = Math.min(255, Math.max(0, (baseColor & 0xff) + (Math.random() * (2 * variation) - variation)));
     return (r << 16) + (g << 8) + b;
   }
   
