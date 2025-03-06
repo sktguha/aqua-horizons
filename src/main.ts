@@ -134,22 +134,22 @@ const MOVE_STEP = 3;
 const ROTATE_STEP = 1;
 
 // keyboard listener for rotation
-window.addEventListener('keydown', (event) => {
-  switch (event.key) {
-    case 'Q':
-    case 'q':
-      camera.rotation.y += ROTATE_STEP;
-      camera.rotateX(ROTATE_STEP);
-      console.log("+")
-      break;
-    case 'E':
-    case 'e':
-      camera.rotation.y -= ROTATE_STEP;
-      camera.rotateX(-1*ROTATE_STEP);
-      console.log("+-")
-      break;
-  }
-});
+// window.addEventListener('keydown', (event) => {
+//   switch (event.key) {
+//     case 'Q':
+//     case 'q':
+//       camera.rotation.y += ROTATE_STEP;
+//       camera.rotateX(ROTATE_STEP);
+//       console.log("+")
+//       break;
+//     case 'E':
+//     case 'e':
+//       camera.rotation.y -= ROTATE_STEP;
+//       camera.rotateX(-1*ROTATE_STEP);
+//       console.log("+-")
+//       break;
+//   }
+// });
 
 // keyboard listener
 // window.addEventListener('keydown2', (event) => {
