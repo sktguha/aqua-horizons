@@ -121,7 +121,7 @@ const addRandomObjects = () => {
   // Add balls
   for (let i = 0; i < OBJECTS_TO_RENDER; i++) { // Increased number of objects
     const color = colors[Math.floor(Math.random() * colors.length)];
-    const material = new THREE.MeshStandardMaterial({ color, emissive: color, emissiveIntensity: 0.5 });
+    const material = new THREE.MeshStandardMaterial({ color, emissive: color, emissiveIntensity: 0.2 });
     const ball = new THREE.Mesh(geometry, material);
     ball.position.set(
       Math.random() * worldX - worldX / 2, // Adjusted spread
@@ -150,7 +150,7 @@ const addRandomObjects = () => {
   }
 
   // Add squares
-  for (let i = 0; i < 50; i++) {
+  for (let i = 0; i < 2000; i++) {
     const squareGeo = new THREE.BoxGeometry(100, 100, 100);
     const squareMat = new THREE.MeshStandardMaterial({ color: 0xffffff });
     const square = new THREE.Mesh(squareGeo, squareMat);
@@ -164,7 +164,7 @@ const addRandomObjects = () => {
   }
 
   // Add rectangles
-  for (let i = 0; i < 50; i++) {
+  for (let i = 0; i < 2000; i++) {
     const rectGeo = new THREE.BoxGeometry(200, 100, 100);
     const rectMat = new THREE.MeshStandardMaterial({ color: 0xfff000 });
     const rect = new THREE.Mesh(rectGeo, rectMat);
