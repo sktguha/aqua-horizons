@@ -265,7 +265,7 @@ function initOceanScene(){
     camera.rotation.z = z;
     camera.rotation.y = y;
 
-    // Move balls up and down
+    // Move balls up and down , sideways also
     balls.forEach((ball, index) => {
       ball.position.y += ballSpeeds[index] * 4; // Increase speed by ~4x
       const MAX_BALLOON_HEIGHT_IMP = 3000;
