@@ -85,14 +85,25 @@ export const addRandomObjects = (scene, isOcean = false) => {
     return varyColor((r << 16) + (g << 8) + b);
   }
   
+  function gaussianRandom(mean, stddev) {
+    let u = 1 - Math.random();
+    let v = 1 - Math.random();
+    let normal = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+    return mean + stddev * normal;
+}
+
+function getBiasedCoordinate(worldX, worldY) {
+    const x = gaussianRandom(0, worldX / 4); // More trees near the center
+    const z = gaussianRandom(0, worldY / 4);
+    return { x, z };
+}
 
   // Add trees
   for (let i = 0; i < OBJECTS_TO_RENDER/4; i++) { // Increased number of objects
     // Create tree geometry with random height
     const treeHeight = 1000 + Math.random() * 2000;
     const treeGeometry = new THREE.ConeGeometry(200, treeHeight, 200); // Reduced size
-    const x = Math.random() * worldX - worldX / 2;
-    const z = Math.random() * worldY - worldY / 2;
+    const {x,z} = getBiasedCoordinate(worldX, worldY);
     const treeMaterial = new THREE.MeshStandardMaterial({ color: interpolateColor(x, z) });
     const tree = new THREE.Mesh(treeGeometry, treeMaterial);
 
