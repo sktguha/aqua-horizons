@@ -267,5 +267,20 @@ function getBiasedCoordinate(worldX, worldY) {
     scene.add(cluster);
   }
 
+  // Add very large trees (mountains)
+  for (let i = 0; i < 3; i++) {
+    const mountainHeight = 15000 + Math.random() * 3000;
+    const mountainRadius = mountainHeight * 0.9;
+    const mountainGeometry = new THREE.ConeGeometry(mountainRadius, mountainHeight, 16);
+    const mountainMaterial = new THREE.MeshStandardMaterial({ color: 0x8B4513, roughness: 0.9 });
+    const mountain = new THREE.Mesh(mountainGeometry, mountainMaterial);
+    const mountainX = Math.random() * worldX - worldX / 2;
+    const mountainZ = Math.random() * worldY - worldY / 2;
+    mountain.position.set(mountainX, mountainHeight / 2, mountainZ);
+    trees.push(mountain);
+    treeSpeeds.push(0); // Mountain trees remain static
+    scene.add(mountain);
+  }
+
   return {balls, trees, treeSpeeds, ballSpeeds};
 };
