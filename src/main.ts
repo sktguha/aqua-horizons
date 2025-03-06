@@ -173,6 +173,8 @@ const animate = () => {
     camera.rotation.y = y;
     console.log({y});
   }
+  camera.rotation.x = 0;
+  camera.rotation.z = 0;
   camera.rotation.y = y;
   // camera.updateMatrixWorld();
   renderer.render(scene, camera);
