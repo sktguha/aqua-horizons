@@ -9,7 +9,7 @@ import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
 import { initDesertScene } from './main2Desert';
 
 export const worldX = 100000, worldY = 100000;
-// initDesertScene();
+initDesertScene();
 function initOceanScene(){
 const stats = new Stats();
 stats.showPanel(0);
@@ -192,4 +192,4 @@ const animate = () => {
 
 animate();
 }
-initOceanScene();
+// initOceanScene();

@@ -4,6 +4,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { FirstPersonControls } from 'three/examples/jsm/controls/FirstPersonControls';
 import Stats from 'three/examples/jsm/libs/stats.module';
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader';
+import { addRandomObjects } from './addRandomObjects';
 
 export function initDesertScene(){
 
@@ -159,7 +160,7 @@ window.addEventListener(
 
 const stats = new Stats()
 document.body.appendChild(stats.dom)
-
+addRandomObjects(scene);
 const keyState = {};
 // keyboard event listeners
 window.addEventListener('keydown', (event) => {
