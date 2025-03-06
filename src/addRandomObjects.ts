@@ -92,43 +92,45 @@ export const addRandomObjects = (scene, isOcean = false) => {
     return center + (r - 0.5) * range * 2;
   }
 
-  // Add trees
-  for (let i = 0; i < OBJECTS_TO_RENDER/4; i++) { // Increased number of objects
-    // Create tree geometry with random height
-    const treeHeight = 1000 + Math.random() * 2000;
-    const treeGeometry = new THREE.ConeGeometry(200, treeHeight, 200); // Reduced size
-
-    // Apply biased placement for trees
-    const forestCenter = { x: 2000, z: 2000 };
-    const forestRange = 8000; // Range for tree distribution
-    const biasExponent = 2; // Higher value makes distribution more centered
-    const x = biasedRandom(forestCenter.x, forestRange, biasExponent);
-    const z = biasedRandom(forestCenter.z, forestRange, biasExponent);
-
-    const treeMaterial = new THREE.MeshStandardMaterial({ color: interpolateColor(x, z) });
-    const tree = new THREE.Mesh(treeGeometry, treeMaterial);
-
-    // Prevent trees from being generated near the user's spawn position (within a radius of 1000 units)
-    const distanceFromOrigin = Math.sqrt(x * x + z * z);
-    if (distanceFromOrigin < 1000) {
-      continue;
+  function createNewBigForest(xParam, zParam){
+    for (let i = 0; i < OBJECTS_TO_RENDER/4; i++) { // Increased number of objects
+      // Create tree geometry with random height
+      const treeHeight = 1000 + Math.random() * 2000;
+      const treeGeometry = new THREE.ConeGeometry(200, treeHeight, 200); // Reduced size
+  
+      // Apply biased placement for trees
+      const forestCenter = { x:xParam, z: zParam };
+      const forestRange = 8000; // Range for tree distribution
+      const biasExponent = 2; // Higher value makes distribution more centered
+      const x = biasedRandom(forestCenter.x, forestRange, biasExponent);
+      const z = biasedRandom(forestCenter.z, forestRange, biasExponent);
+  
+      const treeMaterial = new THREE.MeshStandardMaterial({ color: interpolateColor(x, z) });
+      const tree = new THREE.Mesh(treeGeometry, treeMaterial);
+  
+      // Prevent trees from being generated near the user's spawn position (within a radius of 1000 units)
+      const distanceFromOrigin = Math.sqrt(x * x + z * z);
+      if (distanceFromOrigin < 1000) {
+        continue;
+      }
+  
+      tree.position.set(x, treeHeight / 2, z);
+  
+      // Consolidate crown addition: crown radius proportional to tree height (e.g. treeHeight/10)
+      const crownRadius = treeHeight / 5;
+      const crownGeometry = new THREE.SphereGeometry(crownRadius, 32, 16);
+      const crownMaterial = new THREE.MeshStandardMaterial({ color: 0x228B22 });
+      const crown = new THREE.Mesh(crownGeometry, crownMaterial);
+      // Position crown at the top of the tree
+      crown.position.set(0, treeHeight / 2, 0);
+      tree.add(crown);
+  
+      trees.push(tree);
+      treeSpeeds.push((Math.random() * 0.02) + 0.01); // Random speed
+      scene.add(tree);
     }
-
-    tree.position.set(x, treeHeight / 2, z);
-
-    // Consolidate crown addition: crown radius proportional to tree height (e.g. treeHeight/10)
-    const crownRadius = treeHeight / 5;
-    const crownGeometry = new THREE.SphereGeometry(crownRadius, 32, 16);
-    const crownMaterial = new THREE.MeshStandardMaterial({ color: 0x228B22 });
-    const crown = new THREE.Mesh(crownGeometry, crownMaterial);
-    // Position crown at the top of the tree
-    crown.position.set(0, treeHeight / 2, 0);
-    tree.add(crown);
-
-    trees.push(tree);
-    treeSpeeds.push((Math.random() * 0.02) + 0.01); // Random speed
-    scene.add(tree);
   }
+  createNewBigForest(15000, 2000);
 
   // Add squares
   for (let i = 0; i < 0; i++) {
