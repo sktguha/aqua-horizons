@@ -140,7 +140,7 @@ function initOceanScene(){
   scene.add(water);
 
   // light
-  const directionalLight = new THREE.DirectionalLight(0xffffff, 0.2); // Further increase intensity
+  const directionalLight = new THREE.DirectionalLight(0x783412, 0.2); // Further increase intensity
   directionalLight.position.set(10, 10, 10);
   scene.add(directionalLight);
 

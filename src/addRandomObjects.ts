@@ -165,6 +165,12 @@ export const addRandomObjects = (scene, isOcean = false) => {
   if(isOcean)
   scene.add(island);
 
+  // Add a second island
+  const island2 = new THREE.Mesh(islandGeometry, islandMaterial.clone());
+  island2.position.set(-20, -20, -2020); // Moved further along z-axis
+  if(isOcean)
+  scene.add(island2);
+
   // Add trees on the single island
   const islandTreeGeometry = new THREE.ConeGeometry(25, 125, 32); // Reduced size
   const islandTreeMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff });
