@@ -36,7 +36,7 @@ const cameraRotationSpeed = 0.005;
 // first person controls
 const fpControls = new FirstPersonControls(camera, canvas);
 fpControls.lookSpeed = 0.1; // Adjust look speed for rotation
-fpControls.movementSpeed = 0.6;
+
 fpControls.noFly = true;
 fpControls.lookVertical = true; // Enable vertical look
 fpControls.constrainVertical = true; // Enable vertical constraints
@@ -53,13 +53,14 @@ window.addEventListener('keydown', (event) => {
     fpControls.movementSpeed = 0.6;
     cameraRotationSpeed = 0.005;
   } else if (event.key === 'z') {
-    fpControls.movementSpeed = 0.9;
+    fpControls.movementSpeed = START_MOVEMENT_SPEED;
     cameraRotationSpeed = 0.01
     // fpControls.lookSpeed = 0.001;
   }
 });
+const START_MOVEMENT_SPEED = 1.8;
 fpControls.constrainVertical = true;
-fpControls.movementSpeed = 0.2;
+fpControls.movementSpeed = START_MOVEMENT_SPEED; // 0.6
 fpControls.noFly = true;
 
 // texture loader
@@ -105,7 +106,7 @@ const addRandomObjects = () => {
       Math.random() * 2000 - 1000 // Increased spread
     );
     balls.push(ball);
-    ballSpeeds.push((Math.random() * 0.02) + 0.01); // Random speed
+    ballSpeeds.push((Math.random() * 2) + 0.1); // Random speed
     scene.add(ball);
   }
 
