@@ -149,72 +149,26 @@ function initOceanScene(){
   water.rotation.x = -Math.PI / 2;
   scene.add(water);
 
+  // Add a gigantic tree
+  const trunkHeight = 1000;
+  const trunkGeometry = new THREE.CylinderGeometry(10, 15, trunkHeight, 32);
+  const trunkMaterial = new THREE.MeshStandardMaterial({ color: 0x8B4513 });
+  const trunk = new THREE.Mesh(trunkGeometry, trunkMaterial);
+  // Adjust trunk position so the bottom is at y=0
+  trunk.position.set(0, trunkHeight / 2, -100);
+  scene.add(trunk);
+
+  const crownGeometry = new THREE.SphereGeometry(80, 32, 16);
+  const crownMaterial = new THREE.MeshStandardMaterial({ color: 0x228B22 });
+  const crown = new THREE.Mesh(crownGeometry, crownMaterial);
+  // Position crown so it sits atop the trunk
+  crown.position.set(0, trunkHeight + 80, -100);
+  scene.add(crown);
+
   // light
   const directionalLight = new THREE.DirectionalLight(0x783412, 0.2); // Further increase intensity
   directionalLight.position.set(10, 10, 10);
   scene.add(directionalLight);
-
-  // Add bright lamp lights (point lights)
-  const lamp1 = new THREE.PointLight(0xffffff, 2, 500);
-  lamp1.position.set(50, 50, 50);
-  scene.add(lamp1);
-
-  const lamp2 = new THREE.PointLight(0xffffff, 2, 500);
-  lamp2.position.set(-50, 50, -50);
-  scene.add(lamp2);
-
-  // Add fireflies
-  const fireflies: THREE.Mesh[] = [];
-  const numFireflies = 20;
-  const fireflyGeometry = new THREE.SphereGeometry(0.5, 8, 8);
-  for (let i = 0; i < numFireflies; i++) {
-    // Use a basic material; we add a point light for glow emission.
-    const fireflyMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 });
-    const firefly = new THREE.Mesh(fireflyGeometry, fireflyMaterial);
-    // Add a point light to simulate emission from the firefly
-    const fireflyLight = new THREE.PointLight(0xffff00, 1.5, 30);
-    firefly.add(fireflyLight);
-    
-    firefly.position.set(
-      (Math.random() - 0.5) * 200,
-      Math.random() * 50 + 20,
-      (Math.random() - 0.5) * 200
-    );
-    firefly.userData.offset = Math.random() * Math.PI * 2;
-    scene.add(firefly);
-    fireflies.push(firefly);
-  }
-
-  // Add lamps similar to fireflies
-  const lamps: THREE.Mesh[] = [];
-  const numLamps = 5;
-  const lampGeometry = new THREE.CylinderGeometry(0.5, 0.5, 2, 8);
-  for (let i = 0; i < numLamps; i++) {
-    const lampMaterial = new THREE.MeshBasicMaterial({ color: 0xffa726 });
-    const lamp = new THREE.Mesh(lampGeometry, lampMaterial);
-    // Attach a point light for emission
-    const lampLight = new THREE.PointLight(0xffa726, 2, 50);
-    lamp.add(lampLight);
-    lamp.position.set(
-      (Math.random() - 0.5) * 200,
-      Math.random() * 30 + 10,
-      (Math.random() - 0.5) * 200
-    );
-    scene.add(lamp);
-    lamps.push(lamp);
-  }
-
-  // Add a collection of ten very bright lamps at height 200
-  const brightLamps: THREE.PointLight[] = [];
-  const NUM_BRIGHT_LAMPS = 10;
-  const spacing = 20; // horizontal spacing between lamps
-  const startX = -((NUM_BRIGHT_LAMPS - 1) * spacing) / 2;
-  for (let i = 0; i < NUM_BRIGHT_LAMPS; i++) {
-    const brightLamp = new THREE.PointLight(0xffffff, 5, 4000); // very bright
-    brightLamp.position.set(startX + i * spacing, 8000, 0);
-    scene.add(brightLamp);
-    brightLamps.push(brightLamp);
-  }
 
   const {balls, trees, ballSpeeds, treeSpeeds} = addRandomObjects(scene, true);
 
@@ -331,13 +285,6 @@ function initOceanScene(){
     camera.rotation.x = x;
     camera.rotation.z = z;
     camera.rotation.y = y;
-
-    // Update fireflies' flicker effect
-    const t = performance.now() * 0.001;
-    fireflies.forEach(firefly => {
-      const flicker = 1 + Math.sin(t + firefly.userData.offset) * 0.3;
-      firefly.scale.set(flicker, flicker, flicker);
-    });
 
     // Move balls up and down , sideways also
     balls.forEach((ball, index) => {
