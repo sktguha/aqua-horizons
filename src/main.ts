@@ -253,8 +253,13 @@ function initOceanScene(){
     // Move balls up and down
     balls.forEach((ball, index) => {
       ball.position.y += ballSpeeds[index] * 4; // Increase speed by ~4x
-      if (ball.position.y > 200 || ball.position.y < 10) {
-        ballSpeeds[index] = -ballSpeeds[index];
+      const MAX_BALLOON_HEIGHT_IMP = 3000;
+      if (ball.position.y > MAX_BALLOON_HEIGHT_IMP) { // Increase maximum height
+        ball.position.y = MAX_BALLOON_HEIGHT_IMP;
+        ballSpeeds[index] = -Math.abs(ballSpeeds[index]); // Ensure speed is negative
+      } else if (ball.position.y < 10) {
+        ball.position.y = 10;
+        ballSpeeds[index] = Math.abs(ballSpeeds[index]); // Ensure speed is positive
       }
     });
 
