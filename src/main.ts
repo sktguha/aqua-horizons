@@ -91,14 +91,27 @@ const balls: THREE.Mesh[] = [];
 const trees: THREE.Mesh[] = [];
 const ballSpeeds: number[] = [];
 const treeSpeeds: number[] = [];
+const colors = [0xff0000, 0x00ff00, 0x0000ff, 0xffff00, 0xff00ff, 0x00ffff, 0xffa500, 0x800080, 0x008000];
+const speedRanges = {
+  0xff0000: [0.1, 0.02], // Red
+  0x00ff00: [0.2, 0.03], // Green
+  0x0000ff: [0.3, 0.04], // Blue
+  0xffff00: [0.4, 0.05], // Yellow
+  0xff00ff: [0.5, 0.06], // Magenta
+  0x00ffff: [0.6, 0.07], // Cyan
+  0xffa500: [0.7, 0.08], // Orange
+  0x800080: [0.8, 0.09], // Purple
+  0x008000: [0.9, 0.1]   // Dark Green
+};
 
 // Add random objects
 const addRandomObjects = () => {
   const geometry = new THREE.SphereGeometry(50, 32, 32); // Increased size
-  const material = new THREE.MeshStandardMaterial({ color: 0xff0000 });
   
   // Add balls
   for (let i = 0; i < 50; i++) { // Increased number of objects
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    const material = new THREE.MeshStandardMaterial({ color });
     const ball = new THREE.Mesh(geometry, material);
     ball.position.set(
       Math.random() * 2000 - 1000, // Increased spread
@@ -106,7 +119,8 @@ const addRandomObjects = () => {
       Math.random() * 2000 - 1000 // Increased spread
     );
     balls.push(ball);
-    ballSpeeds.push((Math.random() * 2) + 0.1); // Random speed
+    const [minSpeed, maxSpeed] = speedRanges[color];
+    ballSpeeds.push((Math.random() * (maxSpeed - minSpeed)) + minSpeed); // Random speed within range
     scene.add(ball);
   }
 
