@@ -144,7 +144,7 @@ function initOceanScene(){
   directionalLight.position.set(10, 30, 10);
   scene.add(directionalLight);
 
-  const {balls, trees, ballSpeeds, treeSpeeds} = addRandomObjects(scene);
+  const {balls, trees, ballSpeeds, treeSpeeds} = addRandomObjects(scene, true);
 
   // renderer
   const renderer = new THREE.WebGLRenderer({ canvas });

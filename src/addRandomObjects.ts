@@ -35,7 +35,7 @@ export const speedRanges = {
 
 export const worldX = 100000, worldY = 100000;
 // Add random objects
-export const addRandomObjects = (scene) => {
+export const addRandomObjects = (scene, isOcean = false) => {
   const geometry = new THREE.SphereGeometry(200, 32, 32); // Increased size by 4 times
   const OBJECTS_TO_RENDER = 5000;
 
@@ -121,7 +121,7 @@ export const addRandomObjects = (scene) => {
   
     let lods = [];
     for (let i = 0; i < 4; i++) {
-      let m = createPatch(scene, material);
+      let m = createPatch(scene, material, isOcean);
       let scl = (i + 1) ** 3;
       m.scale.x = scl;
       m.scale.z = scl;

@@ -17,8 +17,10 @@ const noisefn = (x: number, y: number, seconds: number, v = v0) => {
   return v.set(x, z * 3, y);
 };
 
-export function createPatch(scene: THREE.Scene) {
-  const patchGeometry = new THREE.PlaneGeometry(50, 50, 99, 99);
+export function createPatch(scene: THREE.Scene, isOcean = false) {
+  const patchGeometry = isOcean ? 
+  new THREE.PlaneGeometry(50, 50, 99, 99)
+  : new THREE.PlaneGeometry(20, 20, 10, 10);
   patchGeometry.rotateX(PI * -0.5);
 
   const material = new THREE.MeshStandardMaterial({ color: '#ffbe67', dithering: true });
