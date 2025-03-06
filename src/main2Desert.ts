@@ -1,3 +1,4 @@
+// @ts-nocheck
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { FirstPersonControls } from 'three/examples/jsm/controls/FirstPersonControls';
@@ -22,7 +23,7 @@ new RGBELoader().load('https://cdn.jsdelivr.net/gh/Sean-Bradley/React-Three-Fibe
 })
 
 const fpControls = new FirstPersonControls(camera, renderer.domElement);
-fpControls.lookSpeed = 0.1; // Adjust look speed for rotation
+fpControls.lookSpeed = 0.001; // Adjust look speed for rotation
 
 fpControls.noFly = true;
 fpControls.lookVertical = true; // Enable vertical look
@@ -159,18 +160,73 @@ window.addEventListener(
 const stats = new Stats()
 document.body.appendChild(stats.dom)
 
-function animate() {
-  requestAnimationFrame(animate)
-  controls.update()
+const keyState = {};
+// keyboard event listeners
+window.addEventListener('keydown', (event) => {
+  keyState[event.key] = true;
+});
+
+window.addEventListener('keyup', (event) => {
+  keyState[event.key] = false;
+});
+const cameraRotationSpeed = 0.005;
+// animate
+let y = 0;
+const animate = () => {
+  stats.begin();
   fpControls.update(1);
-  render()
-  stats.update()
-}
+//   water.material.uniforms['time'].value += 1.0 / 60.0;
 
-function render() {
-  renderer.render(scene, camera)
-}
+  // camera rotation logic
+  if (keyState['ArrowLeft'] || keyState['A'] || keyState['q']) {
+    y += cameraRotationSpeed;
+    camera.rotation.y = y;
+    console.log({y});
+  }
+  if (keyState['ArrowRight'] || keyState['D'] || keyState['e']) {
+    y -= cameraRotationSpeed;
+    camera.rotation.y = y;
+    console.log({y});
+  }
+  camera.rotation.x = 0;
+  camera.rotation.z = 0;
+  camera.rotation.y = y;
 
-animate()
+//   // Move balls up and down
+//   balls.forEach((ball, index) => {
+//     ball.position.y += ballSpeeds[index] * 4; // Increase speed by ~4x
+//     if (ball.position.y > 200 || ball.position.y < 10) {
+//       ballSpeeds[index] = -ballSpeeds[index];
+//     }
+//   });
+
+//   // Move trees up and down
+//   trees.forEach((tree, index) => {
+//     tree.position.y += treeSpeeds[index] * 4; // Increase speed by ~4x
+//     if (tree.position.y > 200 || tree.position.y < 10) {
+//       treeSpeeds[index] = -treeSpeeds[index];
+//     }
+//   });
+
+  renderer.render(scene, camera);
+  stats.end();
+  requestAnimationFrame(animate);
+};
+
+animate();
+
+// function animate() {
+//   requestAnimationFrame(animate)
+//   controls.update()
+//   fpControls.update(1);
+//   render()
+//   stats.update()
+// }
+
+// function render() {
+//   renderer.render(scene, camera)
+// }
+
+// animate()
 
 }
