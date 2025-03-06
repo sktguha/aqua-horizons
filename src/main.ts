@@ -266,6 +266,28 @@ const addRandomObjects = () => {
     );
     scene.add(tree6);
   }
+
+  // Add forest clusters
+  const forestTreeGeometry = new THREE.ConeGeometry(200, 1000, 32); // Same size as regular trees
+  const forestTreeMaterial = new THREE.MeshStandardMaterial({ color: 0x228B22 }); // Forest green color
+  const forestPositions = [
+    { x: -5000, z: -5000 },
+    { x: 5000, z: -5000 },
+    { x: -5000, z: 5000 },
+    { x: 5000, z: 5000 }
+  ];
+  forestPositions.forEach(pos => {
+    for (let i = 0; i < 200; i++) {
+      const tree = new THREE.Mesh(forestTreeGeometry, forestTreeMaterial);
+      tree.position.set(
+        pos.x + (Math.random() * 2000 - 1000), // Cluster around the position
+        10,
+        pos.z + (Math.random() * 2000 - 1000) // Cluster around the position
+      );
+      trees.push(tree);
+      scene.add(tree);
+    }
+  });
 };
 
 addRandomObjects();
