@@ -4,6 +4,7 @@ import * as THREE from 'three';
 const USE_ROUNDED_DUNES = true;
 const BASE_HEIGHT = 20; // Increase base height for rounded dunes
 const LARGE_HEIGHT = 500; // New variable for high rounded dunes
+const SET_BROWN_SAND = true;
 
 let v0 = new THREE.Vector3();
 let v1 = new THREE.Vector3();
@@ -32,6 +33,7 @@ let noisefn = (x, y, seconds, v = v0) => {
 // Function to create a terrain patch
 export const createPatch = (scene, material) => {
   // Set sand color to dark brown.
+  if(SET_BROWN_SAND)
   material.color.set(0x654321);
   
   // Increase the size of the patch to accommodate larger dunes
