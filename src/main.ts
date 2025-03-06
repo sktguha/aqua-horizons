@@ -10,7 +10,7 @@ const stats = new Stats();
 stats.showPanel(0);
 document.body.appendChild(stats.dom);
 
-// canvas
+// canvas init
 const canvas = document.getElementsByClassName('webgl')[0] as HTMLCanvasElement;
 
 // scene
