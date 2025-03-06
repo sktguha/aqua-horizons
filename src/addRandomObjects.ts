@@ -43,7 +43,7 @@ export const addRandomObjects = (scene, isOcean = false) => {
 
 
   // Add balloon-shaped balls
-  for (let i = 0; i < OBJECTS_TO_RENDER; i++) { // Increased number of objects
+  for (let i = 0; i < OBJECTS_TO_RENDER/2; i++) { // Increased number of objects
     const color = getRandomColorBallon();
     const material = new THREE.MeshStandardMaterial({ color, emissive: color, emissiveIntensity: 0.2 });
     const balloon = new THREE.Mesh(geometry, material);
@@ -81,7 +81,7 @@ export const addRandomObjects = (scene, isOcean = false) => {
   
 
   // Add trees
-  for (let i = 0; i < OBJECTS_TO_RENDER*2; i++) { // Increased number of objects
+  for (let i = 0; i < OBJECTS_TO_RENDER; i++) { // Increased number of objects
     const treeGeometry = new THREE.ConeGeometry(200, 1000+Math.random()*2000, 200); // Reduced size
     const treeMaterial = new THREE.MeshStandardMaterial({ color: interpolateColor() });
     const tree = new THREE.Mesh(treeGeometry, treeMaterial);
