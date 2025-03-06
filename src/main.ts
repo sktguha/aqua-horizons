@@ -1,3 +1,4 @@
+
 import './style.css';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
@@ -33,17 +34,28 @@ const camera = new THREE.PerspectiveCamera(
 camera.position.set(0, 10, 30);
 scene.add(camera);
 
-// controls
-const controls = new FirstPersonControls(camera, canvas);
-controls.lookSpeed = 0; // Reduced look speed for less sensitivity
-controls.movementSpeed = 0.2;
-controls.noFly = true;
-// controls.lookVertical = true;
-// controls.constrainVertical = false;
-controls.verticalMin = 1.0;
-controls.verticalMax = 2.0;
-controls.lon = -150;
-controls.lat = 120;
+// first person controls
+const fpControls = new FirstPersonControls(camera, canvas);
+fpControls.lookSpeed = 0;
+fpControls.movementSpeed = 0.2;
+fpControls.noFly = true;
+
+// orbit controls
+const orbitControls = new OrbitControls(camera, canvas);
+orbitControls.enableDamping = true;
+orbitControls.dampingFactor = 0.05;
+orbitControls.screenSpacePanning = false;
+orbitControls.maxPolarAngle = Math.PI / 2;
+
+// choose active controls
+let activeControls = fpControls;
+
+// toggle controls
+window.addEventListener('keydown', (event) => {
+  if (event.key === 'T' || event.key === 't') {
+    activeControls = (activeControls === fpControls) ? orbitControls : fpControls;
+  }
+});
 
 // texture loader
 const textureLoader = new THREE.TextureLoader();
@@ -95,6 +107,27 @@ window.addEventListener('dblclick', () => {
 // Movement step size
 const MOVE_STEP = 3;
 
+// Rotation step size
+const ROTATE_STEP = 1;
+
+// keyboard listener for rotation
+window.addEventListener('keydown', (event) => {
+  switch (event.key) {
+    case 'Q':
+    case 'q':
+      camera.rotation.y += ROTATE_STEP;
+      camera.rotateX(ROTATE_STEP);
+      console.log("+")
+      break;
+    case 'E':
+    case 'e':
+      camera.rotation.y -= ROTATE_STEP;
+      camera.rotateX(-1*ROTATE_STEP);
+      console.log("+-")
+      break;
+  }
+});
+
 // keyboard listener
 // window.addEventListener('keydown2', (event) => {
 //   switch (event.key) {
@@ -116,12 +149,13 @@ const MOVE_STEP = 3;
 // animate
 const animate = () => {
   stats.begin();
-  controls.update(1); // Pass delta time to update method
+  if (activeControls === orbitControls) {
+    orbitControls.update();
+  } else {
+    fpControls.update(1);
+  }
   water.material.uniforms['time'].value += 1.0 / 60.0;
-  
-  // Ensure camera responds to changes
   camera.updateMatrixWorld();
-  
   renderer.render(scene, camera);
   stats.end();
   requestAnimationFrame(animate);
