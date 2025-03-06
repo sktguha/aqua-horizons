@@ -142,7 +142,7 @@ window.addEventListener('keyup', (event) => {
 // animate
 let rotationY = 0;
 let x=0,y=0,z=0;
-const FORWARD_SPEED = 5;
+const FORWARD_SPEED = 2;
 const animate = () => {
   stats.begin();
   water.material.uniforms['time'].value += 1.0 / 60.0;
@@ -157,15 +157,16 @@ const animate = () => {
     camera.rotation.y = rotationY;
   }
   if(keyState['w']){
-    x += FORWARD_SPEED;
+    z -= FORWARD_SPEED;
   }
   if(keyState['s']){
-    x -= FORWARD_SPEED;
+    z += FORWARD_SPEED;
   }
   camera.rotation.x = 0;
   camera.rotation.z = 0;
   camera.rotation.y = rotationY;
-  camera.position.x = x;
+
+  camera.position.z = z;
   console.log({x,y,z});
   // camera.position.y = y;
   // camera.position.z = z;
