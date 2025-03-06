@@ -9,7 +9,7 @@ import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
 import { initDesertScene } from './main2Desert';
 
 initDesertScene();
-throw new Error("lol");
+// throw new Error("lol");
 // stats
 const stats = new Stats();
 stats.showPanel(0);
@@ -19,7 +19,7 @@ document.body.appendChild(stats.dom);
 const canvas = document.getElementsByClassName('webgl')[0] as HTMLCanvasElement;
 
 // scene
-export const scene = new THREE.Scene();
+const scene = new THREE.Scene();
 scene.background = new THREE.Color(0xE0FFFF); // Light cyan color for the sky
 
 // sizes
@@ -104,37 +104,7 @@ const directionalLight = new THREE.DirectionalLight(0xffffff, 3); // Further inc
 directionalLight.position.set(10, 30, 10);
 scene.add(directionalLight);
 
-export const balls: THREE.Mesh[] = [];
-export const trees: THREE.Mesh[] = [];
-export const squares: THREE.Mesh[] = [];
-export const rectangles: THREE.Mesh[] = [];
-export const ballSpeeds: number[] = [];
-export const treeSpeeds: number[] = [];
-export const colors = [
-  0xff0000,
-  0x00ff00,
-  0x0000ff,
-  0xffff00,
-  0xff00ff,
-  0x00ffff, 0x00ffff, 0x00ffff, 0x00ffff, 0x00ffff, // Replicate cyan multiple times
-  0x00ffff, 0x00ffff, 0x00ffff, 0x00ffff, 0x00ffff,
-  0xffa500,
-  0x800080,
-  0x008000
-];
-export const speedRanges = {
-  0xff0000: [0.1, 0.02], // Red
-  0x00ff00: [0.2, 0.03], // Green
-  0x0000ff: [0.3, 0.04], // Blue
-  0xffff00: [0.4, 0.05], // Yellow
-  0xff00ff: [0.5, 0.06], // Magenta
-  0x00ffff: [0.6, 0.07], // Cyan
-  0xffa500: [0.7, 0.08], // Orange
-  0x800080: [0.8, 0.09], // Purple
-  0x008000: [0.9, 0.1]   // Dark Green
-};
-
-addRandomObjects(speedRanges);
+const {balls, trees, ballSpeeds, treeSpeeds} = addRandomObjects(scene);
 
 // renderer
 const renderer = new THREE.WebGLRenderer({ canvas });
