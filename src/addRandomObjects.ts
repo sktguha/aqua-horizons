@@ -67,7 +67,7 @@ export const addRandomObjects = (speedRanges) => {
   }
 
   // Add a single island
-  const islandGeometry = new THREE.BoxGeometry(1000, 50, 1000); // Reduced height
+  const islandGeometry = new THREE.BoxGeometry(10000, 50, 1000); // Reduced height
   const islandMaterial = new THREE.MeshStandardMaterial({ color: 0x8B4513 }); // Brown color
   const island = new THREE.Mesh(islandGeometry, islandMaterial);
   island.position.set(0, 25, 0); // Adjusted position to match reduced height
