@@ -87,22 +87,12 @@ export const addRandomObjects = (scene, isOcean = false) => {
   
 
   // Add trees
-const clusterCount = 10; // Number of clusters
-const treesPerCluster = OBJECTS_TO_RENDER / (4 * clusterCount); // Trees per cluster
-
-for (let i = 0; i < clusterCount; i++) {
-  // Generate cluster center
-  const clusterX = Math.random() * worldX - worldX / 2;
-  const clusterZ = Math.random() * worldY - worldY / 2;
-
-  for (let j = 0; j < treesPerCluster; j++) {
+  for (let i = 0; i < OBJECTS_TO_RENDER/4; i++) { // Increased number of objects
     // Create tree geometry with random height
     const treeHeight = 1000 + Math.random() * 2000;
     const treeGeometry = new THREE.ConeGeometry(200, treeHeight, 200); // Reduced size
-
-    // Generate tree position within cluster
-    const x = clusterX + (Math.random() - 0.5) * 1000; // Cluster radius
-    const z = clusterZ + (Math.random() - 0.5) * 1000; // Cluster radius
+    const x = Math.random() * worldX - worldX / 2;
+    const z = Math.random() * worldY - worldY / 2;
     const treeMaterial = new THREE.MeshStandardMaterial({ color: interpolateColor(x, z) });
     const tree = new THREE.Mesh(treeGeometry, treeMaterial);
 
@@ -113,7 +103,6 @@ for (let i = 0; i < clusterCount; i++) {
     }
 
     tree.position.set(x, treeHeight / 2, z);
-    scene.add(tree);
 
     // Consolidate crown addition: crown radius proportional to tree height (e.g. treeHeight/10)
     const crownRadius = treeHeight / 5;
@@ -121,11 +110,13 @@ for (let i = 0; i < clusterCount; i++) {
     const crownMaterial = new THREE.MeshStandardMaterial({ color: 0x228B22 });
     const crown = new THREE.Mesh(crownGeometry, crownMaterial);
     // Position crown at the top of the tree
-    crown.position.set(0, treeHeight / 2 + crownRadius, 0);
+    crown.position.set(0, treeHeight / 2, 0);
     tree.add(crown);
-  }
-}
 
+    trees.push(tree);
+    treeSpeeds.push((Math.random() * 0.02) + 0.01); // Random speed
+    scene.add(tree);
+  }
 
   // Add squares
   for (let i = 0; i < 0; i++) {
