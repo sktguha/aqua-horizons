@@ -36,9 +36,11 @@ scene.add(camera);
 
 // first person controls
 const fpControls = new FirstPersonControls(camera, canvas);
-fpControls.lookSpeed = 0;
+fpControls.lookSpeed = 0.005; // Adjust look speed for rotation
 fpControls.movementSpeed = 0.2;
 fpControls.noFly = true;
+fpControls.lookVertical = true; // Enable vertical look
+fpControls.constrainVertical = false; // Disable vertical constraints
 
 // orbit controls
 const orbitControls = new OrbitControls(camera, canvas);
@@ -58,6 +60,7 @@ window.addEventListener('keydown', (event) => {
     activeControls = (activeControls === fpControls) ? orbitControls : fpControls;
     camera.position.copy(currentPosition);
     camera.rotation.copy(currentRotation);
+    camera.updateProjectionMatrix(); // Ensure the camera's projection matrix is updated
   }
 });
 
