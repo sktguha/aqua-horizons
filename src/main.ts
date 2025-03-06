@@ -146,6 +146,16 @@ function initOceanScene(){
 
   const {balls, trees, ballSpeeds, treeSpeeds} = addRandomObjects(scene, true);
 
+  // Create X and Z speed arrays for balloons
+  const ballXSpeeds: number[] = [];
+  const ballZSpeeds: number[] = [];
+
+  balls.forEach(() => {
+    // Random horizontal speeds in range [-1, 1]
+    ballXSpeeds.push(Math.random() * 2 - 1);
+    ballZSpeeds.push(Math.random() * 2 - 1);
+  });
+
   // renderer
   const renderer = new THREE.WebGLRenderer({ canvas });
   renderer.setSize(sizes.width, sizes.height);
@@ -261,6 +271,9 @@ function initOceanScene(){
         ball.position.y = 10;
         ballSpeeds[index] = Math.abs(ballSpeeds[index]); // Ensure speed is positive
       }
+      // Update balloon X and Z positions
+      ball.position.x += ballXSpeeds[index];
+      ball.position.z += ballZSpeeds[index];
     });
 
     // // Move trees up and down
