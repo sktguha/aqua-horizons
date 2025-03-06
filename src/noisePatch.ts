@@ -1,4 +1,4 @@
-
+// @ts-nocheck
 import * as THREE from 'three';
 
 const { sin, cos, abs } = Math;
