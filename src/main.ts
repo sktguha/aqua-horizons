@@ -86,37 +86,8 @@ const directionalLight = new THREE.DirectionalLight(0xffffff, 3); // Further inc
 directionalLight.position.set(10, 30, 10);
 scene.add(directionalLight);
 
-// Add random objects
-const addRandomObjects = () => {
-  const geometry = new THREE.SphereGeometry(50, 32, 32); // Increased size
-  const material = new THREE.MeshStandardMaterial({ color: 0xff0000 });
-  
-  // Add balls
-  for (let i = 0; i < 50; i++) { // Increased number of objects
-    const ball = new THREE.Mesh(geometry, material);
-    ball.position.set(
-      Math.random() * 1000 - 500, // Increased spread
-      Math.random() * 100 + 10, // Increased spread
-      Math.random() * 1000 - 500 // Increased spread
-    );
-    scene.add(ball);
-  }
 
-  // Add trees
-  const treeGeometry = new THREE.ConeGeometry(50, 250, 32); // Increased size
-  const treeMaterial = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
-  for (let i = 0; i < 50; i++) { // Increased number of objects
-    const tree = new THREE.Mesh(treeGeometry, treeMaterial);
-    tree.position.set(
-      Math.random() * 1000 - 500, // Increased spread
-      Math.random() * 100 + 10, // Increased spread
-      Math.random() * 1000 - 500 // Increased spread
-    );
-    scene.add(tree);
-  }
-};
-
-addRandomObjects();
+setTimeout(()=>addRandomObjects(),200);
 
 // renderer
 const renderer = new THREE.WebGLRenderer({ canvas });
@@ -187,3 +158,32 @@ const animate = () => {
 };
 
 animate();
+// Add random objects
+const addRandomObjects = () => {
+  const geometry = new THREE.SphereGeometry(50, 32, 32); // Increased size
+  const material = new THREE.MeshStandardMaterial({ color: 0xff0000 });
+  
+  // Add balls
+  for (let i = 0; i < 50; i++) { // Increased number of objects
+    const ball = new THREE.Mesh(geometry, material);
+    ball.position.set(
+      Math.random() * 1000 - 500, // Increased spread
+      Math.random() * 100 + 10, // Increased spread
+      Math.random() * 1000 - 500 // Increased spread
+    );
+    scene.add(ball);
+  }
+
+  // Add trees
+  const treeGeometry = new THREE.ConeGeometry(50, 250, 32); // Increased size
+  const treeMaterial = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
+  for (let i = 0; i < 50; i++) { // Increased number of objects
+    const tree = new THREE.Mesh(treeGeometry, treeMaterial);
+    tree.position.set(
+      Math.random() * 1000 - 500, // Increased spread
+      Math.random() * 100 + 10, // Increased spread
+      Math.random() * 1000 - 500 // Increased spread
+    );
+    scene.add(tree);
+  }
+};
