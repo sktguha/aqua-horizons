@@ -104,7 +104,7 @@ export const addRandomObjects = (scene, isOcean = false) => {
   }
 
   // Add a single island
-  const islandGeometry = new THREE.BoxGeometry(10000, 50, 1000); // Reduced height
+  const islandGeometry = new THREE.BoxGeometry(10000, 50, 2000); // Reduced height
   const islandMaterial = new THREE.MeshStandardMaterial({
     color: '#333333',
       dithering: true
@@ -129,6 +129,7 @@ export const addRandomObjects = (scene, isOcean = false) => {
     }
 
   island.position.set(-20, -20, -20); // Adjusted position to match reduced height
+  if(isOcean)
   scene.add(island);
 
   // Add trees on the single island
