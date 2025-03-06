@@ -52,8 +52,12 @@ let activeControls = fpControls;
 
 // toggle controls
 window.addEventListener('keydown', (event) => {
-  if (event.key === 'T' || event.key === 't') {
+  if (event.key === 'Shift') {
+    const currentPosition = camera.position.clone();
+    const currentRotation = camera.rotation.clone();
     activeControls = (activeControls === fpControls) ? orbitControls : fpControls;
+    camera.position.copy(currentPosition);
+    camera.rotation.copy(currentRotation);
   }
 });
 
