@@ -234,16 +234,16 @@ function initOceanScene(){
       camera.rotation.y = y;
       console.log({y});
     }
-    if(keyState['v']){
+    if(keyState['t']){
       z -= zRot;
     }
-    if(keyState['b']){
+    if(keyState['y']){
       z += zRot;
     }
-    if(keyState['f']){
+    if(keyState['g']){
       x -= xRot;
     }
-    if(keyState['g']){
+    if(keyState['h']){
       x += xRot;
     }
     camera.rotation.x = x;
