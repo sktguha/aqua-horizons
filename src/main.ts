@@ -149,6 +149,22 @@ function initOceanScene(){
   water.rotation.x = -Math.PI / 2;
   scene.add(water);
 
+  // Add a gigantic tree
+  const trunkHeight = 1000;
+  const trunkGeometry = new THREE.CylinderGeometry(10, 15, trunkHeight, 32);
+  const trunkMaterial = new THREE.MeshStandardMaterial({ color: 0x8B4513 });
+  const trunk = new THREE.Mesh(trunkGeometry, trunkMaterial);
+  // Adjust trunk position so the bottom is at y=0
+  trunk.position.set(0, trunkHeight / 2, -100);
+  scene.add(trunk);
+
+  const crownGeometry = new THREE.SphereGeometry(80, 32, 16);
+  const crownMaterial = new THREE.MeshStandardMaterial({ color: 0x228B22 });
+  const crown = new THREE.Mesh(crownGeometry, crownMaterial);
+  // Position crown so it sits atop the trunk
+  crown.position.set(0, trunkHeight + 80, -100);
+  scene.add(crown);
+
   // light
   const directionalLight = new THREE.DirectionalLight(0x783412, 0.2); // Further increase intensity
   directionalLight.position.set(10, 10, 10);
