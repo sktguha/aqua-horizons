@@ -1,57 +1,62 @@
 // @ts-nocheck
 import * as THREE from 'three';
 
-const { sin, cos, abs } = Math;
-const PI = Math.PI;
-
 let v0 = new THREE.Vector3();
 let v1 = new THREE.Vector3();
 let v2 = new THREE.Vector3();
 let v3 = new THREE.Vector3();
 let v4 = new THREE.Vector3();
 
-const noisefn = (x: number, y: number, seconds: number, v = v0) => {
-  let z = sin((x * 0.1) + seconds) * cos((y * 0.13) + seconds);
-  let z1 = sin((y * 0.15) + seconds) * cos((x * 0.2) + seconds);
+// Modify noisefn to create much larger sand dunes
+let noisefn = (x, y, seconds, v = v0) => {
+  // Reduce frequency to create wider dunes (divide by 5)
+  let z = Math.sin((x * 0.02) + seconds) * Math.cos((y * 0.026) + seconds);
+  let z1 = Math.sin((y * 0.03) + seconds) * Math.cos((x * 0.04) + seconds);
   z -= z1;
-  return v.set(x, z * 3, y);
+  
+  // Exaggerate the height by applying a nonlinear transformation
+  z = Math.sign(z) * Math.pow(Math.abs(z), 0.8); // Make dunes smoother with 0.8
+  
+  // Increase height multiplier from 3 to 30 (10x larger)
+  return v.set(x, z * 30, y);
 };
 
-export function createPatch(scene: THREE.Scene, isOcean = false) {
-  const patchGeometry = isOcean ? 
-  new THREE.PlaneGeometry(50, 50, 99, 99)
-  : new THREE.PlaneGeometry(20, 20, 10, 10);
-  patchGeometry.rotateX(PI * -0.5);
-
-  const material = new THREE.MeshStandardMaterial({ color: '#ffbe67', dithering: true });
-  const mesh = new THREE.Mesh(patchGeometry, material);
+// Function to create a terrain patch
+export const createPatch = (scene, material) => {
+  // Increase the size of the patch to accommodate larger dunes
+  let patchGeometry = new THREE.PlaneGeometry(200, 200, 99, 99);
+  patchGeometry.rotateX(Math.PI * -0.5);
+  let mesh = new THREE.Mesh(patchGeometry.clone(), material);
   scene.add(mesh);
   return mesh;
-}
+};
 
-export function generatePatch(mesh: THREE.Mesh, seconds: number, lod = 0) {
-  const a = mesh.geometry.attributes.position.array;
-  const na = mesh.geometry.attributes.normal.array;
-  const sz = 100;
-  const sz2 = sz / 2;
+// Function to generate dynamic terrain
+export const generatePatch = (mesh, seconds, lod = 0) => {
+  let a = mesh.geometry.attributes.position.array;
+  let na = mesh.geometry.attributes.normal.array;
+
+  let sz = 100;
+  let sz2 = sz / 2;
   v3.set(-sz2, 0, -sz2);
   v4.set(sz2, 0, sz2);
+  let bb = mesh.geometry.boundingBox || (mesh.geometry.boundingBox = new THREE.Box3());
 
   let cutoff = 6 * lod;
-  let outIndex: number[] = [];
+  let outIndex = [];
   let gi = mesh.geometry.index.array;
 
-  for (let i = 0, ai = 0, c = sz * sz; i < c; i++, ai += 3) {
+  for (let i = 0, ai = 0, c = (sz * sz); i < c; i++, ai += 3) {
     let ix = (i % sz);
     let iy = ((i / sz) | 0);
     let x = ix - sz2;
     let y = iy - sz2;
 
-    let ax = abs(x);
-    let ay = abs(y);
+    let ax = Math.abs(x);
+    let ay = Math.abs(y);
 
     if ((ax < cutoff) && (ay < cutoff)) {
-      a[ai] = x;
+      a[ai + 0] = x;
       a[ai + 1] = 0;
       a[ai + 2] = y;
       continue;
@@ -65,17 +70,19 @@ export function generatePatch(mesh: THREE.Mesh, seconds: number, lod = 0) {
     let nx = (x * mesh.scale.x) + mesh.position.x;
     let ny = (y * mesh.scale.z) + mesh.position.z;
     let pp = noisefn(nx, ny, seconds);
+
     let vx = noisefn(nx + (0.0001 * mesh.scale.x), ny, seconds, v1).sub(pp);
     let vy = noisefn(nx, ny + (0.0001 * mesh.scale.z), seconds, v2).sub(pp);
     let vn = vy.cross(vx);
-    vn.y /= (1 + lod);
+
+    vn.y /= 0.2 + lod; // Reduced divisor from 0.5 to 0.2 to make slopes much steeper
     vn.normalize();
 
     if (!i) {
       v3.y = v4.y = pp.y;
     } else {
-      if (pp.y < v2.y) v3.y = pp.y;
-      if (pp.y > v3.y) v4.y = pp.y;
+      if (pp.y < v3.y) v3.y = pp.y;
+      if (pp.y > v4.y) v4.y = pp.y;
     }
 
     a[ai] = x;
@@ -87,8 +94,7 @@ export function generatePatch(mesh: THREE.Mesh, seconds: number, lod = 0) {
   }
 
   mesh.geometry.setIndex(outIndex);
-  mesh.geometry.boundingBox = mesh.geometry.boundingBox || new THREE.Box3();
   mesh.geometry.boundingBox.set(v3, v4);
   mesh.geometry.attributes.position.needsUpdate = true;
   mesh.geometry.attributes.normal.needsUpdate = true;
-}
+};
