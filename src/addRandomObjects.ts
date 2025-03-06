@@ -101,7 +101,7 @@ function getBiasedCoordinate(worldX, worldY) {
 }
 
   // Add trees
-  for (let i = 0; i < OBJECTS_TO_RENDER/0.7; i++) { // Increased number of objects
+  for (let i = 0; i < OBJECTS_TO_RENDER*0.7; i++) { // Increased number of objects
     // Create tree geometry with random height
     const treeHeight = 1000 + Math.random() * 2000;
     const treeGeometry = new THREE.ConeGeometry(200, treeHeight, 200); // Reduced size
