@@ -34,14 +34,17 @@ export const speedRanges = {
 };
 
 export const worldX = 100000, worldY = 100000;
+export const getRandomColorBallon = () => colors[Math.floor(Math.random() * colors.length)];
 // Add random objects
 export const addRandomObjects = (scene, isOcean = false) => {
   const geometry = new THREE.SphereGeometry(200, 32, 32); // Balloon shape
   const OBJECTS_TO_RENDER = 5000;
 
+
+
   // Add balloon-shaped balls
   for (let i = 0; i < OBJECTS_TO_RENDER; i++) { // Increased number of objects
-    const color = colors[Math.floor(Math.random() * colors.length)];
+    const color = getRandomColorBallon();
     const material = new THREE.MeshStandardMaterial({ color, emissive: color, emissiveIntensity: 0.2 });
     const balloon = new THREE.Mesh(geometry, material);
     balloon.scale.set(1, 1.5, 1); // Make it balloon-shaped
@@ -98,9 +101,9 @@ export const addRandomObjects = (scene, isOcean = false) => {
   }
 
   // Add squares
-  for (let i = 0; i < 2000; i++) {
-    const squareGeo = new THREE.BoxGeometry(100, 100, 100);
-    const squareMat = new THREE.MeshStandardMaterial({ color: 0xffffff });
+  for (let i = 0; i < 0; i++) {
+    const squareGeo = new THREE.BoxGeometry(100, 100*10, 100);
+    const squareMat = new THREE.MeshStandardMaterial({ color: getRandomColorBallon() });
     const square = new THREE.Mesh(squareGeo, squareMat);
     square.position.set(
       Math.random() * worldX - worldX / 2,
@@ -112,9 +115,9 @@ export const addRandomObjects = (scene, isOcean = false) => {
   }
 
   // Add rectangles
-  for (let i = 0; i < 2000; i++) {
-    const rectGeo = new THREE.BoxGeometry(200, 100, 100);
-    const rectMat = new THREE.MeshStandardMaterial({ color: 0xfff000 });
+  for (let i = 0; i < 0; i++) {
+    const rectGeo = new THREE.BoxGeometry(200, 1000, 100);
+    const rectMat = new THREE.MeshStandardMaterial({ color: getRandomColorBallon() });
     const rect = new THREE.Mesh(rectGeo, rectMat);
     rect.position.set(
       Math.random() * worldX - worldX / 2,
@@ -190,9 +193,10 @@ export const addRandomObjects = (scene, isOcean = false) => {
   });
 
   // Add clusters of small objects
-  const smallObjectGeometry = new THREE.SphereGeometry(50/2, 16/2, 16/2); // Smaller size
-  const smallObjectMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff });
   for (let i = 0; i < 100; i++) { // Number of clusters
+    const smallObjectGeometry = new THREE.SphereGeometry(50/2, 16/2, 16/2); // Smaller size
+  const smallObjectMaterial = new THREE.MeshStandardMaterial({ color: getRandomColorBallon() });
+  
     const cluster = new THREE.Group();
     for (let j = 0; j < 10; j++) { // Number of objects per cluster
       const smallObject = new THREE.Mesh(smallObjectGeometry, smallObjectMaterial);
@@ -204,8 +208,8 @@ export const addRandomObjects = (scene, isOcean = false) => {
       cluster.add(smallObject);
     }
     cluster.position.set(
-      Math.random() * 20,
-      Math.random() * 20,
+      Math.random() * 20*5,
+      Math.random() * 20*5,
       Math.random() * 20
     );
     scene.add(cluster);
