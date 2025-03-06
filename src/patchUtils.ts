@@ -12,7 +12,7 @@ let v4 = new THREE.Vector3();
 
 const IS_MOUNTAIN = true;
 
-// Modify noisefn to lower dune height and round the peaks more
+// Modify noisefn to lower dune height and round the peaks more, nice
 let noisefn = (x, y, seconds, v = v0) => {
   // Update frequency multipliers for larger dunes
   let z = Math.sin((x * 0.01) + seconds) * Math.cos((y * 0.013) + seconds);
