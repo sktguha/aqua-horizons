@@ -10,7 +10,7 @@ let v2 = new THREE.Vector3();
 let v3 = new THREE.Vector3();
 let v4 = new THREE.Vector3();
 
-const IS_MOUNTAIN = false;
+const IS_MOUNTAIN = true;
 
 // Modify noisefn to lower dune height and round the peaks more
 let noisefn = (x, y, seconds, v = v0) => {
@@ -32,6 +32,9 @@ let noisefn = (x, y, seconds, v = v0) => {
 
 // Function to create a terrain patch
 export const createPatch = (scene, material) => {
+  if (IS_MOUNTAIN) {
+    material.color.set(0x654321); // Set color to dark brown for mountain
+  }
   // Increase the size of the patch to accommodate larger dunes
   let patchGeometry = new THREE.PlaneGeometry(200, 200, 99, 99);
   patchGeometry.rotateX(Math.PI * -0.5);
