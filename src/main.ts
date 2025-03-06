@@ -109,15 +109,16 @@ const speedRanges = {
 const addRandomObjects = () => {
   const geometry = new THREE.SphereGeometry(50, 32, 32); // Increased size
   const OBJECTS_TO_RENDER = 5000;
+  
   // Add balls
   for (let i = 0; i < OBJECTS_TO_RENDER; i++) { // Increased number of objects
     const color = colors[Math.floor(Math.random() * colors.length)];
     const material = new THREE.MeshStandardMaterial({ color });
     const ball = new THREE.Mesh(geometry, material);
     ball.position.set(
-      Math.random() * 2000 - 1000, // Increased spread
+      Math.random() * worldX - worldX / 2, // Adjusted spread
       Math.random() * 200 + 10, // Increased spread
-      Math.random() * 2000 - 1000 // Increased spread
+      Math.random() * worldY - worldY / 2 // Adjusted spread
     );
     balls.push(ball);
     const [minSpeed, maxSpeed] = speedRanges[color];
@@ -131,9 +132,9 @@ const addRandomObjects = () => {
   for (let i = 0; i < OBJECTS_TO_RENDER; i++) { // Increased number of objects
     const tree = new THREE.Mesh(treeGeometry, treeMaterial);
     tree.position.set(
-      Math.random() * 2000 - 1000, // Increased spread
+      Math.random() * worldX - worldX / 2, // Adjusted spread
       Math.random() * 200 + 10, // Increased spread
-      Math.random() * 2000 - 1000 // Increased spread
+      Math.random() * worldY - worldY / 2 // Adjusted spread
     );
     trees.push(tree);
     treeSpeeds.push((Math.random() * 0.02) + 0.01); // Random speed
