@@ -36,8 +36,8 @@ scene.add(camera);
 
 // first person controls
 const fpControls = new FirstPersonControls(camera, canvas);
-fpControls.lookSpeed = 0.005; // Adjust look speed for rotation
-fpControls.movementSpeed = 0.2;
+fpControls.lookSpeed = 0.0001; // Adjust look speed for rotation
+fpControls.movementSpeed = 0.001;
 fpControls.noFly = true;
 fpControls.lookVertical = true; // Enable vertical look
 fpControls.constrainVertical = false; // Disable vertical constraints
