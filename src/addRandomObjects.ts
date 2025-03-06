@@ -107,14 +107,14 @@ export const addRandomObjects = (scene, isOcean = false) => {
   const islandGeometry = new THREE.BoxGeometry(10000, 50, 1000); // Reduced height
   // Randomize face colors
   islandGeometry?.faces?.forEach?.(face => {
-    const color = new THREE.Color(0xC2B280);
-    color.offsetHSL(0, (Math.random() * 0.1) - 0.05, (Math.random() * 0.1) - 0.05);
+    const color = new THREE.Color(0xFFFFFF);
+    // color.offsetHSL(0, (Math.random() * 0.1) - 0.05, (Math.random() * 0.1) - 0.05);
     face.color.copy(color);
   });
   islandGeometry.elementsNeedUpdate = true;
 
   const islandMaterial = new THREE.MeshStandardMaterial({
-    vertexColors: true // Use face colors
+    // vertexColors: true // Use face colors
   });
   
   const island = new THREE.Mesh(islandGeometry, islandMaterial);
