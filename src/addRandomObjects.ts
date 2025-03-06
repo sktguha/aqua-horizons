@@ -59,11 +59,19 @@ export const addRandomObjects = (scene, isOcean = false) => {
     scene.add(balloon);
   }
 
-  function interpolateColor() {
-
-  const color1 = 0x00ff00;
-  const color2 = 0x2B1B17;
-  const factor = Math.random();
+  function interpolateColor(x, z) {
+    const color1 = 0x00ff00; // Green
+    const color2 = 0x2B1B17; // Brown
+    let normalizedX = (x + worldX / 2) / worldX;
+    let normalizedZ = (z + worldY / 2) / worldY;
+  
+    // Clamp normalized values
+    normalizedX = Math.max(0, Math.min(1, normalizedX));
+    normalizedZ = Math.max(0, Math.min(1, normalizedZ));
+  
+    let factor = (normalizedX + normalizedZ) / 2;
+    factor = Math.max(0, Math.min(1, factor)); // Clamp factor
+  
     const r1 = (color1 >> 16) & 0xff;
     const g1 = (color1 >> 8) & 0xff;
     const b1 = color1 & 0xff;
@@ -82,11 +90,11 @@ export const addRandomObjects = (scene, isOcean = false) => {
 
   // Add trees
   for (let i = 0; i < OBJECTS_TO_RENDER; i++) { // Increased number of objects
-    const treeGeometry = new THREE.ConeGeometry(200, 1000+Math.random()*2000, 200); // Reduced size
-    const treeMaterial = new THREE.MeshStandardMaterial({ color: interpolateColor() });
-    const tree = new THREE.Mesh(treeGeometry, treeMaterial);
+    const treeGeometry = new THREE.ConeGeometry(200, 1000 + Math.random() * 2000, 200); // Reduced size
     const x = Math.random() * worldX - worldX / 2;
     const z = Math.random() * worldY - worldY / 2;
+    const treeMaterial = new THREE.MeshStandardMaterial({ color: interpolateColor(x, z) });
+    const tree = new THREE.Mesh(treeGeometry, treeMaterial);
 
     // Prevent trees from being generated near the user's spawn position (within a radius of 1000 units)
     const distanceFromOrigin = Math.sqrt(x * x + z * z);
@@ -170,6 +178,18 @@ export const addRandomObjects = (scene, isOcean = false) => {
     scene.add(tree);
   }
 
+  function getRandomForestColor() {
+    return Math.floor(Math.random() * 0xffffff); // Random 24-bit color
+  }
+  
+  function varyColor(baseColor: number) {
+    // Slightly vary each RGB component
+    const r = Math.min(255, Math.max(0, ((baseColor >> 16) & 0xff) + (Math.random() * 60 - 30)));
+    const g = Math.min(255, Math.max(0, ((baseColor >> 8) & 0xff) + (Math.random() * 60 - 30)));
+    const b = Math.min(255, Math.max(0, (baseColor & 0xff) + (Math.random() * 60 - 30)));
+    return (r << 16) + (g << 8) + b;
+  }
+  
   // Add forest clusters
   const forestTreeGeometry = new THREE.ConeGeometry(50, 250, 32); // Reduced size
   const forestTreeMaterial = new THREE.MeshStandardMaterial({ color: 0x228B22 }); // Forest green color
@@ -180,12 +200,14 @@ export const addRandomObjects = (scene, isOcean = false) => {
     { x: 5000, z: 5000 }
   ];
   forestPositions.forEach(pos => {
+    const clusterBaseColor = getRandomForestColor(); // Different base color for each cluster
     for (let i = 0; i < 200; i++) {
-      const tree = new THREE.Mesh(forestTreeGeometry, forestTreeMaterial);
+      const treeColor = varyColor(clusterBaseColor); // Vary the cluster color
+      const tree = new THREE.Mesh(forestTreeGeometry, new THREE.MeshStandardMaterial({ color: treeColor }));
       tree.position.set(
         pos.x + (Math.random() * 2000 - 1000), // Cluster around the position
         10,
-        pos.z + (Math.random() * 2000 - 1000) // Cluster around the position
+        pos.z + (Math.random() * 2000 - 1000)
       );
       trees.push(tree);
       scene.add(tree);
