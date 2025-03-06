@@ -143,22 +143,6 @@ const MOVE_STEP = 3;
 // Rotation step size
 const ROTATE_STEP = 1;
 
-// keyboard listener for rotation
-window.addEventListener('keydown', (event) => {
-  switch (event.key) {
-    case 'Q':
-    case 'q':
-      camera.rotateOnAxis(new THREE.Vector3(0, 1, 0), ROTATE_STEP * Math.PI / 180);
-      camera.updateMatrixWorld();
-      break;
-    case 'E':
-    case 'e':
-      camera.rotateOnAxis(new THREE.Vector3(0, 1, 0), -ROTATE_STEP * Math.PI / 180);
-      camera.updateMatrixWorld();
-      break;
-  }
-});
-
 const keyState: { [key: string]: boolean } = {};
 const cameraRotationSpeed = 0.05;
 
@@ -178,23 +162,11 @@ const animate = () => {
   water.material.uniforms['time'].value += 1.0 / 60.0;
 
   // camera rotation logic
-  if (keyState['ArrowLeft']) {
+  if (keyState['Q'] || keyState['q']) {
     camera.rotation.y += cameraRotationSpeed;
   }
-  if (keyState['ArrowRight']) {
-    camera.rotation.y -= cameraRotationSpeed;
-  }
-  if (keyState['ArrowUp']) {
-    camera.rotation.x += cameraRotationSpeed;
-  }
-  if (keyState['ArrowDown']) {
-    camera.rotation.x -= cameraRotationSpeed;
-  }
-  if (keyState['Q'] || keyState['q']) {
-    camera.rotation.z += cameraRotationSpeed;
-  }
   if (keyState['E'] || keyState['e']) {
-    camera.rotation.z -= cameraRotationSpeed;
+    camera.rotation.y -= cameraRotationSpeed;
   }
 
   camera.updateMatrixWorld();
