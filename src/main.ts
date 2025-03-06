@@ -5,6 +5,7 @@ import Stats from 'stats.js';
 import { Water } from 'three/examples/jsm/objects/Water';
 import { FirstPersonControls } from 'three/examples/jsm/controls/FirstPersonControls';
 import { addRandomObjects } from './addRandomObjects';
+import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
 
 // stats
 const stats = new Stats();
@@ -81,6 +82,11 @@ const water = new Water(waterGeometry, {
   textureHeight: 512,
   waterNormals: textureLoader.load('textures/waternormals.jpg', (texture) => {
     texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+    new RGBELoader().load('https://cdn.jsdelivr.net/gh/Sean-Bradley/React-Three-Fiber-Boilerplate@obstacleCourse/public/img/rustig_koppie_puresky_1k.hdr', function(texture) {
+      texture.mapping = THREE.EquirectangularReflectionMapping
+      scene.background = texture
+      scene.environment = texture
+    })
   }),
   sunDirection: new THREE.Vector3(1, 0.1, 0),
   sunColor: 0xffffff, // Brighter sun color
