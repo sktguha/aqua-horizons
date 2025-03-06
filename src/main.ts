@@ -14,6 +14,7 @@ const canvas = document.getElementsByClassName('webgl')[0] as HTMLCanvasElement;
 
 // scene
 const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xE0FFFF); // Light cyan color for the sky
 
 // sizes
 const sizes = {
@@ -47,15 +48,15 @@ const water = new Water(waterGeometry, {
     texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
   }),
   sunDirection: new THREE.Vector3(),
-  sunColor: 0xffffff,
-  waterColor: 0x00008B80,
+  sunColor: 0xffddaa, // Brighter sun color
+  waterColor: 0xADD8E6, // Light blue water color
   distortionScale: 3.7,
 });
 water.rotation.x = -Math.PI / 2;
 scene.add(water);
 
 // light
-const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+const directionalLight = new THREE.DirectionalLight(0xffffff, 3); // Further increase intensity
 directionalLight.position.set(10, 30, 10);
 scene.add(directionalLight);
 
@@ -82,10 +83,24 @@ window.addEventListener('dblclick', () => {
   return document.exitFullscreen();
 });
 
+// Movement step size
+const MOVE_STEP = 3;
+
 // keyboard listener
 window.addEventListener('keydown', (event) => {
-  if (event.key === 'ArrowRight') {
-    camera.position.x += 1;
+  switch (event.key) {
+    case 'ArrowRight':
+      camera.position.x += MOVE_STEP;
+      break;
+    case 'ArrowLeft':
+      camera.position.x -= MOVE_STEP;
+      break;
+    case 'ArrowUp':
+      camera.position.z -= MOVE_STEP;
+      break;
+    case 'ArrowDown':
+      camera.position.z += MOVE_STEP;
+      break;
   }
 });
 
