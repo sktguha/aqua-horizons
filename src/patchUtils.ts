@@ -1,6 +1,9 @@
 // @ts-nocheck
 import * as THREE from 'three';
 
+const USE_ROUNDED_DUNES = false;
+const BASE_HEIGHT = 20; // Increase base height for rounded dunes
+
 let v0 = new THREE.Vector3();
 let v1 = new THREE.Vector3();
 let v2 = new THREE.Vector3();
@@ -14,11 +17,15 @@ let noisefn = (x, y, seconds, v = v0) => {
   let z1 = Math.sin((y * 0.03) + seconds) * Math.cos((x * 0.04) + seconds);
   z -= z1;
   
-  // Use a lower exponent to round out the peaks (from 0.8 to 0.7)
-  z = Math.sign(z) * Math.pow(Math.abs(z), 0.7);
-  
-  // Reduce height multiplier from 30 to 10 for lower, smoother dunes
-  return v.set(x, z * 10, y);
+  if (USE_ROUNDED_DUNES) {
+    // Lower and rounded dunes with a high ground level.
+    z = Math.sign(z) * Math.pow(Math.abs(z), 0.7);
+    return v.set(x, z * 10 + BASE_HEIGHT, y);
+  } else {
+    // Original sharper dunes.
+    z = Math.sign(z) * Math.pow(Math.abs(z), 0.8);
+    return v.set(x, z * 30, y);
+  }
 };
 
 // Function to create a terrain patch
