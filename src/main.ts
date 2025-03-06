@@ -145,11 +145,11 @@ function initOceanScene(){
   });
 
   function isMobile() {
-    return 1;
-    // return /Mobi|Android/i.test(navigator.userAgent);
+    // return 1;
+    return /Mobi|Android/i.test(navigator.userAgent);
   }
 
-  function createControlButton(id, text, onClick) {
+  function createControlButton(id, text, onMouseDown, onMouseUp) {
     const button = document.createElement('button');
     button.id = id;
     button.innerText = text;
@@ -157,20 +157,47 @@ function initOceanScene(){
     button.style.bottom = '10px';
     button.style.left = id === 'left-arrow' ? '10px' : '50px';
     button.style.zIndex = '1000';
-    button.addEventListener('click', onClick);
+    button.style.zoom = 2.6;
+    button.style.opacity = 0.2;
+    // button.style.pointerEvents = 'none';
+    button.addEventListener('mousedown', onMouseDown);
+    button.addEventListener('mouseup', onMouseUp);
     document.body.appendChild(button);
   }
+
+  function createStartAffor(){
+    const button = document.createElement('button');
+    // button.id = id;
+    button.innerHTML = "Start/<br/>Stop";
+    button.style.position = 'absolute';
+    button.style.bottom = '10px';
+    button.style.right = '10px';
+    button.style.zIndex = '1000';
+    button.style.zoom = 2.6;
+    button.style.opacity = 0.2;
+    button.style.width = '50px'; // Set the width
+    button.style.height = '50px'; // Set the height
+    button.style.borderRadius = '50%'; // Make it a circle
+    button.style.pointerEvents = 'none';
+    // button.addEventListener('mousedown', onMouseDown);
+    // button.addEventListener('mouseup', onMouseUp);
+    document.body.appendChild(button);
+}
 
   if (isMobile()) {
     createControlButton('left-arrow', '←', () => {
       keyState['q'] = true;
-      setTimeout(() => keyState['q'] = false, 100);
+    }, () => {
+      keyState['q'] = false;
     });
 
     createControlButton('right-arrow', '→', () => {
       keyState['e'] = true;
-      setTimeout(() => keyState['e'] = false, 100);
+    }, () => {
+      keyState['e'] = false;
     });
+    createStartAffor();
+    // window.alert('Tap anywhere on screen to start/stop');
   }
 
   // animate
