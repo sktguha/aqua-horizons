@@ -49,7 +49,7 @@ fpControls.heightMin= h-1;
 // toggle controls
 window.addEventListener('keydown', (event) => {
   if (event.key === 'Shift') {
-    // fpControls.lookSpeed = 0;
+    // fpControls.lookSpeed = 0; work fine
     fpControls.movementSpeed = 0.6;
     cameraRotationSpeed = 0.005;
   } else if (event.key === 'z') {
