@@ -108,9 +108,9 @@ const speedRanges = {
 // Add random objects
 const addRandomObjects = () => {
   const geometry = new THREE.SphereGeometry(50, 32, 32); // Increased size
-  
+  const OBJECTS_TO_RENDER = 5000;
   // Add balls
-  for (let i = 0; i < 50; i++) { // Increased number of objects
+  for (let i = 0; i < OBJECTS_TO_RENDER; i++) { // Increased number of objects
     const color = colors[Math.floor(Math.random() * colors.length)];
     const material = new THREE.MeshStandardMaterial({ color });
     const ball = new THREE.Mesh(geometry, material);
@@ -128,7 +128,7 @@ const addRandomObjects = () => {
   // Add trees
   const treeGeometry = new THREE.ConeGeometry(50, 250, 32); // Increased size
   const treeMaterial = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
-  for (let i = 0; i < 50; i++) { // Increased number of objects
+  for (let i = 0; i < OBJECTS_TO_RENDER; i++) { // Increased number of objects
     const tree = new THREE.Mesh(treeGeometry, treeMaterial);
     tree.position.set(
       Math.random() * 2000 - 1000, // Increased spread
