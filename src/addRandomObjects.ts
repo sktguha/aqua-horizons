@@ -201,21 +201,19 @@ export const addRandomObjects = (scene, isOcean = false) => {
     for (let j = 0; j < 10; j++) { // Number of objects per cluster
       const smallObject = new THREE.Mesh(smallObjectGeometry, smallObjectMaterial);
       smallObject.position.set(
-        Math.random() * 10 - 10, // Cluster spread
-        Math.random() * 100 - 10,
-        Math.random() * 100 - 10
+        Math.random() * 500 , // Cluster spread
+        Math.random() * 500 ,
+        Math.random() * 500 
       );
       cluster.add(smallObject);
     }
     cluster.position.set(
-      Math.random() * 20*5,
-      Math.random() * 20*5,
-      Math.random() * 20
+      Math.random() * 20*20,
+      Math.random() * 20*20,
+      Math.random() * 20*20
     );
     scene.add(cluster);
   }
 
-  const patch = createPatch(scene);
-  generatePatch(patch, 0, 0);
   return {balls, trees, treeSpeeds, ballSpeeds};
 };
