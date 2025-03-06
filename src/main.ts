@@ -166,12 +166,14 @@ const animate = () => {
   if (keyState['Q'] || keyState['q']) {
     y += cameraRotationSpeed;
     camera.rotation.y = y;
+    console.log({y});
   }
   if (keyState['E'] || keyState['e']) {
     y -= cameraRotationSpeed;
     camera.rotation.y = y;
+    console.log({y});
   }
-
+  camera.rotation.y = y;
   // camera.updateMatrixWorld();
   renderer.render(scene, camera);
   stats.end();
