@@ -35,11 +35,11 @@ scene.add(camera);
 
 // controls
 const controls = new FirstPersonControls(camera, canvas);
-controls.lookSpeed = 0.001; // Reduced look speed for less sensitivity
+controls.lookSpeed = 0; // Reduced look speed for less sensitivity
 controls.movementSpeed = 20;
 controls.noFly = true;
-controls.lookVertical = true;
-controls.constrainVertical = false;
+// controls.lookVertical = true;
+// controls.constrainVertical = false;
 controls.verticalMin = 1.0;
 controls.verticalMax = 2.0;
 controls.lon = -150;
