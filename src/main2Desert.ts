@@ -5,6 +5,7 @@ import { FirstPersonControls } from 'three/examples/jsm/controls/FirstPersonCont
 import Stats from 'three/examples/jsm/libs/stats.module';
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader';
 import { addRandomObjects } from './addRandomObjects';
+import { isMobile, createControlButton, createStartAffor } from './main';
 
 export function initDesertScene(){
 
@@ -170,6 +171,23 @@ window.addEventListener('keydown', (event) => {
 window.addEventListener('keyup', (event) => {
   keyState[event.key] = false;
 });
+
+if (isMobile()) {
+    createControlButton('left-arrow', '←', () => {
+      keyState['q'] = true;
+    }, () => {
+      keyState['q'] = false;
+    });
+
+    createControlButton('right-arrow', '→', () => {
+      keyState['e'] = true;
+    }, () => {
+      keyState['e'] = false;
+    });
+    createStartAffor();
+    // window.alert('Tap anywhere on screen to start/stop');
+  }
+
 const cameraRotationSpeed = 0.005;
 // animate
 let y = 0;

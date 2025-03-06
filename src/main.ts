@@ -8,6 +8,46 @@ import { addRandomObjects } from './addRandomObjects';
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
 import { initDesertScene } from './main2Desert';
 
+export function isMobile() {
+  // return 1;
+  return /Mobi|Android/i.test(navigator.userAgent);
+}
+
+export function createControlButton(id, text, onMouseDown, onMouseUp) {
+  const button = document.createElement('button');
+  button.id = id;
+  button.innerText = text;
+  button.style.position = 'absolute';
+  button.style.bottom = '10px';
+  button.style.left = id === 'left-arrow' ? '10px' : '50px';
+  button.style.zIndex = '1000';
+  button.style.zoom = 2.6;
+  button.style.opacity = 0.2;
+  // button.style.pointerEvents = 'none';
+  button.addEventListener('mousedown', onMouseDown);
+  button.addEventListener('mouseup', onMouseUp);
+  document.body.appendChild(button);
+}
+
+export function createStartAffor(){
+  const button = document.createElement('button');
+  // button.id = id;
+  button.innerHTML = "Start/<br/>Stop";
+  button.style.position = 'absolute';
+  button.style.bottom = '10px';
+  button.style.right = '10px';
+  button.style.zIndex = '1000';
+  button.style.zoom = 2.6;
+  button.style.opacity = 0.2;
+  button.style.width = '50px'; // Set the width
+  button.style.height = '50px'; // Set the height
+  button.style.borderRadius = '50%'; // Make it a circle
+  button.style.pointerEvents = 'none';
+  // button.addEventListener('mousedown', onMouseDown);
+  // button.addEventListener('mouseup', onMouseUp);
+  document.body.appendChild(button);
+}
+
 export const worldX = 100000, worldY = 100000;
 // initDesertScene();
 function initOceanScene(){
@@ -144,57 +184,27 @@ function initOceanScene(){
     keyState[event.key] = false;
   });
 
-  function isMobile() {
-    // return 1;
-    return /Mobi|Android/i.test(navigator.userAgent);
-  }
-
-  function createControlButton(id, text, onMouseDown, onMouseUp) {
-    const button = document.createElement('button');
-    button.id = id;
-    button.innerText = text;
-    button.style.position = 'absolute';
-    button.style.bottom = '10px';
-    button.style.left = id === 'left-arrow' ? '10px' : '50px';
-    button.style.zIndex = '1000';
-    button.style.zoom = 2.6;
-    button.style.opacity = 0.2;
-    // button.style.pointerEvents = 'none';
-    button.addEventListener('mousedown', onMouseDown);
-    button.addEventListener('mouseup', onMouseUp);
-    document.body.appendChild(button);
-  }
-
-  function createStartAffor(){
-    const button = document.createElement('button');
-    // button.id = id;
-    button.innerHTML = "Start/<br/>Stop";
-    button.style.position = 'absolute';
-    button.style.bottom = '10px';
-    button.style.right = '10px';
-    button.style.zIndex = '1000';
-    button.style.zoom = 2.6;
-    button.style.opacity = 0.2;
-    button.style.width = '50px'; // Set the width
-    button.style.height = '50px'; // Set the height
-    button.style.borderRadius = '50%'; // Make it a circle
-    button.style.pointerEvents = 'none';
-    // button.addEventListener('mousedown', onMouseDown);
-    // button.addEventListener('mouseup', onMouseUp);
-    document.body.appendChild(button);
-}
-
   if (isMobile()) {
-    createControlButton('left-arrow', '←', () => {
+    createControlButton('left-arrow', '←', (e) => {
       keyState['q'] = true;
-    }, () => {
+      e.preventDefault();
+      return false;
+    }, (e) => {
       keyState['q'] = false;
+      e.preventDefault();
+      return false;
     });
 
-    createControlButton('right-arrow', '→', () => {
+    createControlButton('right-arrow', '→', (e) => {
       keyState['e'] = true;
-    }, () => {
+      console.log('eeee')
+      e.preventDefault();
+      return false;
+    }, (e) => {
       keyState['e'] = false;
+      console.log('eeee')
+      e.preventDefault();
+      return false;
     });
     createStartAffor();
     // window.alert('Tap anywhere on screen to start/stop');
