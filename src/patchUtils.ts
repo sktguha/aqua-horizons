@@ -7,18 +7,18 @@ let v2 = new THREE.Vector3();
 let v3 = new THREE.Vector3();
 let v4 = new THREE.Vector3();
 
-// Modify noisefn to create much larger sand dunes
+// Modify noisefn to lower dune height and round the peaks more
 let noisefn = (x, y, seconds, v = v0) => {
-  // Reduce frequency to create wider dunes (divide by 5)
+  // Reduce frequency for wider dunes
   let z = Math.sin((x * 0.02) + seconds) * Math.cos((y * 0.026) + seconds);
   let z1 = Math.sin((y * 0.03) + seconds) * Math.cos((x * 0.04) + seconds);
   z -= z1;
   
-  // Exaggerate the height by applying a nonlinear transformation
-  z = Math.sign(z) * Math.pow(Math.abs(z), 0.8); // Make dunes smoother with 0.8
+  // Use a lower exponent to round out the peaks (from 0.8 to 0.7)
+  z = Math.sign(z) * Math.pow(Math.abs(z), 0.7);
   
-  // Increase height multiplier from 3 to 30 (10x larger)
-  return v.set(x, z * 30, y);
+  // Reduce height multiplier from 30 to 10 for lower, smoother dunes
+  return v.set(x, z * 10, y);
 };
 
 // Function to create a terrain patch
