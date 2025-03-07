@@ -284,7 +284,7 @@ function getBiasedCoordinate(worldX, worldY) {
 
   // Add very large trees (mountains)
 const mountains = [];
-const minSpacing = 5000; // Minimum distance between mountains
+const minSpacing = 10000; // Minimum distance between mountains
 
 
 for (let i = 0; i < 8; i++) {
@@ -310,7 +310,7 @@ for (let i = 0; i < 8; i++) {
         });
 
         attempts++;
-        if (attempts > 100) break; // Prevent infinite loops
+        if (attempts > 300) break; // Prevent infinite loops
     } while (!validPosition);
 
     mountain.position.set(mountainX, mountainHeight / 2, mountainZ);
