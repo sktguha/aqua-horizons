@@ -13,6 +13,8 @@ export function isMobile() {
   return /Mobi|Android/i.test(navigator.userAgent);
 }
 
+export const IS_NIGHT = true;
+
 export function createControlButton(id, text, onMouseDown, onMouseUp) {
   const button = document.createElement('button');
   button.id = id;
@@ -62,7 +64,7 @@ function initOceanScene(){
 
   // scene
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xE0FFFF); // Light cyan color for the sky
+  scene.background = new THREE.Color(0x000000); // Night sky
 
   // sizes
   const sizes = {
@@ -135,7 +137,11 @@ function initOceanScene(){
     textureHeight: 512,
     waterNormals: textureLoader.load('textures/waternormals.jpg', (texture) => {
       texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-      new RGBELoader().load('https://cdn.jsdelivr.net/gh/Sean-Bradley/React-Three-Fiber-Boilerplate@obstacleCourse/public/img/rustig_koppie_puresky_1k.hdr', function(texture) {
+      let url = 'https://cdn.jsdelivr.net/gh/Sean-Bradley/React-Three-Fiber-Boilerplate@obstacleCourse/public/img/rustig_koppie_puresky_1k.hdr'
+      if(IS_NIGHT){
+        url = 'textures/night.exr';
+      }
+      new RGBELoader().load(url, function(texture) {
         texture.mapping = THREE.EquirectangularReflectionMapping
         scene.background = texture
         scene.environment = texture
