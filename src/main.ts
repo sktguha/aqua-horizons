@@ -315,21 +315,25 @@ function initOceanScene(){
     // New: Wrap camera if it goes beyond world boundaries using full worldX and worldY
     // rem minus
     if (camera.position.x > aWorldX*boundMult) {
-      camera.position.x = aWorldX/resetF;
-      camera.position.z = aWorldY/resetF;
+      // camera.position.x = aWorldX/resetF;
+      // camera.position.z = aWorldY/resetF;
+      camera.rotation.y += Math.PI; // Turn camera 180 degrees
       window.rearrangeAll();
     } else if (camera.position.x < -aWorldX*boundMult) {
-      camera.position.x = aWorldX/resetF;
-      camera.position.z = aWorldY/resetF;
+      // camera.position.x = aWorldX/resetF;
+      // camera.position.z = aWorldY/resetF;
+      camera.rotation.y += Math.PI;
       window.rearrangeAll();
     }
     if (camera.position.z > aWorldY*boundMult) {
-      camera.position.x = aWorldX/resetF;
-      camera.position.z = aWorldY/resetF;
+      // camera.position.x = aWorldX/resetF;
+      // camera.position.z = aWorldY/resetF;
+      camera.rotation.y += Math.PI;
       window.rearrangeAll();
     } else if (camera.position.z < -aWorldY*boundMult) {
-      camera.position.x = aWorldX/resetF;
-      camera.position.z = aWorldY/resetF;
+      // camera.position.x = aWorldX/resetF;
+      // camera.position.z = aWorldY/resetF;
+      camera.rotation.y += Math.PI;
       window.rearrangeAll();
     }
 
