@@ -222,15 +222,15 @@ function initOceanScene(){
           ang = 50.0*time + -1.0*p.x*kzx + -2.0*p.z*kzx;
           if (ang>360.0) ang -= 360.0;
           ang = ang*3.14159265/180.0;
-          retVal.y = 3.0*sin(ang);
+          retVal.y = 6.0*sin(ang);
           // Wave2
           ang = 25.0*time + -3.0*p.x*kzx;
           if (ang>360.0) ang -= 360.0;
           ang = ang*3.14159265/180.0;
-          retVal.y += 2.0*sin(ang);
+          retVal.y += 4.0*sin(ang);
           // Wave3
           ang = 15.0*time - 3.0*p.z*kzx;
-          retVal.y += 2.0*sin(ang);
+          retVal.y += 4.0*sin(ang);
           return retVal;
         }
 
@@ -254,10 +254,13 @@ function initOceanScene(){
         '#include <color_fragment>',
         '#include <color_fragment>\n' +
         '  // Example color mix\n' +
-        '  diffuseColor.rgb = mix(vec3(0.03125,0.0625,0.5), vec3(0.1,0.2,0.6), smoothstep(0.0,6.0,vHeight));\n'
+        '  diffuseColor.rgb = mix(vec3(0.2,0.7,1.0), vec3(0.3,0.9,1.0), smoothstep(0.0,6.0,vHeight));\n'
       );
     }
   });
+
+  waveMaterial.transparent = true;
+  waveMaterial.opacity = 0.6;
 
   const waveMesh = new THREE.Mesh(waveGeometry, waveMaterial);
   scene.add(waveMesh);
@@ -382,7 +385,7 @@ function initOceanScene(){
 
     fpControls.update(1);
     waveUniforms.time.value += 0.02; // Adjust speed as needed
-    waveMaterial.needsUpdate = true;
+    // waveMaterial.needsUpdate = true;
 
     // camera rotation logic
     if (keyState['ArrowLeft'] || keyState['A'] || keyState['q']) {
