@@ -282,53 +282,25 @@ export function createFish() {
 }
 
 function createBoat() {
-  const boat = new THREE.Group();
+  const points = [];
+  points.push(new THREE.Vector2(0, 0)); // Bottom center
+  points.push(new THREE.Vector2(5, 1)); // Slight curve start
+  points.push(new THREE.Vector2(7, 3)); // Middle width
+  points.push(new THREE.Vector2(6, 5)); // Starts tapering
+  points.push(new THREE.Vector2(3, 6)); // Near top
+  points.push(new THREE.Vector2(0, 7)); // Top center
 
-  // **Pointy Hull using ConvexGeometry**
-  const hullPoints = [
-    new THREE.Vector3(-20, 0, -10), // Rear left
-    new THREE.Vector3(20, 0, -10),  // Rear right
-    new THREE.Vector3(0, 0, 10),    // Pointy front
-    new THREE.Vector3(-15, 5, -5),  // Upper left
-    new THREE.Vector3(15, 5, -5),   // Upper right
-    new THREE.Vector3(0, 8, 8)      // Top center for smooth curve
-  ];
-
-  const hullGeometry = new ConvexGeometry(hullPoints);
+  const hullGeometry = new THREE.LatheGeometry(points, 20);
   const hullMaterial = new THREE.MeshStandardMaterial({
-    color: 0x8b4513,
+    color: 0x8b4513, // Wood brown
     flatShading: true,
   });
+
   const hull = new THREE.Mesh(hullGeometry, hullMaterial);
-  hull.position.y = 5;
-  boat.add(hull);
+  hull.rotation.x = Math.PI; // Flip for boat orientation
+  hull.position.y = 3.5;
 
-  // **Deck**
-  const deckGeometry = new THREE.BoxGeometry(35, 2, 15);
-  const deckMaterial = new THREE.MeshStandardMaterial({ color: 0xcd853f });
-  const deck = new THREE.Mesh(deckGeometry, deckMaterial);
-  deck.position.y = 10;
-  boat.add(deck);
-
-  // **Mast**
-  const mastGeometry = new THREE.CylinderGeometry(1, 1, 30, 16);
-  const mastMaterial = new THREE.MeshStandardMaterial({ color: 0x654321 });
-  const mast = new THREE.Mesh(mastGeometry, mastMaterial);
-  mast.position.set(0, 25, 0);
-  boat.add(mast);
-
-  // **Sail**
-  const sailGeometry = new THREE.PlaneGeometry(15, 20);
-  const sailMaterial = new THREE.MeshStandardMaterial({
-    color: 0xffffff,
-    side: THREE.DoubleSide,
-  });
-  const sail = new THREE.Mesh(sailGeometry, sailMaterial);
-  sail.position.set(7, 25, 0);
-  sail.rotation.y = Math.PI / 6;
-  boat.add(sail);
-
-  return boat;
+  return hull;
 }
 
 export const worldX = 100000, worldY = 100000;
@@ -569,7 +541,7 @@ function prepareFishOrBoat(fish, isBoat = false){
   fish.scale.set(Math.random() * 80, Math.random() * 80, Math.random() * 80);
   fish.position.set(
     Math.random() * worldX - worldX / 2,
-    isBoat ? -168: 14,
+    isBoat ? 50 : 14,
     Math.random() * worldY - worldY / 2
   );
   if(isBoat){
