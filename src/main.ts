@@ -476,9 +476,9 @@ function initOceanScene(){
     });
     if (LodFlg > 0) {
       etime = clock.getElapsedTime();
-      gu.time.value = etime;
-      WtrNrm.offset.x -= .0005;
-      WtrNrm.offset.y += .00025;
+      gu.time.value = etime/30;
+      WtrNrm.offset.x -= .0001;
+      WtrNrm.offset.y += .00003;
     }
     // controls.update();
        
