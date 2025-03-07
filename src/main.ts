@@ -353,6 +353,18 @@ function initOceanScene(){
       fish.position.x += fish.userData.velocity.x;
       fish.position.z += fish.userData.velocity.z;
       fish.position.y = fish.userData.initialY + Math.sin(timeFactor + fish.userData.oscPhase) * 5;
+
+      // New: Wrap fish positions if they go beyond the boundaries using the same reset factors
+      if (fish.position.x > aWorldX) {
+        fish.position.x = -aWorldX / resetF;
+      } else if (fish.position.x < -aWorldX) {
+        fish.position.x = aWorldX / resetF;
+      }
+      if (fish.position.z > aWorldY) {
+        fish.position.z = -aWorldY / resetF;
+      } else if (fish.position.z < -aWorldY) {
+        fish.position.z = aWorldY / resetF;
+      }
     });
 
     renderer.render(scene, camera);
