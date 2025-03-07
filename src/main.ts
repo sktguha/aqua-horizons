@@ -201,6 +201,9 @@ function initOceanScene(){
         scene.environment = texture;
       });
     }),
+    sunDirection: new THREE.Vector3(1, 0.1, 0),
+    sunColor: 0xffffff, // Brighter sun color
+    waterColor: 0xADD8E6, // Light blue water color
     metalness: 0.5,
     roughness: 0.6,
     onBeforeCompile: (shader) => {
@@ -212,10 +215,23 @@ function initOceanScene(){
         varying float vHeight;
 
         vec3 moveWave(vec3 p){
+          vec3 retVal = p;
           float ang;
-          float kzx = 360.0 / grid;
-          // ...existing wave formula logic...
-          return p;
+          float kzx = 360.0/grid;
+          // Wave1
+          ang = 50.0*time + -1.0*p.x*kzx + -2.0*p.z*kzx;
+          if (ang>360.0) ang -= 360.0;
+          ang = ang*3.14159265/180.0;
+          retVal.y = 3.0*sin(ang);
+          // Wave2
+          ang = 25.0*time + -3.0*p.x*kzx;
+          if (ang>360.0) ang -= 360.0;
+          ang = ang*3.14159265/180.0;
+          retVal.y += 2.0*sin(ang);
+          // Wave3
+          ang = 15.0*time - 3.0*p.z*kzx;
+          retVal.y += 2.0*sin(ang);
+          return retVal;
         }
 
         ${shader.vertexShader}
@@ -366,6 +382,7 @@ function initOceanScene(){
 
     fpControls.update(1);
     waveUniforms.time.value += 0.02; // Adjust speed as needed
+    waveMaterial.needsUpdate = true;
 
     // camera rotation logic
     if (keyState['ArrowLeft'] || keyState['A'] || keyState['q']) {
@@ -478,7 +495,6 @@ function initOceanScene(){
         fish.position.z = aWorldY / resetF;
       }
     });
-
     renderer.render(scene, camera);
     stats.end();
     requestAnimationFrame(animate);
