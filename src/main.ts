@@ -306,6 +306,18 @@ function initOceanScene(){
     camera.rotation.z = z;
     camera.rotation.y = y;
 
+    // New: Wrap camera if it goes beyond world boundaries using full worldX and worldY
+    if (camera.position.x > worldX) {
+      camera.position.x = -worldX;
+    } else if (camera.position.x < -worldX) {
+      camera.position.x = worldX;
+    }
+    if (camera.position.z > worldY) {
+      camera.position.z = -worldY;
+    } else if (camera.position.z < -worldY) {
+      camera.position.z = worldY;
+    }
+
     // Move balls up and down , sideways also
     balls.forEach((ball, index) => {
       ball.position.y += ballSpeeds[index] * 4; // Increase speed by ~4x

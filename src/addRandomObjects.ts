@@ -624,11 +624,26 @@ export const rearrangeTrees = (scene, isMon=false) => {
   });
 };
 
+// Add a function to rearrange fish positions
+export const rearrangeFishes = (scene) => {
+  fishes.forEach((fish) => {
+    fish.position.set(
+      Math.random() * worldX - worldX / 2,
+      Math.random() * 200 + 10,
+      Math.random() * worldY - worldY / 2
+    );
+  });
+};
+
 // Optionally, a combined function to rearrange both can be defined:
 // export const rearrangeObjects = (scene) => {
 //   rearrangeBalloons(scene);
 //   rearrangeTrees(scene);
 // };
+
+// setInterval(() => {
+//   rearrangeFishes(window._scene);
+// }, 30*60);
 
 // Update key listener to call both functions when 'u' key is pressed
 window.addEventListener('keydown', (event) => {
@@ -640,5 +655,14 @@ window.addEventListener('keydown', (event) => {
   }
   if (event.key.toLowerCase() === 'm' && window._scene) {
     rearrangeTrees(window._scene, true);
+  }
+  if (event.key.toLowerCase() === 'p' && window._scene) {
+    rearrangeFishes(window._scene);
+  }
+  if (event.key.toLowerCase() === '0' && window._scene) {
+    rearrangeBalloons(window._scene);
+    rearrangeTrees(window._scene, true);
+    rearrangeTrees(window._scene);
+    rearrangeFishes(window._scene);
   }
 });
