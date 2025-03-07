@@ -49,10 +49,6 @@ let dirLight = new THREE.DirectionalLight(0xffffff,1);
 	dirLight.position.set(0,2000,0);	// High Noon
 	scene.add(dirLight);
 // Camera
-let	camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 1, 15000);
-let	controls = new OrbitControls(camera, renderer.domElement);
-	camera.position.set(0,200,400)
-	controls.update();
 // Clock
 let clock = new THREE.Clock();
 let	etime;
@@ -126,8 +122,8 @@ function initOceanScene(){
   const canvas = document.getElementsByClassName('webgl')[0] as HTMLCanvasElement;
 
   // scene
-  const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x000000); // Night sky
+  // const scene = new THREE.Scene();
+  // scene.background = new THREE.Color(0x000000); // Night sky
 
   // sizes
   const sizes = {
@@ -477,6 +473,14 @@ function initOceanScene(){
         fish.position.z = aWorldY / resetF;
       }
     });
+    if (LodFlg > 0) {
+      etime = clock.getElapsedTime();
+      gu.time.value = etime;
+      WtrNrm.offset.x -= .0005;
+      WtrNrm.offset.y += .00025;
+    }
+    // controls.update();
+       
 
     renderer.render(scene, camera);
     stats.end();
@@ -518,6 +522,7 @@ function loadAll() {
 
 /* 1 Initialize ===============================================*/
 function initAll() {
+  console.log('init all came');
 	let n, zx;
 /* = Main Program =============================================*/
 	// Planes with Extended Material ----------------------------
@@ -622,15 +627,15 @@ function initAll() {
 
 /* 2 Render ===================================================*/
 function rendAll() {
-	requestAnimationFrame(rendAll);
-	if (LodFlg > 0) {
-		etime = clock.getElapsedTime();
-		gu.time.value = etime;
-  	WtrNrm.offset.x -= .0005;
-		WtrNrm.offset.y += .00025;
-	}
-	controls.update();
-   	renderer.render(scene, camera);
+	// requestAnimationFrame(rendAll);
+	// if (LodFlg > 0) {
+	// 	etime = clock.getElapsedTime();
+	// 	gu.time.value = etime;
+  // 	WtrNrm.offset.x -= .0005;
+	// 	WtrNrm.offset.y += .00025;
+	// }
+	// controls.update();
+  //  	renderer.render(scene, camera);
 }
 
 /* Window Resize Input ========================================*/
