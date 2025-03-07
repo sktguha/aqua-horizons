@@ -548,7 +548,7 @@ for (let i = 0; i < 8; i++) {
     scene.add(mountain);
 }
 
-  const NUM_FISH = OBJECTS_TO_RENDER;
+  const NUM_FISH = OBJECTS_TO_RENDER/2;
   const fishColors = [0x008080, 0x20B2AA, 0x40E0D0, 0x5F9EA0, 0x66CDAA]; // Teal/shades array
   function addFishesSub(img=false){
   const fishGeometry = createFish();
