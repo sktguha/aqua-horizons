@@ -548,7 +548,7 @@ for (let i = 0; i < 8; i++) {
     scene.add(mountain);
 }
 
-  const NUM_FISH = 1000;
+  const NUM_FISH = OBJECTS_TO_RENDER;
   const fishGeometry = createFish();
   const fishMaterial = new THREE.MeshStandardMaterial({ color: 0xaaaaaa, side: THREE.DoubleSide });
   for (let i = 0; i < NUM_FISH; i++) {
@@ -556,10 +556,10 @@ for (let i = 0; i < 8; i++) {
     
     const fish = new THREE.Mesh(fishGeometry, fishMaterial);
     // Set fish scale and random position in the world
-    fish.scale.set(10,10,10);
+    fish.scale.set(Math.random()*14,Math.random()*14,Math.random()*14);
     fish.position.set(
       Math.random() * worldX - worldX / 2,
-      Math.random() * 200 + 20,
+      10,
       Math.random() * worldY - worldY / 2
     );
     fishes.push(fish);
