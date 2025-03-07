@@ -599,10 +599,11 @@ function initAll() {
 			`.replace(
 				`#include <color_fragment>`,
 				`#include <color_fragment>
-					diffuseColor.rgb = mix(vec3(0.03125,0.0625,0.5), vec3(0.1,0.2,0.6), smoothstep(0.0, 6.0, vHeight));
-					if (vHeight>7.0) {
-						diffuseColor.rgb = vec3(0.2,0.3,0.7);	// Adds "foam" highlight to highest waves
-					}
+					// Modify the water color here to a very light blue
+          diffuseColor.rgb = mix(vec3(0.8, 0.9, 1.0), vec3(0.9, 0.95, 1.0), smoothstep(0.0, 6.0, vHeight));
+          if (vHeight > 7.0) {
+            diffuseColor.rgb = vec3(1.0, 1.0, 1.0);  // Adds "foam" highlight to highest waves
+          }
 				`
 			);
 		}
