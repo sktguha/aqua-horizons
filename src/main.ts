@@ -312,36 +312,73 @@ function initOceanScene(){
     const resetF = 20;
     const boundMult = 1.3;
     console.log(camera.rotation, camera.position);
+    // Declare a rotation lock variable outside of the wrapping conditions if not already declared
+    if (typeof window.rotationLocked === 'undefined') {
+        window.rotationLocked = false;
+    }
+    const rotationLockDuration = 3000; // Lock rotation for 1 second
+
     // New: Wrap camera if it goes beyond world boundaries using full worldX and worldY
-    // rem minus
     if (camera.position.x > aWorldX*boundMult) {
       camera.position.x -= aWorldX/resetF;
       camera.position.z -= aWorldY/resetF;
-      setTimeout(() => {
+      if (!window.rotationLocked) {
         camera.rotation.y += Math.PI; // Turn camera 180 degrees
-      }, 1);
+        console.log("Camera rotated 180° (X positive excess) and locked rotation.");
+        window.rotationLocked = true;
+        setTimeout(() => {
+          window.rotationLocked = false;
+          console.log("Rotation lock released.");
+        }, rotationLockDuration);
+      } else {
+        console.log("Rotation already applied, skipping additional rotation (X positive excess).");
+      }
       window.rearrangeAll();
     } else if (camera.position.x < -aWorldX*boundMult) {
       camera.position.x -= aWorldX/resetF;
       camera.position.z -= aWorldY/resetF;
-      setTimeout(() => {
-        camera.rotation.y += Math.PI; // Turn camera 180 degrees
-      }, 1);
+      if (!window.rotationLocked) {
+        camera.rotation.y += Math.PI;
+        console.log("Camera rotated 180° (X negative excess) and locked rotation.");
+        window.rotationLocked = true;
+        setTimeout(() => {
+          window.rotationLocked = false;
+          console.log("Rotation lock released.");
+        }, rotationLockDuration);
+      } else {
+        console.log("Rotation already applied, skipping additional rotation (X negative excess).");
+      }
       window.rearrangeAll();
     }
     if (camera.position.z > aWorldY*boundMult) {
       camera.position.x -= aWorldX/resetF;
       camera.position.z -= aWorldY/resetF;
-      setTimeout(() => {
-        camera.rotation.y += Math.PI; // Turn camera 180 degrees
-      }, 1);
+      if (!window.rotationLocked) {
+        camera.rotation.y += Math.PI;
+        console.log("Camera rotated 180° (Z positive excess) and locked rotation.");
+        window.rotationLocked = true;
+        setTimeout(() => {
+          window.rotationLocked = false;
+          console.log("Rotation lock released.");
+        }, rotationLockDuration);
+      } else {
+        console.log("Rotation already applied, skipping additional rotation (Z positive excess).");
+      }
       window.rearrangeAll();
     } else if (camera.position.z < -aWorldY*boundMult) {
       camera.position.x -= aWorldX/resetF;
       camera.position.z -= aWorldY/resetF;
-      setTimeout(() => {
-        camera.rotation.y += Math.PI; // Turn camera 180 degrees
-      }, 1);
+      if (!window.rotationLocked) {
+        camera.rotation.y += Math.PI;
+        console.log("Camera rotated 180° (Z negative excess) and locked rotation.");
+        window.rotationLocked = true;
+        setTimeout(() => {
+          window.rotationLocked = false;
+          console.log("Rotation lock released.");
+        }, rotationLockDuration);
+      } else {
+        console.log("Rotation already applied, skipping additional rotation (Z negative excess).");
+      }
       window.rearrangeAll();
     }
 
