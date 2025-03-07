@@ -309,13 +309,17 @@ function initOceanScene(){
     // New: Wrap camera if it goes beyond world boundaries using full worldX and worldY
     if (camera.position.x > worldX) {
       camera.position.x = -worldX;
+      window.rearrangeAll();
     } else if (camera.position.x < -worldX) {
       camera.position.x = worldX;
+      window.rearrangeAll();
     }
     if (camera.position.z > worldY) {
       camera.position.z = -worldY;
+      window.rearrangeAll();
     } else if (camera.position.z < -worldY) {
       camera.position.z = worldY;
+      window.rearrangeAll();
     }
 
     // Move balls up and down , sideways also
