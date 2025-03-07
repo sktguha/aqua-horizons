@@ -644,7 +644,7 @@ for (let i = 0; i < 8; i++) {
   addFishesSub(6);
   addFishesSub(7);
 
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < NUM_FISH/7; i++) {
     const boat = createBoat();
     prepareFishOrBoat(boat);
   }
