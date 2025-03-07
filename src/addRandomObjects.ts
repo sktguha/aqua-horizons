@@ -561,7 +561,7 @@ for (let i = 0; i < 8; i++) {
     const randomFishColor = fishColors[Math.floor(Math.random() * fishColors.length)];
     fishMaterial = new THREE.MeshStandardMaterial({ color: randomFishColor, side: THREE.DoubleSide });
   }
-  for (let i = 0; i < NUM_FISH/3; i++) {
+  for (let i = 0; i < NUM_FISH/7; i++) {
     const fish = new THREE.Mesh(fishGeometry, fishMaterial);
     fish.scale.set(Math.random() * 80, Math.random() * 80, Math.random() * 80);
     fish.position.set(
@@ -575,7 +575,11 @@ for (let i = 0; i < 8; i++) {
   }
   addFishesSub(1);
   addFishesSub(2);
-  addFishesSub();
+  addFishesSub(3);
+  addFishesSub(4);
+  addFishesSub(5);
+  addFishesSub(6);
+  addFishesSub(7);
   window._scene = scene;
   return {balls, trees, treeSpeeds, ballSpeeds, fishes};
 };
