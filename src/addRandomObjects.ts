@@ -4,6 +4,21 @@ import { noise } from 'perlin-noise';
 // import { colors, worldX, worldY, balls, speedRanges, ballSpeeds, scene, trees, treeSpeeds, squares, rectangles } from './main';
 import { createPatch, generatePatch } from './patchUtils';
 
+export const deepBrownShades = [
+  "#4a2e28", // Dark Redwood
+  "#3b241f", // Coffee Bean
+  "#5a3a31", // Chestnut Brown
+  "#2f1d19", // Espresso Brown
+  "#472f26", // Mahogany Shadow
+  "#593d35", // Deep Clay
+  "#36221c", // Burnt Umber
+  "#6b443a", // Warm Walnut
+  "#402a24", // Dark Cocoa
+  "#512f29", // Rich Mocha
+  "#2d1b16", // Charcoal Brown
+  "#55382e"  // Deep Oak
+];
+
 export const balls: THREE.Mesh[] = [];
 export const trees: THREE.Mesh[] = [];
 export const squares: THREE.Mesh[] = [];
@@ -106,7 +121,7 @@ function getBiasedCoordinate(worldX, worldY) {
     const treeHeight = 1000 + Math.random() * 2000;
     const treeGeometry = new THREE.ConeGeometry(200, treeHeight, 200); // Reduced size
     const {x,z} = getBiasedCoordinate(worldX, worldY);
-    const treeMaterial = new THREE.MeshStandardMaterial({ color: interpolateColor(x, z) });
+    const treeMaterial = new THREE.MeshStandardMaterial({ color: deepBrownShades[Math.floor(Math.random() * deepBrownShades.length)] });
     const tree = new THREE.Mesh(treeGeometry, treeMaterial);
 
     // Prevent trees from being generated near the user's spawn position (within a radius of 1000 units)
@@ -268,19 +283,43 @@ function getBiasedCoordinate(worldX, worldY) {
   }
 
   // Add very large trees (mountains)
-  for (let i = 0; i < 3; i++) {
+const mountains = [];
+const minSpacing = 5000; // Minimum distance between mountains
+
+
+for (let i = 0; i < 8; i++) {
     const mountainHeight = 15000 + Math.random() * 3000;
     const mountainRadius = mountainHeight * 0.9;
     const mountainGeometry = new THREE.ConeGeometry(mountainRadius, mountainHeight, 16);
-    const mountainMaterial = new THREE.MeshStandardMaterial({ color: 0x8B4513, roughness: 0.5 + Math.random()/2 });
+    const mountainMaterial = new THREE.MeshStandardMaterial({
+        color: deepBrownShades[Math.floor(Math.random() * deepBrownShades.length)],
+        roughness: 0.5 + Math.random() / 2
+    });
     const mountain = new THREE.Mesh(mountainGeometry, mountainMaterial);
-    const mountainX = Math.random() * worldX - worldX / 2;
-    const mountainZ = Math.random() * worldY - worldY / 2;
+
+    let mountainX, mountainZ, validPosition;
+    let attempts = 0;
+    
+    do {
+        mountainX = Math.random() * worldX - worldX / 2;
+        mountainZ = Math.random() * worldY - worldY / 2;
+        validPosition = mountains.every(m => {
+            const dx = m.position.x - mountainX;
+            const dz = m.position.z - mountainZ;
+            return Math.sqrt(dx * dx + dz * dz) > minSpacing;
+        });
+
+        attempts++;
+        if (attempts > 100) break; // Prevent infinite loops
+    } while (!validPosition);
+
     mountain.position.set(mountainX, mountainHeight / 2, mountainZ);
+    mountains.push(mountain);
     trees.push(mountain);
     treeSpeeds.push(0); // Mountain trees remain static
     scene.add(mountain);
-  }
+}
+
 
   return {balls, trees, treeSpeeds, ballSpeeds};
 };
