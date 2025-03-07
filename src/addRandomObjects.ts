@@ -282,23 +282,36 @@ export function createFish() {
 }
 
 function createBoat() {
-  const points = [];
-  points.push(new THREE.Vector2(0, 0)); // Bottom center
-  points.push(new THREE.Vector2(5, 1)); // Slight curve start
-  points.push(new THREE.Vector2(7, 3)); // Middle width
-  points.push(new THREE.Vector2(6, 5)); // Starts tapering
-  points.push(new THREE.Vector2(3, 6)); // Near top
-  points.push(new THREE.Vector2(0, 7)); // Top center
+  const hull = new THREE.Group();
 
-  const hullGeometry = new THREE.LatheGeometry(points, 20);
-  const hullMaterial = new THREE.MeshStandardMaterial({
-    color: 0x8b4513, // Wood brown
-    flatShading: true,
+  // **Curved Bottom using LatheGeometry**
+  const shape = [
+    new THREE.Vector2(0, 0),  // Bottom center
+    new THREE.Vector2(6, 1),  // Curve start
+    new THREE.Vector2(8, 3),  // Mid-section
+    new THREE.Vector2(7, 5),  // Tapering
+    new THREE.Vector2(4, 7),  // Almost top
+    new THREE.Vector2(0, 8)   // Top center
+  ];
+
+  const hullGeometry = new THREE.LatheGeometry(shape, 20);
+  const hullMaterial = new THREE.MeshStandardMaterial({ 
+    color: 0x8b4513, 
+    flatShading: true 
   });
+  const hullMain = new THREE.Mesh(hullGeometry, hullMaterial);
+  hullMain.rotation.x = Math.PI; // Flip for correct boat orientation
+  hullMain.position.y = 4;
 
-  const hull = new THREE.Mesh(hullGeometry, hullMaterial);
-  hull.rotation.x = Math.PI; // Flip for boat orientation
-  hull.position.y = 3.5;
+  // **Pointy Bow (Front) using a Tapered Box**
+  const bowGeometry = new THREE.CylinderGeometry(0, 6, 10, 4, 1); // Tapered tip
+  const bow = new THREE.Mesh(bowGeometry, hullMaterial);
+  bow.rotation.z = Math.PI / 2;
+  bow.position.set(8, 4, 0);
+
+  // Combine hull and bow
+  hull.add(hullMain);
+  hull.add(bow);
 
   return hull;
 }
@@ -620,8 +633,8 @@ for (let i = 0; i < 8; i++) {
   addFishesSub(7);
 
   for (let i = 0; i < NUM_FISH/7; i++) {
-    const boat = createBoat();
-    prepareFishOrBoat(boat, true);
+    // const boat = createBoat();
+    // prepareFishOrBoat(boat, true);
   }
 
   window._scene = scene;
