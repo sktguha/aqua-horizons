@@ -139,7 +139,8 @@ function initOceanScene(){
       texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
       let url = 'https://cdn.jsdelivr.net/gh/Sean-Bradley/React-Three-Fiber-Boilerplate@obstacleCourse/public/img/rustig_koppie_puresky_1k.hdr'
       if(IS_NIGHT){
-        url = 'https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/4k/qwantani_night_4k.hdr';
+        // url = 'https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/4k/qwantani_night_4k.hdr';
+        url = 'https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/4k/lakeside_night_4k.hdr';
       }
       new RGBELoader().load(url, function(texture) {
         texture.mapping = THREE.EquirectangularReflectionMapping
