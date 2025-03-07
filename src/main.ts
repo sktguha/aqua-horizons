@@ -307,20 +307,24 @@ function initOceanScene(){
     camera.rotation.y = y;
     const aWorldX = 40000;
     const aWorldY = 45000;
-    const resetF = 3;
+    const resetF = 7;
     console.log(camera.rotation, camera.position);
     // New: Wrap camera if it goes beyond world boundaries using full worldX and worldY
     if (camera.position.x > aWorldX) {
       camera.position.x = -aWorldX/resetF;
+      camera.position.z = -aWorldY/resetF;
       window.rearrangeAll();
     } else if (camera.position.x < -aWorldX) {
-      camera.position.x = aWorldX/resetF;
+      camera.position.x = -aWorldX/resetF;
+      camera.position.z = -aWorldY/resetF;
       window.rearrangeAll();
     }
     if (camera.position.z > aWorldY) {
+      camera.position.x = -aWorldX/resetF;
       camera.position.z = -aWorldY/resetF;
       window.rearrangeAll();
     } else if (camera.position.z < -aWorldY) {
+      camera.position.x = aWorldX/resetF;
       camera.position.z = aWorldY/resetF;
       window.rearrangeAll();
     }
