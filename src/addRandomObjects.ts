@@ -47,6 +47,13 @@ export const speedRanges = {
   0x008000: [0.9, 0.1]   // Dark Green
 };
 
+export function getBiasedCoordinate(worldX, worldY) {
+  const biasFactor = 4; // Higher = more clustering
+  let x = Math.pow(Math.random(), biasFactor) * worldX - worldX / 2;
+  let z = Math.pow(Math.random(), biasFactor) * worldY - worldY / 2;
+  return { x, z };
+}
+
 export const worldX = 100000, worldY = 100000;
 export const getRandomColorBallon = () => colors[Math.floor(Math.random() * colors.length)];
 // Add random objects
@@ -108,12 +115,6 @@ export const addRandomObjects = (scene, isOcean = false) => {
     return mean + stddev * normal;
 }
 
-function getBiasedCoordinate(worldX, worldY) {
-  const biasFactor = 4; // Higher = more clustering
-  let x = Math.pow(Math.random(), biasFactor) * worldX - worldX / 2;
-  let z = Math.pow(Math.random(), biasFactor) * worldY - worldY / 2;
-  return { x, z };
-}
   const DISABLE_TREES = false;
   // Add trees
   for (let i = 0; i < OBJECTS_TO_RENDER*0.7; i++) { // Increased number of objects
@@ -335,18 +336,23 @@ export const rearrangeBalloons = (scene) => {
   });
 };
 
-// Add function to rearrange trees (and mountains)
+// Revised function to rearrange trees with debugging and fallback
 export const rearrangeTrees = (scene) => {
-  trees.forEach((tree) => {
-    if (tree.geometry.parameters && tree.geometry.parameters.height > 10000) {
-      const mountainHeight = tree.geometry.parameters.height;
+  trees.forEach((tree, index) => {
+    let height = tree.geometry.parameters?.height;
+    if (!height) {
+      console.warn(`Tree at index ${index} has no height parameter; using 1000 as fallback.`);
+      height = 1000;
+    }
+    if (height > 10000) { // Assume mountain
       const newX = Math.random() * worldX - worldX / 2;
       const newZ = Math.random() * worldY - worldY / 2;
-      tree.position.set(newX, mountainHeight / 2, newZ);
+      console.log(`Rearranging mountain tree at index ${index} to (${newX.toFixed(2)}, ${height/2}, ${newZ.toFixed(2)})`);
+      tree.position.set(newX, height / 2, newZ);
     } else {
       const { x, z } = getBiasedCoordinate(worldX, worldY);
-      const treeHeight = tree.geometry.parameters.height;
-      tree.position.set(x, treeHeight / 2, z);
+      console.log(`Rearranging normal tree at index ${index} to (${x.toFixed(2)}, ${height/2}, ${z.toFixed(2)})`);
+      tree.position.set(x, height / 2, z);
     }
   });
 };
