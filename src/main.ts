@@ -84,7 +84,7 @@ let txtrLoader = new THREE.TextureLoader(loadingManager);
     button.style.left = id === 'left-arrow' ? '10px' : '50px';
     button.style.zIndex = '1000';
     button.style.zoom = 2.6;
-    button.style.opacity = 0.2;
+    button.style.opacity = 0.4; // Increased opacity
     // button.style.pointerEvents = 'none';
     button.addEventListener('mousedown', onMouseDown);
     button.addEventListener('mouseup', onMouseUp);
@@ -102,7 +102,7 @@ let txtrLoader = new THREE.TextureLoader(loadingManager);
     button.style.right = '10px';
     button.style.zIndex = '1000';
     button.style.zoom = 2.6;
-    button.style.opacity = 0.2;
+    button.style.opacity = 0.4; // Increased opacity
     button.style.width = '50px'; // Set the width
     button.style.height = '50px'; // Set the height
     button.style.borderRadius = '50%'; // Make it a circle
@@ -476,9 +476,9 @@ function initOceanScene(){
     });
     if (LodFlg > 0) {
       etime = clock.getElapsedTime();
-      gu.time.value = etime/30;
-      WtrNrm.offset.x -= .0001;
-      WtrNrm.offset.y += .00003;
+      gu.time.value = etime/20; // Slightly faster wave movement (was /30)
+      WtrNrm.offset.x -= .00015; // Slightly faster texture movement
+      WtrNrm.offset.y += .00005;
     }
     // controls.update();
        
@@ -531,10 +531,11 @@ function initAll() {
 	geoWav.rotateX(-Math.PI * 0.5);
 	matWav = new THREE.MeshStandardMaterial({
 		normalMap: WtrNrm,
-		metalness: 0.5,
-		roughness: 0.6,
+		metalness: 0.6, // Increased metalness for better reflections
+		roughness: 0.4, // Reduced roughness for shinier appearance
 		transparent: true,
-		opacity: 0.4,
+		opacity: 0.8, // Further increased opacity for better visibility
+		color: new THREE.Color(0x4682B4), // Steel blue color for better visibility
 		onBeforeCompile: shader => {
 			shader.uniforms.time = gu.time;
 			shader.uniforms.grid = gu.grid;
@@ -551,27 +552,27 @@ function initAll() {
 					ang = 80.0*time + -1.0*p.x*kzx + -2.0*p.z*kzx;
 					if (ang>360.0) ang = ang-360.0;
 					ang = ang*3.14159265/180.0;
-					retVal.y = 15.0*sin(ang);          // Increased wave1
+					retVal.y = 30.0*sin(ang);          // Increased wave height significantly
 					// Wave2 (090)
 					ang = 40.0*time + -3.0*p.x*kzx;
 					if (ang>360.0) ang = ang-360.0;
 					ang = ang*3.14159265/180.0;
-					retVal.y = retVal.y + 8.0*sin(ang);         // Increased wave2
+					retVal.y = retVal.y + 15.0*sin(ang);         // Increased wave height
 					// Wave3 (180 degrees)
 					ang = 30.0*time - 3.0*p.z*kzx;
 					if (ang>360.0) ang = ang-360.0;
 					ang = ang*3.14159265/180.0;
-					retVal.y = retVal.y + 8.0*sin(ang);         // Increased wave3
+					retVal.y = retVal.y + 18.0*sin(ang);         // Increased wave height
 					// Wave4 (225 degrees)
 					ang = 80.0*time + 4.0*p.x*kzx + 8.0*p.z*kzx;
 					if (ang>360.0) ang = ang-360.0;
 					ang = ang*3.14159265/180.0;
-					retVal.y = retVal.y + 2.0*sin(ang);         // Increased wave4
+					retVal.y = retVal.y + 8.0*sin(ang);         // Increased wave height
 					// Wave5 (270 degrees)
 					ang = 80.0*time + 8.0*p.x*kzx;
 					if (ang>360.0) ang = ang-360.0;
 					ang = ang*3.14159265/180.0;
-					retVal.y = retVal.y + 2.0*sin(ang);         // Increased wave5
+					retVal.y = retVal.y + 6.0*sin(ang);         // Increased wave height
 					//
 					return retVal;
 				}					
@@ -599,10 +600,10 @@ function initAll() {
 			`.replace(
 				`#include <color_fragment>`,
 				`#include <color_fragment>
-					// Modify the water color here to a slightly darker blue
-          diffuseColor.rgb = mix(vec3(0.6, 0.7, 0.9), vec3(0.7, 0.8, 0.95), smoothstep(0.0, 6.0, vHeight));
-          if (vHeight > 7.0) {
-            diffuseColor.rgb = vec3(0.9, 0.9, 1.0);  // Adds "foam" highlight to highest waves
+					// Enhanced blue colors with better contrast
+          diffuseColor.rgb = mix(vec3(0.1, 0.4, 0.8), vec3(0.5, 0.7, 0.95), smoothstep(0.0, 10.0, vHeight));
+          if (vHeight > 14.0) {
+            diffuseColor.rgb = vec3(1.0, 1.0, 1.0);  // Brighter foam at wave peaks
           }
 				`
 			);
