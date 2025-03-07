@@ -77,7 +77,7 @@ function initOceanScene(){
     75,
     sizes.width / sizes.height,
     0.1, // Near clipping plane
-    15000 // Far clipping plane (view distance)
+    40000 // Far clipping plane (view distance)
   );
   camera.position.set(0, 60, 60);
   scene.add(camera);
@@ -139,7 +139,7 @@ function initOceanScene(){
       texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
       let url = 'https://cdn.jsdelivr.net/gh/Sean-Bradley/React-Three-Fiber-Boilerplate@obstacleCourse/public/img/rustig_koppie_puresky_1k.hdr'
       if(IS_NIGHT){
-        url = 'https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/4k/qwantani_night_4k.hdr';
+        url = 'http://localhost:5173/textures/night.hdr';
       }
       new RGBELoader().load(url, function(texture) {
         texture.mapping = THREE.EquirectangularReflectionMapping;
@@ -289,12 +289,17 @@ function initOceanScene(){
       x += xRot;
     }
     
-    // New logic: if the 'L' key pressed, raise camera high
+    // New logic: if the 'K' key pressed, raise camera high, k for know
     if (keyState['k'] || keyState['K']) {
-      camera.position.y = -10000; // set to a high Y position
+      // camera.position.y = -26000; // set to a high Y position
+      // camera.rotation.y = 2.98;
+      camera.rotation.set(-1.620000000000001, 3.1150000000000144, -0.019999999999999993);
+      camera.position.set(2827.7598928613406, -25000, 4498.540878289671);
+      console.log(camera.rotation, camera.position);
     }
     if (keyState['l'] || keyState['L']) {
       camera.position.y = 5; // set to a high Y position
+      camera.rotation.y = 0;
     }
     
     camera.rotation.x = x;
