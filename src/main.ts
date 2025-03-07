@@ -8,6 +8,8 @@ import { addRandomObjects } from './addRandomObjects';
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
 import { initDesertScene } from './main2Desert';
 import { getParams } from './getParams';
+import { Sky } from 'three/examples/jsm/objects/Sky';
+import GerstnerWater from './gerstnerWater.js';
 
 export function isMobile() {
   // return 1;
@@ -194,7 +196,7 @@ function initOceanScene(){
     distortionScale: 15, // Increased from 3.7 for aggressive, choppy waves
   });
   water.rotation.x = -Math.PI / 2;
-  scene.add(water);
+  // scene.add(water);
 
   // Add a gigantic tree
   const trunkHeight = 1000;
@@ -297,6 +299,17 @@ function initOceanScene(){
     createStartAffor();
     // window.alert('Tap anywhere on screen to start/stop');
   }
+
+  const sky = new Sky();
+  sky.scale.setScalar(10000);
+  scene.add(sky);
+
+  // Configure sky uniforms if needed
+  sky.material.uniforms['turbidity'].value = 10;
+  sky.material.uniforms['rayleigh'].value = 2;
+
+  const gerstnerWater = new GerstnerWater(/* pass GUI if using one */);
+  scene.add(gerstnerWater.water);
 
   // animate
   let y = 5.5-1.7;
@@ -428,6 +441,8 @@ function initOceanScene(){
         fish.position.z = aWorldY / resetF;
       }
     });
+
+    gerstnerWater.update(2/* delta or desired time step */);
 
     renderer.render(scene, camera);
     stats.end();
