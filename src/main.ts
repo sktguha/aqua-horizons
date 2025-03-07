@@ -117,7 +117,7 @@ function initOceanScene(){
       // fpControls.lookSpeed = 0.001;
     }
     if (event.key === 'n') {
-      fpControls.movementSpeed = START_MOVEMENT_SPEED*8;
+      fpControls.movementSpeed = START_MOVEMENT_SPEED*11;
       cameraRotationSpeed = 2;
       // fpControls.lookSpeed = 0.001;
     }
@@ -310,7 +310,7 @@ function initOceanScene(){
     console.log(camera.rotation, camera.position);
     // New: Wrap camera if it goes beyond world boundaries using full worldX and worldY
     if (camera.position.x > aWorldX) {
-      camera.position.x = -aWorldX;
+      camera.position.x = -aWorldX/3;
       window.rearrangeAll();
     } else if (camera.position.x < -aWorldX) {
       camera.position.x = aWorldX;
