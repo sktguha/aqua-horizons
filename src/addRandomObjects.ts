@@ -5,6 +5,7 @@ import { noise } from 'perlin-noise';
 import { createPatch, generatePatch } from './patchUtils';
 import * as BufferGeometryUtils from 'three/examples/jsm/utils/BufferGeometryUtils'
 import { ConvexGeometry } from 'three/examples/jsm/geometries/ConvexGeometry.js';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 export const deepBrownShades = [
   "#4a2e28", // Dark Redwood
@@ -316,10 +317,64 @@ function createBoat() {
   return hull;
 }
 
+// Create a loader for GLTF models and track loaded models
+const gltfLoader = new GLTFLoader();
+const treeModels = [];
+let modelsLoaded = false;
+let modelLoadAttempted = false;
+
+// Function to load tree models
+function loadTreeModels(callback) {
+  if (modelLoadAttempted) {
+    return;
+  }
+  
+  modelLoadAttempted = true;
+  const treeModelPaths = [
+    'models/tree1.glb',
+    'models/tree2.glb',
+    'models/pine_tree.glb'
+  ];
+  
+  let loadedCount = 0;
+  let totalToLoad = treeModelPaths.length;
+  
+  treeModelPaths.forEach(path => {
+    gltfLoader.load(
+      path,
+      (gltf) => {
+        console.log(`Loaded tree model: ${path}`);
+        treeModels.push(gltf.scene);
+        loadedCount++;
+        
+        if (loadedCount === totalToLoad) {
+          modelsLoaded = true;
+          console.log('All tree models loaded successfully');
+          if (callback) callback();
+        }
+      },
+      (xhr) => {
+        console.log(`${path}: ${(xhr.loaded / xhr.total * 100).toFixed(2)}% loaded`);
+      },
+      (error) => {
+        console.error(`Error loading model ${path}:`, error);
+        totalToLoad--; // Decrease expected count if loading fails
+        if (loadedCount === totalToLoad && totalToLoad > 0) {
+          modelsLoaded = true;
+          if (callback) callback();
+        }
+      }
+    );
+  });
+}
+
 export const worldX = 100000, worldY = 100000;
 export const getRandomColorBallon = () => colors[Math.floor(Math.random() * colors.length)];
 // Add random objects
 export const addRandomObjects = (scene, isOcean = false) => {
+  // Start loading tree models early
+  loadTreeModels();
+  
   const geometry = new THREE.SphereGeometry(200, 32, 32); // Balloon shape
   const OBJECTS_TO_RENDER = 5000;
 
@@ -381,33 +436,61 @@ export const addRandomObjects = (scene, isOcean = false) => {
   // Add trees
   for (let i = 0; i < OBJECTS_TO_RENDER*0.7; i++) { // Increased number of objects
     if(DISABLE_TREES) i = OBJECTS_TO_RENDER*0.7;
-    // Create tree geometry with random height
+    
+    // Create tree with random height
     const treeHeight = 1000 + Math.random() * 3000;
-    const treeGeometry = new THREE.ConeGeometry(200, treeHeight, 200); // Reduced size
     const {x,z} = getBiasedCoordinate(worldX, worldY);
-    const treeMaterial = new THREE.MeshStandardMaterial({ color: deepBrownShades[Math.floor(Math.random() * deepBrownShades.length)] });
-    const tree = new THREE.Mesh(treeGeometry, treeMaterial);
-
-    // Prevent trees from being generated near the user's spawn position (within a radius of 1000 units)
+    
+    // Prevent trees from being generated near the user's spawn position
     const distanceFromOrigin = Math.sqrt(x * x + z * z);
     if (distanceFromOrigin < 1000) {
       continue;
     }
 
-    tree.position.set(x, treeHeight / 2, z);
+    // Use GLTF model if available, otherwise create geometric tree
+    if (modelsLoaded && treeModels.length > 0) {
+      // Create tree from model
+      const randomIndex = Math.floor(Math.random() * treeModels.length);
+      const treeModel = treeModels[randomIndex].clone();
+      
+      // Scale based on desired tree height
+      const scale = treeHeight / 1000; // Adjust scaling factor based on model size
+      treeModel.scale.set(scale, scale, scale);
+      
+      // Position tree
+      treeModel.position.set(x, 0, z);
+      
+      // Add random rotation for variety
+      treeModel.rotation.y = Math.random() * Math.PI * 2;
+      
+      trees.push(treeModel);
+      treeSpeeds.push((Math.random() * 0.02) + 0.01);
+      scene.add(treeModel);
+    } 
+    else {
+      // Fallback to geometric tree
+      const treeGeometry = new THREE.ConeGeometry(200, treeHeight, 200);
+      const treeMaterial = new THREE.MeshStandardMaterial({ 
+        color: deepBrownShades[Math.floor(Math.random() * deepBrownShades.length)] 
+      });
+      
+      const tree = new THREE.Mesh(treeGeometry, treeMaterial);
+      tree.position.set(x, treeHeight / 2, z);
 
-    // Consolidate crown addition: crown radius proportional to tree height (e.g. treeHeight/10)
-    const crownRadius = treeHeight / 5;
-    const crownGeometry = new THREE.SphereGeometry(crownRadius, 32, 16);
-    const crownMaterial = new THREE.MeshStandardMaterial({ color: 0x228B22 });
-    const crown = new THREE.Mesh(crownGeometry, crownMaterial);
-    // Position crown at the top of the tree
-    crown.position.set(0, treeHeight / 2, 0);
-    tree.add(crown);
+      // Consolidate crown addition: crown radius proportional to tree height
+      const crownRadius = treeHeight / 5;
+      const crownGeometry = new THREE.SphereGeometry(crownRadius, 32, 16);
+      const crownMaterial = new THREE.MeshStandardMaterial({ color: 0x228B22 });
+      const crown = new THREE.Mesh(crownGeometry, crownMaterial);
+      
+      // Position crown at the top of the tree
+      crown.position.set(0, treeHeight / 2, 0);
+      tree.add(crown);
 
-    trees.push(tree);
-    treeSpeeds.push((Math.random() * 0.02) + 0.01); // Random speed
-    scene.add(tree);
+      trees.push(tree);
+      treeSpeeds.push((Math.random() * 0.02) + 0.01); // Random speed
+      scene.add(tree);
+    }
   }
 
   // Add squares
@@ -511,15 +594,47 @@ export const addRandomObjects = (scene, isOcean = false) => {
   forestPositions.forEach(pos => {
     const clusterBaseColor = getRandomForestColor(); // Different base color for each cluster
     for (let i = 0; i < 200; i++) {
-      const treeColor = varyColor(clusterBaseColor); // Vary the cluster color
-      const tree = new THREE.Mesh(forestTreeGeometry, new THREE.MeshStandardMaterial({ color: treeColor }));
-      tree.position.set(
-        pos.x + (Math.random() * 2000 - 1000), // Cluster around the position
-        10,
-        pos.z + (Math.random() * 2000 - 1000)
-      );
-      trees.push(tree);
-      scene.add(tree);
+      if (modelsLoaded && treeModels.length > 0) {
+        // Use GLTF model for forest trees
+        const randomIndex = Math.floor(Math.random() * treeModels.length);
+        const treeModel = treeModels[randomIndex].clone();
+        
+        // Scale down for forest trees
+        const scale = 0.5 + Math.random() * 0.5; // Smaller scale for forest
+        treeModel.scale.set(scale, scale, scale);
+        
+        // Position within forest cluster
+        treeModel.position.set(
+          pos.x + (Math.random() * 2000 - 1000),
+          0, // At ground level
+          pos.z + (Math.random() * 2000 - 1000)
+        );
+        
+        // Random rotation
+        treeModel.rotation.y = Math.random() * Math.PI * 2;
+        
+        trees.push(treeModel);
+        treeSpeeds.push((Math.random() * 0.01)); // Slower speed for forest trees
+        scene.add(treeModel);
+      } else {
+        // Fallback to geometric tree
+        const treeColor = varyColor(clusterBaseColor);
+        const forestTreeGeometry = new THREE.ConeGeometry(50, 250, 32);
+        const tree = new THREE.Mesh(
+          forestTreeGeometry, 
+          new THREE.MeshStandardMaterial({ color: treeColor })
+        );
+        
+        tree.position.set(
+          pos.x + (Math.random() * 2000 - 1000),
+          10,
+          pos.z + (Math.random() * 2000 - 1000)
+        );
+        
+        trees.push(tree);
+        treeSpeeds.push((Math.random() * 0.01));
+        scene.add(tree);
+      }
     }
   });
 
@@ -654,20 +769,27 @@ export const rearrangeBalloons = (scene) => {
 // Revised function to rearrange trees with debugging and fallback
 export const rearrangeTrees = (scene, isMon=false) => {
   trees.forEach((tree, index) => {
-    let height = tree.geometry.parameters?.height;
-    if (!height) {
-      console.warn(`Tree at index ${index} has no height parameter; using 1000 as fallback.`);
-      height = 1000;
-    }
-    if (height > 10000 && isMon) { // Assume mountain
-      const newX = Math.random() * worldX - worldX / 2;
-      const newZ = Math.random() * worldY - worldY / 2;
-      console.log(`Rearranging mountain tree at index ${index} to (${newX.toFixed(2)}, ${height/2}, ${newZ.toFixed(2)})`);
-      tree.position.set(newX, height / 2, newZ);
-    } else if(!isMon) {
-      const { x, z } = getBiasedCoordinate(worldX, worldY);
-      console.log(`Rearranging normal tree at index ${index} to (${x.toFixed(2)}, ${height/2}, ${z.toFixed(2)})`);
-      tree.position.set(x, height / 2, z);
+    // Check if it's a GLTF model (Group) or a regular Mesh
+    if (tree.isGroup) {
+      if (!isMon) { // Only move regular trees, not mountains
+        const { x, z } = getBiasedCoordinate(worldX, worldY);
+        tree.position.set(x, 0, z); // GLTF models position at ground level
+      }
+    } else {
+      // Use original logic for geometric trees
+      let height = tree.geometry?.parameters?.height;
+      if (!height) {
+        height = 1000; // fallback
+      }
+      
+      if (height > 10000 && isMon) { // Assume mountain
+        const newX = Math.random() * worldX - worldX / 2;
+        const newZ = Math.random() * worldY - worldY / 2;
+        tree.position.set(newX, height / 2, newZ);
+      } else if (!isMon) {
+        const { x, z } = getBiasedCoordinate(worldX, worldY);
+        tree.position.set(x, height / 2, z);
+      }
     }
   });
 };
