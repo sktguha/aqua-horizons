@@ -2,7 +2,7 @@
 import './style.css';
 import * as THREE from 'three';
 import Stats from 'stats.js';
-import { Water } from 'three/examples/jsm/objects/Water';
+// import { Water } from 'three/examples/jsm/objects/Water';
 import { FirstPersonControls } from 'three/examples/jsm/controls/FirstPersonControls';
 import { addRandomObjects } from './addRandomObjects';
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
@@ -170,12 +170,25 @@ function initOceanScene(){
   // texture loader
   const textureLoader = new THREE.TextureLoader();
 
-  // water geometry and material
-  const waterGeometry = new THREE.PlaneGeometry(worldX, worldY);
-  const water = new Water(waterGeometry, {
-    textureWidth: 512,
-    textureHeight: 512,
-    waterNormals: textureLoader.load('textures/waternormals.jpg', (texture) => {
+  // Create uniform for wave animation
+  const waveUniforms = {
+    time: { value: 0.0 },
+    grid: { value: 1000 } // Adjust to your desired water plane size
+  };
+
+  // Remove or comment out the old Water geometry code:
+  // const waterGeometry = new THREE.PlaneGeometry(worldX, worldY);
+  // const water = new Water(...);
+  // scene.add(water);
+
+  // Instead, create a custom wave plane:
+  const segNum = 15;
+  const waveGeometry = new THREE.PlaneGeometry(worldX, worldY, segNum, segNum);
+  waveGeometry.rotateX(-Math.PI * 0.5);
+
+  const waveMaterial = new THREE.MeshStandardMaterial({
+    // Optionally set normalMap, etc.
+    normalMap: textureLoader.load('textures/waternormals.jpg', (texture) => {
       texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
       const url2= getParams().url;
       let url = url2 || 'https://cdn.jsdelivr.net/gh/Sean-Bradley/React-Three-Fiber-Boilerplate@obstacleCourse/public/img/rustig_koppie_puresky_1k.hdr'
@@ -188,13 +201,50 @@ function initOceanScene(){
         scene.environment = texture;
       });
     }),
-    sunDirection: new THREE.Vector3(1, 0.1, 0),
-    sunColor: 0xffffff, // Brighter sun color
-    waterColor: 0xADD8E6, // Light blue water color
-    distortionScale: 15, // Increased from 3.7 for aggressive, choppy waves
+    metalness: 0.5,
+    roughness: 0.6,
+    onBeforeCompile: (shader) => {
+      shader.uniforms.time = waveUniforms.time;
+      shader.uniforms.grid = waveUniforms.grid;
+      shader.vertexShader = `
+        uniform float time;
+        uniform float grid;
+        varying float vHeight;
+
+        vec3 moveWave(vec3 p){
+          float ang;
+          float kzx = 360.0 / grid;
+          // ...existing wave formula logic...
+          return p;
+        }
+
+        ${shader.vertexShader}
+      `.replace(
+        '#include <beginnormal_vertex>',
+        '#include <beginnormal_vertex>\n' +
+        '  vec3 p = position;\n' +
+        '  vec3 pos = moveWave(p);\n' +
+        '  vNormal = normal;\n'
+      ).replace(
+        '#include <begin_vertex>',
+        '#include <begin_vertex>\n' +
+        '  transformed.y = pos.y;\n' +
+        '  vHeight = pos.y;\n'
+      );
+      shader.fragmentShader = `
+        varying float vHeight;
+        ${shader.fragmentShader}
+      `.replace(
+        '#include <color_fragment>',
+        '#include <color_fragment>\n' +
+        '  // Example color mix\n' +
+        '  diffuseColor.rgb = mix(vec3(0.03125,0.0625,0.5), vec3(0.1,0.2,0.6), smoothstep(0.0,6.0,vHeight));\n'
+      );
+    }
   });
-  water.rotation.x = -Math.PI / 2;
-  scene.add(water);
+
+  const waveMesh = new THREE.Mesh(waveGeometry, waveMaterial);
+  scene.add(waveMesh);
 
   // Add a gigantic tree
   const trunkHeight = 1000;
@@ -315,7 +365,7 @@ function initOceanScene(){
     }
 
     fpControls.update(1);
-    water.material.uniforms['time'].value += 1.0 / 60.0;
+    waveUniforms.time.value += 0.02; // Adjust speed as needed
 
     // camera rotation logic
     if (keyState['ArrowLeft'] || keyState['A'] || keyState['q']) {
