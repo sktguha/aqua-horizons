@@ -590,7 +590,7 @@ for (let i = 0; i < 8; i++) {
   addFishesSub(6);
   addFishesSub(7);
   window._scene = scene;
-  return {balls, trees, treeSpeeds, ballSpeeds, fishes};
+  return {balls, trees, treeSpeeds, ballSpeeds, fishes, rearrangeAll};
 };
 
 // Add function to rearrange balloons
@@ -645,6 +645,13 @@ export const rearrangeFishes = (scene) => {
 //   rearrangeFishes(window._scene);
 // }, 30*60);
 
+function rearrangeAll(){
+  rearrangeBalloons(window._scene);
+  rearrangeTrees(window._scene, true);
+  rearrangeTrees(window._scene);
+  rearrangeFishes(window._scene);
+}
+window.rearrangeAll = rearrangeAll;
 // Update key listener to call both functions when 'u' key is pressed
 window.addEventListener('keydown', (event) => {
   if (event.key.toLowerCase() === 'u' && window._scene) {
@@ -660,9 +667,6 @@ window.addEventListener('keydown', (event) => {
     rearrangeFishes(window._scene);
   }
   if (event.key.toLowerCase() === '0' && window._scene) {
-    rearrangeBalloons(window._scene);
-    rearrangeTrees(window._scene, true);
-    rearrangeTrees(window._scene);
-    rearrangeFishes(window._scene);
+    rearrangeAll();
   }
 });
