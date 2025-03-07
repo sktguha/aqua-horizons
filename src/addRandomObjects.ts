@@ -4,6 +4,7 @@ import { noise } from 'perlin-noise';
 // import { colors, worldX, worldY, balls, speedRanges, ballSpeeds, scene, trees, treeSpeeds, squares, rectangles } from './main';
 import { createPatch, generatePatch } from './patchUtils';
 import * as BufferGeometryUtils from 'three/examples/jsm/utils/BufferGeometryUtils'
+import { ConvexGeometry } from 'three/examples/jsm/geometries/ConvexGeometry.js';
 
 export const deepBrownShades = [
   "#4a2e28", // Dark Redwood
@@ -280,6 +281,56 @@ export function createFish() {
   }
 }
 
+function createBoat() {
+  const boat = new THREE.Group();
+
+  // **Pointy Hull using ConvexGeometry**
+  const hullPoints = [
+    new THREE.Vector3(-20, 0, -10), // Rear left
+    new THREE.Vector3(20, 0, -10),  // Rear right
+    new THREE.Vector3(0, 0, 10),    // Pointy front
+    new THREE.Vector3(-15, 5, -5),  // Upper left
+    new THREE.Vector3(15, 5, -5),   // Upper right
+    new THREE.Vector3(0, 8, 8)      // Top center for smooth curve
+  ];
+
+  const hullGeometry = new ConvexGeometry(hullPoints);
+  const hullMaterial = new THREE.MeshStandardMaterial({
+    color: 0x8b4513,
+    flatShading: true,
+  });
+  const hull = new THREE.Mesh(hullGeometry, hullMaterial);
+  hull.position.y = 5;
+  boat.add(hull);
+
+  // **Deck**
+  const deckGeometry = new THREE.BoxGeometry(35, 2, 15);
+  const deckMaterial = new THREE.MeshStandardMaterial({ color: 0xcd853f });
+  const deck = new THREE.Mesh(deckGeometry, deckMaterial);
+  deck.position.y = 10;
+  boat.add(deck);
+
+  // **Mast**
+  const mastGeometry = new THREE.CylinderGeometry(1, 1, 30, 16);
+  const mastMaterial = new THREE.MeshStandardMaterial({ color: 0x654321 });
+  const mast = new THREE.Mesh(mastGeometry, mastMaterial);
+  mast.position.set(0, 25, 0);
+  boat.add(mast);
+
+  // **Sail**
+  const sailGeometry = new THREE.PlaneGeometry(15, 20);
+  const sailMaterial = new THREE.MeshStandardMaterial({
+    color: 0xffffff,
+    side: THREE.DoubleSide,
+  });
+  const sail = new THREE.Mesh(sailGeometry, sailMaterial);
+  sail.position.set(7, 25, 0);
+  sail.rotation.y = Math.PI / 6;
+  boat.add(sail);
+
+  return boat;
+}
+
 export const worldX = 100000, worldY = 100000;
 export const getRandomColorBallon = () => colors[Math.floor(Math.random() * colors.length)];
 // Add random objects
@@ -514,7 +565,25 @@ export const addRandomObjects = (scene, isOcean = false) => {
 const mountains = [];
 const minSpacing = 10000; // Minimum distance between mountains
 
-
+function prepareFishOrBoat(fish){
+  fish.scale.set(Math.random() * 80, Math.random() * 80, Math.random() * 80);
+  fish.position.set(
+    Math.random() * worldX - worldX / 2,
+    14,
+    Math.random() * worldY - worldY / 2
+  );
+  // Assign random velocity mainly in X and Z, with slightly randomized magnitude
+  fish.userData.velocity = new THREE.Vector3(
+    (Math.random()*5 + 2) * (Math.random() < 0.5 ? -1 : 1),
+    0,
+    (Math.random()*2 - 1) * 0.5  // small variation in Z
+  );
+  // Store the initial Y and a random phase for oscillation
+  fish.userData.initialY = fish.position.y;
+  fish.userData.oscPhase = Math.random() * Math.PI * 2;
+  fishes.push(fish);
+  scene.add(fish);
+}
 for (let i = 0; i < 8; i++) {
     const mountainHeight = 15000 + Math.random() * 3000;
     const mountainRadius = mountainHeight * 0.9;
@@ -561,25 +630,10 @@ for (let i = 0; i < 8; i++) {
     const randomFishColor = fishColors[Math.floor(Math.random() * fishColors.length)];
     fishMaterial = new THREE.MeshStandardMaterial({ color: randomFishColor, side: THREE.DoubleSide });
   }
+  
   for (let i = 0; i < NUM_FISH/7; i++) {
     const fish = new THREE.Mesh(fishGeometry, fishMaterial);
-    fish.scale.set(Math.random() * 80, Math.random() * 80, Math.random() * 80);
-    fish.position.set(
-      Math.random() * worldX - worldX / 2,
-      14,
-      Math.random() * worldY - worldY / 2
-    );
-    // Assign random velocity mainly in X and Z, with slightly randomized magnitude
-    fish.userData.velocity = new THREE.Vector3(
-      (Math.random()*5 + 2) * (Math.random() < 0.5 ? -1 : 1),
-      0,
-      (Math.random()*2 - 1) * 0.5  // small variation in Z
-    );
-    // Store the initial Y and a random phase for oscillation
-    fish.userData.initialY = fish.position.y;
-    fish.userData.oscPhase = Math.random() * Math.PI * 2;
-    fishes.push(fish);
-    scene.add(fish);
+    prepareFishOrBoat(fish);
   }
 }
   addFishesSub(1);
@@ -589,6 +643,12 @@ for (let i = 0; i < 8; i++) {
   addFishesSub(5);
   addFishesSub(6);
   addFishesSub(7);
+
+  for (let i = 0; i < 5; i++) {
+    const boat = createBoat();
+    prepareFishOrBoat(boat);
+  }
+
   window._scene = scene;
   return {balls, trees, treeSpeeds, ballSpeeds, fishes, rearrangeAll};
 };
