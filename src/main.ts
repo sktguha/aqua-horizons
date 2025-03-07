@@ -139,7 +139,7 @@ function initOceanScene(){
     0.1, // Near clipping plane
     10000 // Far clipping plane (view distance)
   );
-  camera.position.set(0, 60, 60);
+  camera.position.set(0, 100, 60); // Raise camera position to better see waves
   scene.add(camera);
   const cameraRotationSpeed = 0.005;
   // first person controls
@@ -476,9 +476,9 @@ function initOceanScene(){
     });
     if (LodFlg > 0) {
       etime = clock.getElapsedTime();
-      gu.time.value = etime/20; // Slightly faster wave movement (was /30)
-      WtrNrm.offset.x -= .00015; // Slightly faster texture movement
-      WtrNrm.offset.y += .00005;
+      gu.time.value = etime/15; // Even faster wave movement 
+      WtrNrm.offset.x -= .0002; // Faster texture movement
+      WtrNrm.offset.y += .0001;
     }
     // controls.update();
        
@@ -525,91 +525,115 @@ function loadAll() {
 function initAll() {
   console.log('init all came');
 	let n, zx;
-/* = Main Program =============================================*/
-	// Planes with Extended Material ----------------------------
-	geoWav = new THREE.PlaneGeometry(GrdSiz,GrdSiz,segNum,segNum);
-	geoWav.rotateX(-Math.PI * 0.5);
-	matWav = new THREE.MeshStandardMaterial({
-		normalMap: WtrNrm,
-		metalness: 0.6, // Increased metalness for better reflections
-		roughness: 0.4, // Reduced roughness for shinier appearance
-		transparent: true,
-		opacity: 0.8, // Further increased opacity for better visibility
-		color: new THREE.Color(0x4682B4), // Steel blue color for better visibility
-		onBeforeCompile: shader => {
-			shader.uniforms.time = gu.time;
-			shader.uniforms.grid = gu.grid;
-			shader.vertexShader = `
-				uniform float time;
-				uniform float grid;  
-				varying float vHeight;
-				vec3 moveWave(vec3 p){
-					// Angle = distance offset + degree offset
-					vec3 retVal = p;
-					float ang;
-					float kzx = 360.0/grid;
-					// Wave1 (135 degrees)
-					ang = 80.0*time + -1.0*p.x*kzx + -2.0*p.z*kzx;
-					if (ang>360.0) ang = ang-360.0;
-					ang = ang*3.14159265/180.0;
-					retVal.y = 30.0*sin(ang);          // Increased wave height significantly
-					// Wave2 (090)
-					ang = 40.0*time + -3.0*p.x*kzx;
-					if (ang>360.0) ang = ang-360.0;
-					ang = ang*3.14159265/180.0;
-					retVal.y = retVal.y + 15.0*sin(ang);         // Increased wave height
-					// Wave3 (180 degrees)
-					ang = 30.0*time - 3.0*p.z*kzx;
-					if (ang>360.0) ang = ang-360.0;
-					ang = ang*3.14159265/180.0;
-					retVal.y = retVal.y + 18.0*sin(ang);         // Increased wave height
-					// Wave4 (225 degrees)
-					ang = 80.0*time + 4.0*p.x*kzx + 8.0*p.z*kzx;
-					if (ang>360.0) ang = ang-360.0;
-					ang = ang*3.14159265/180.0;
-					retVal.y = retVal.y + 8.0*sin(ang);         // Increased wave height
-					// Wave5 (270 degrees)
-					ang = 80.0*time + 8.0*p.x*kzx;
-					if (ang>360.0) ang = ang-360.0;
-					ang = ang*3.14159265/180.0;
-					retVal.y = retVal.y + 6.0*sin(ang);         // Increased wave height
-					//
-					return retVal;
-				}					
-				${shader.vertexShader}
-			`.replace(
-				`#include <beginnormal_vertex>`,
-				`#include <beginnormal_vertex>
-					vec3 p = position;
-       				vec2 move = vec2(1, 0);
-					vec3 pos = moveWave(p);
-					vec3 pos2 = moveWave(p + move.xyy);
-					vec3 pos3 = moveWave(p + move.yyx);
-					vNormal = normalize(cross(normalize(pos2-pos), normalize(pos3-pos)));
-				`
-			).replace(
-				`#include <begin_vertex>`,
-				`#include <begin_vertex>
-					transformed.y = pos.y;
-					vHeight = pos.y;
-				`
-			);
-			shader.fragmentShader = `
-				varying float vHeight;
-				${shader.fragmentShader}
-			`.replace(
-				`#include <color_fragment>`,
-				`#include <color_fragment>
-					// Enhanced blue colors with better contrast
-          diffuseColor.rgb = mix(vec3(0.1, 0.4, 0.8), vec3(0.5, 0.7, 0.95), smoothstep(0.0, 10.0, vHeight));
-          if (vHeight > 14.0) {
-            diffuseColor.rgb = vec3(1.0, 1.0, 1.0);  // Brighter foam at wave peaks
+  
+  // Increase the segment count for better wave definition
+  segNum = 25; // Increased from 15 for more detailed waves
+  
+  // Planes with Extended Material ----------------------------
+  geoWav = new THREE.PlaneGeometry(GrdSiz, GrdSiz, segNum, segNum);
+  geoWav.rotateX(-Math.PI * 0.5);
+  matWav = new THREE.MeshStandardMaterial({
+    normalMap: WtrNrm,
+    metalness: 0.7, // Further increased metalness
+    roughness: 0.3, // Further reduced roughness
+    transparent: true,
+    opacity: 0.9, // Almost fully opaque
+    color: new THREE.Color(0x0066FF), // More vibrant blue
+    onBeforeCompile: shader => {
+      shader.uniforms.time = gu.time;
+      shader.uniforms.grid = gu.grid;
+      shader.vertexShader = `
+        uniform float time;
+        uniform float grid;  
+        varying float vHeight;
+        vec3 moveWave(vec3 p){
+          // Angle = distance offset + degree offset
+          vec3 retVal = p;
+          float ang;
+          float kzx = 360.0/grid;
+          
+          // Scale factor to increase all wave heights dramatically
+          float scaleFactor = 10.0; // Massive scaling factor
+          
+          // Wave1 (135 degrees) - Primary wave with extreme height
+          ang = 80.0*time + -1.0*p.x*kzx + -2.0*p.z*kzx;
+          if (ang>360.0) ang = ang-360.0;
+          ang = ang*3.14159265/180.0;
+          retVal.y = scaleFactor * 10.0 * sin(ang); // 10x original height * scale factor
+          
+          // Wave2 (090)
+          ang = 40.0*time + -3.0*p.x*kzx;
+          if (ang>360.0) ang = ang-360.0;
+          ang = ang*3.14159265/180.0;
+          retVal.y = retVal.y + scaleFactor * 5.0 * sin(ang); // 5x original height * scale factor
+          
+          // Wave3 (180 degrees)
+          ang = 30.0*time - 3.0*p.z*kzx;
+          if (ang>360.0) ang = ang-360.0;
+          ang = ang*3.14159265/180.0;
+          retVal.y = retVal.y + scaleFactor * 6.0 * sin(ang); // 6x original height * scale factor
+          
+          // Wave4 (225 degrees)
+          ang = 80.0*time + 4.0*p.x*kzx + 8.0*p.z*kzx;
+          if (ang>360.0) ang = ang-360.0;
+          ang = ang*3.14159265/180.0;
+          retVal.y = retVal.y + scaleFactor * 3.0 * sin(ang); // 3x original height * scale factor
+          
+          // Wave5 (270 degrees)
+          ang = 80.0*time + 8.0*p.x*kzx;
+          if (ang>360.0) ang = ang-360.0;
+          ang = ang*3.14159265/180.0;
+          retVal.y = retVal.y + scaleFactor * 2.0 * sin(ang); // 2x original height * scale factor
+          
+          return retVal;
+        }					
+        ${shader.vertexShader}
+      `.replace(
+        `#include <beginnormal_vertex>`,
+        `#include <beginnormal_vertex>
+          vec3 p = position;
+          vec2 move = vec2(1, 0);
+          vec3 pos = moveWave(p);
+          vec3 pos2 = moveWave(p + move.xyy);
+          vec3 pos3 = moveWave(p + move.yyx);
+          vNormal = normalize(cross(normalize(pos2-pos), normalize(pos3-pos)));
+        `
+      ).replace(
+        `#include <begin_vertex>`,
+        `#include <begin_vertex>
+          transformed.y = pos.y;
+          vHeight = pos.y;
+        `
+      );
+      shader.fragmentShader = `
+        varying float vHeight;
+        ${shader.fragmentShader}
+      `.replace(
+        `#include <color_fragment>`,
+        `#include <color_fragment>
+          // Highly contrasting colors for better visibility
+          float normalizedHeight = abs(vHeight) / 100.0; // Scale height for color mapping
+          // Use extreme color contrast with bright blues and whites
+          diffuseColor.rgb = mix(
+            vec3(0.0, 0.2, 1.0), // Deep vibrant blue for valleys
+            vec3(0.6, 0.8, 1.0), // Light blue for mid-heights
+            smoothstep(0.0, 0.5, normalizedHeight)
+          );
+          
+          // Add bright white foam to all wave peaks
+          if (normalizedHeight > 0.5) {
+            diffuseColor.rgb = mix(
+              diffuseColor.rgb,
+              vec3(1.0, 1.0, 1.0), // Pure white for foam
+              smoothstep(0.5, 0.7, normalizedHeight)
+            );
           }
-				`
-			);
-		}
-	});
-	// Compute Starting Z and X Values
+        `
+      );
+    }
+  });
+
+  // Compute Starting Z and X Values
 	zx = -0.5*(GrdRCs)*GrdSiz+0.5*GrdSiz;
 	for (let i = 0; i < GrdRCs; i++) {
 		WavMZV[i] = zx;
