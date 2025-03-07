@@ -616,6 +616,7 @@ function initAll() {
 	for (let z = 0; z < GrdRCs; z++) {		// Row X2
 		for (let x = 0; x < GrdRCs; x++) {	// Column X2
 			GrdPtr[n] = new THREE.Mesh(geoWav,matWav);
+      console.log('scene add')
 			scene.add(GrdPtr[n]);
 			GrdPtr[n].position.set(WavMXV[x],0,-WavMZV[z]);
 			n++;
