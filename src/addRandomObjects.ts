@@ -337,19 +337,19 @@ export const rearrangeBalloons = (scene) => {
 };
 
 // Revised function to rearrange trees with debugging and fallback
-export const rearrangeTrees = (scene) => {
+export const rearrangeTrees = (scene, isMon=false) => {
   trees.forEach((tree, index) => {
     let height = tree.geometry.parameters?.height;
     if (!height) {
       console.warn(`Tree at index ${index} has no height parameter; using 1000 as fallback.`);
       height = 1000;
     }
-    if (height > 10000) { // Assume mountain
+    if (height > 10000 && isMon) { // Assume mountain
       const newX = Math.random() * worldX - worldX / 2;
       const newZ = Math.random() * worldY - worldY / 2;
       console.log(`Rearranging mountain tree at index ${index} to (${newX.toFixed(2)}, ${height/2}, ${newZ.toFixed(2)})`);
       tree.position.set(newX, height / 2, newZ);
-    } else {
+    } else if(!isMon) {
       const { x, z } = getBiasedCoordinate(worldX, worldY);
       console.log(`Rearranging normal tree at index ${index} to (${x.toFixed(2)}, ${height/2}, ${z.toFixed(2)})`);
       tree.position.set(x, height / 2, z);
@@ -370,5 +370,8 @@ window.addEventListener('keydown', (event) => {
   }
   if (event.key.toLowerCase() === 'i' && window._scene) {
     rearrangeTrees(window._scene);
+  }
+  if (event.key.toLowerCase() === 'm' && window._scene) {
+    rearrangeTrees(window._scene, true);
   }
 });
