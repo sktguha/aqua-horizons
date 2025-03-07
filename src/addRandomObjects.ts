@@ -548,7 +548,7 @@ for (let i = 0; i < 8; i++) {
     scene.add(mountain);
 }
 
-  const NUM_FISH = 10;
+  const NUM_FISH = 100;
   for (let i = 0; i < NUM_FISH; i++) {
     // createFish() returns a BufferGeometry for the fish
     const fishGeometry = createFish();
