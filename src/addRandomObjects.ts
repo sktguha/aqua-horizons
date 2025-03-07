@@ -569,7 +569,7 @@ function prepareFishOrBoat(fish, isBoat = false){
   fish.scale.set(Math.random() * 80, Math.random() * 80, Math.random() * 80);
   fish.position.set(
     Math.random() * worldX - worldX / 2,
-    isBoat ? -18: 14,
+    isBoat ? -38: 14,
     Math.random() * worldY - worldY / 2
   );
   if(isBoat){
