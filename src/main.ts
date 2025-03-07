@@ -1,5 +1,14 @@
-import * as THREE from "three";
+// @ts-nocheck
 import {OrbitControls} from "three/addons/controls/OrbitControls.js";
+import './style.css';
+import * as THREE from 'three';
+import Stats from 'stats.js';
+import { Water } from 'three/examples/jsm/objects/Water';
+import { FirstPersonControls } from 'three/examples/jsm/controls/FirstPersonControls';
+import { addRandomObjects } from './addRandomObjects';
+import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
+import { initDesertScene } from './main2Desert';
+import { getParams } from './getParams';
 
 /* = Variables ================================================*/
 // Common
@@ -62,6 +71,51 @@ let txtrLoader = new THREE.TextureLoader(loadingManager);
 /* = Main Program =============================================*/
 	loadAll();
 	rendAll();
+  export function isMobile() {
+    // return 1;
+    return /Mobi|Android/i.test(navigator.userAgent);
+  }
+  
+  export const IS_NIGHT = true;
+  
+  export function createControlButton(id, text, onMouseDown, onMouseUp) {
+    const button = document.createElement('button');
+    button.id = id;
+    button.innerText = text;
+    button.style.position = 'absolute';
+    button.style.bottom = '10px';
+    button.style.left = id === 'left-arrow' ? '10px' : '50px';
+    button.style.zIndex = '1000';
+    button.style.zoom = 2.6;
+    button.style.opacity = 0.2;
+    // button.style.pointerEvents = 'none';
+    button.addEventListener('mousedown', onMouseDown);
+    button.addEventListener('mouseup', onMouseUp);
+    button.addEventListener('touchstart', onMouseDown);
+    button.addEventListener('touchend', onMouseUp);
+    document.body.appendChild(button);
+  }
+  
+  export function createStartAffor(){
+    const button = document.createElement('button');
+    // button.id = id;
+    button.innerHTML = "Start/<br/>Stop";
+    button.style.position = 'absolute';
+    button.style.bottom = '10px';
+    button.style.right = '10px';
+    button.style.zIndex = '1000';
+    button.style.zoom = 2.6;
+    button.style.opacity = 0.2;
+    button.style.width = '50px'; // Set the width
+    button.style.height = '50px'; // Set the height
+    button.style.borderRadius = '50%'; // Make it a circle
+    button.style.pointerEvents = 'none';
+    // button.addEventListener('mousedown', onMouseDown);
+    // button.addEventListener('mouseup', onMouseUp);
+    document.body.appendChild(button);
+  }
+  
+
 
 /* 0 Load All =================================================*/
 function loadAll() {	
@@ -201,4 +255,22 @@ function onWindowResize() {
 	camera.aspect = window.innerWidth / window.innerHeight;
 	camera.updateProjectionMatrix();
 	renderer.setSize(window.innerWidth, window.innerHeight);
+}
+
+function getRandomForestColor() {
+  return Math.floor(Math.random() * 0xffffff); // Random 24-bit color
+}
+
+function varyColor(baseColor: number) {
+  const variation = 100;
+  const r = Math.min(255, Math.max(0, ((baseColor >> 16) & 0xff) + (Math.random() * (2 * variation) - variation)));
+  const g = Math.min(255, Math.max(0, ((baseColor >> 8) & 0xff) + (Math.random() * (2 * variation) - variation)));
+  const b = Math.min(255, Math.max(0, (baseColor & 0xff) + (Math.random() * (2 * variation) - variation)));
+  return (r << 16) + (g << 8) + b;
+}
+
+if(location.href.indexOf('desert') > -1){
+  initDesertScene();
+} else {
+  initOceanScene();
 }
