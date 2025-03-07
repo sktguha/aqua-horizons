@@ -103,27 +103,27 @@ function initAll() {
 					float ang;
 					float kzx = 360.0/grid;
 					// Wave1 (135 degrees)
-					ang = 50.0*time + -1.0*p.x*kzx + -2.0*p.z*kzx;
+					ang = 80.0*time + -1.0*p.x*kzx + -2.0*p.z*kzx;
 					if (ang>360.0) ang = ang-360.0;
 					ang = ang*3.14159265/180.0;
 					retVal.y = 9.0*sin(ang);          // Wave1
 					// Wave2 (090)
-					ang = 25.0*time + -3.0*p.x*kzx;
+					ang = 40.0*time + -3.0*p.x*kzx;
 					if (ang>360.0) ang = ang-360.0;
 					ang = ang*3.14159265/180.0;
 					retVal.y = retVal.y + 5.0*sin(ang);         // Wave2
 					// Wave3 (180 degrees)
-					ang = 15.0*time - 3.0*p.z*kzx;
+					ang = 30.0*time - 3.0*p.z*kzx;
 					if (ang>360.0) ang = ang-360.0;
 					ang = ang*3.14159265/180.0;
 					retVal.y = retVal.y + 5.0*sin(ang);         // Wave3
 					// Wave4 (225 degrees)
-					ang = 50.0*time + 4.0*p.x*kzx + 8.0*p.z*kzx;
+					ang = 80.0*time + 4.0*p.x*kzx + 8.0*p.z*kzx;
 					if (ang>360.0) ang = ang-360.0;
 					ang = ang*3.14159265/180.0;
 					retVal.y = retVal.y + 1.0*sin(ang);         // Wave4
 					// Wave5 (270 degrees)
-					ang = 50.0*time + 8.0*p.x*kzx;
+					ang = 80.0*time + 8.0*p.x*kzx;
 					if (ang>360.0) ang = ang-360.0;
 					ang = ang*3.14159265/180.0;
 					retVal.y = retVal.y + 1.0*sin(ang);         // Wave5
