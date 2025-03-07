@@ -95,8 +95,22 @@ function initOceanScene(){
   fpControls.heightMax = h;
   fpControls.heightMin= h-1;
 
+  // Add global cruise mode variable
+  let cruiseMode = false;
+  let cruiseSpeed = 3; // Adjust cruise speed as desired
+
   // toggle controls
   window.addEventListener('keydown', (event) => {
+    keyState[event.key] = true;
+    // Toggle cruise mode: Press "2" to enable, "1" to disable
+    if (event.key === '2') {
+      cruiseMode = true;
+      console.log("Cruise mode enabled.");
+    }
+    if (event.key === '1') {
+      cruiseMode = false;
+      console.log("Cruise mode disabled.");
+    }
     if (event.key === 'Shift') {
       // fpControls.lookSpeed = 0; work fine
       fpControls.movementSpeed = 0.6;
@@ -331,6 +345,14 @@ function initOceanScene(){
       camera.position.x = aWorldX/resetF;
       camera.position.z = aWorldY/resetF;
       window.rearrangeAll();
+    }
+
+    // New: If cruise mode is enabled, update camera position automatically in forward direction
+    if (cruiseMode) {
+      const forward = new THREE.Vector3();
+      camera.getWorldDirection(forward);
+      // Update camera position by cruiseSpeed (scaled by delta time if needed)
+      camera.position.add(forward.multiplyScalar(cruiseSpeed));
     }
 
     // Move balls up and down , sideways also
