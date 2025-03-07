@@ -77,7 +77,7 @@ function initOceanScene(){
     75,
     sizes.width / sizes.height,
     0.1, // Near clipping plane
-    40000 // Far clipping plane (view distance)
+    10000 // Far clipping plane (view distance)
   );
   camera.position.set(0, 60, 60);
   scene.add(camera);
