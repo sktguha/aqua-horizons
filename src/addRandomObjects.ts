@@ -553,15 +553,15 @@ for (let i = 0; i < 8; i++) {
   function addFishesSub(img=false){
   const fishGeometry = createFish();
   let fishMaterial: THREE.MeshStandardMaterial;
-  const textureLoader = new THREE.TextureLoader();
   if (img) {
-    // If img equals 'BU', load a specific texture URL, otherwise load based on img
-    const textureURL = (img === 'BU')
-      ? 'textures/special_fish.jpg'
-      : 'textures/fish' + img + '.jpg';
-    const fishTexture = textureLoader.load(textureURL);
+    const textureLoader = new THREE.TextureLoader();
+    const fishTexture = textureLoader.load('textures/fish'+img+'.jpg');
     fishMaterial = new THREE.MeshStandardMaterial({ map: fishTexture, side: THREE.DoubleSide });
   } else {
+    const randomFishColor = fishColors[Math.floor(Math.random() * fishColors.length)];
+    fishMaterial = new THREE.MeshStandardMaterial({ color: randomFishColor, side: THREE.DoubleSide });
+  }
+  for (let i = 0; i < NUM_FISH/7; i++) {
     const fish = new THREE.Mesh(fishGeometry, fishMaterial);
     fish.scale.set(Math.random() * 80, Math.random() * 80, Math.random() * 80);
     fish.position.set(
