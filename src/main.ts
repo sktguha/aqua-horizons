@@ -140,19 +140,17 @@ function initOceanScene(){
       let url = 'https://cdn.jsdelivr.net/gh/Sean-Bradley/React-Three-Fiber-Boilerplate@obstacleCourse/public/img/rustig_koppie_puresky_1k.hdr'
       if(IS_NIGHT){
         url = 'https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/4k/qwantani_night_4k.hdr';
-        // url = 'https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/4k/lakeside_night_4k.hdr';
-        // url = 'https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/4k/vignaioli_night_4k.hdr'
       }
       new RGBELoader().load(url, function(texture) {
-        texture.mapping = THREE.EquirectangularReflectionMapping
-        scene.background = texture
-        scene.environment = texture
-      })
+        texture.mapping = THREE.EquirectangularReflectionMapping;
+        scene.background = texture;
+        scene.environment = texture;
+      });
     }),
     sunDirection: new THREE.Vector3(1, 0.1, 0),
     sunColor: 0xffffff, // Brighter sun color
     waterColor: 0xADD8E6, // Light blue water color
-    distortionScale: 3.7,
+    distortionScale: 15, // Increased from 3.7 for aggressive, choppy waves
   });
   water.rotation.x = -Math.PI / 2;
   scene.add(water);
@@ -257,7 +255,7 @@ function initOceanScene(){
   }
 
   // animate
-  let y = 0;
+  let y = 5.5-1.7;
   let z = 0;
   let x = 0;
   const zRot = 0.02;
