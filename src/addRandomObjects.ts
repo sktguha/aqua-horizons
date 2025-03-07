@@ -571,7 +571,7 @@ for (let i = 0; i < 8; i++) {
     );
     // Assign random velocity mainly in X and Z, with slightly randomized magnitude
     fish.userData.velocity = new THREE.Vector3(
-      (Math.random()*3 + 2) * (Math.random() < 0.5 ? -1 : 1),
+      (Math.random()*5 + 2) * (Math.random() < 0.5 ? -1 : 1),
       0,
       (Math.random()*2 - 1) * 0.5  // small variation in Z
     );
