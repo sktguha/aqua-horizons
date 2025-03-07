@@ -549,14 +549,15 @@ for (let i = 0; i < 8; i++) {
 }
 
   const NUM_FISH = OBJECTS_TO_RENDER;
+  const fishColors = [0x008080, 0x20B2AA, 0x40E0D0, 0x5F9EA0, 0x66CDAA]; // Teal/shades array
+  function addFishesSub(){
   const fishGeometry = createFish();
-  const fishMaterial = new THREE.MeshStandardMaterial({ color: 0xaaaaaa, side: THREE.DoubleSide });
-  for (let i = 0; i < NUM_FISH; i++) {
-    // createFish() returns a BufferGeometry for the fish
-    
+  const randomFishColor = fishColors[Math.floor(Math.random() * fishColors.length)];
+  const fishMaterial = new THREE.MeshStandardMaterial({  color: randomFishColor, side: THREE.DoubleSide });
+  
+  for (let i = 0; i < NUM_FISH/3; i++) {
     const fish = new THREE.Mesh(fishGeometry, fishMaterial);
-    // Set fish scale and random position in the world
-    fish.scale.set(Math.random()*14,Math.random()*14,Math.random()*14);
+    fish.scale.set(Math.random() * 34, Math.random() * 34, Math.random() * 34);
     fish.position.set(
       Math.random() * worldX - worldX / 2,
       10,
@@ -565,7 +566,10 @@ for (let i = 0; i < 8; i++) {
     fishes.push(fish);
     scene.add(fish);
   }
-
+  }
+  addFishesSub();
+  addFishesSub();
+  addFishesSub();
   window._scene = scene;
   return {balls, trees, treeSpeeds, ballSpeeds, fishes};
 };
