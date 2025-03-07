@@ -565,13 +565,16 @@ export const addRandomObjects = (scene, isOcean = false) => {
 const mountains = [];
 const minSpacing = 10000; // Minimum distance between mountains
 
-function prepareFishOrBoat(fish){
+function prepareFishOrBoat(fish, isBoat = false){
   fish.scale.set(Math.random() * 80, Math.random() * 80, Math.random() * 80);
   fish.position.set(
     Math.random() * worldX - worldX / 2,
-    14,
+    isBoat ? -18: 14,
     Math.random() * worldY - worldY / 2
   );
+  if(isBoat){
+    console.log(fish.position.y);
+  }
   // Assign random velocity mainly in X and Z, with slightly randomized magnitude
   fish.userData.velocity = new THREE.Vector3(
     (Math.random()*5 + 2) * (Math.random() < 0.5 ? -1 : 1),
@@ -646,7 +649,7 @@ for (let i = 0; i < 8; i++) {
 
   for (let i = 0; i < NUM_FISH/7; i++) {
     const boat = createBoat();
-    prepareFishOrBoat(boat);
+    prepareFishOrBoat(boat, true);
   }
 
   window._scene = scene;
