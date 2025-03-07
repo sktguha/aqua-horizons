@@ -200,13 +200,13 @@ function getBiasedCoordinate(worldX, worldY) {
       generatePatch(m, 0, i);
     }
 
-  island.position.set(-20, -20, -20); // Adjusted position to match reduced height
+  island.position.set(-20, -10, -20); // Adjusted position to match reduced height
   if(isOcean)
   scene.add(island);
 
   // Add a second island
   const island2 = new THREE.Mesh(islandGeometry, islandMaterial.clone());
-  island2.position.set(-20, -20, -2020); // Moved further along z-axis
+  island2.position.set(-20, -10, -2020); // Moved further along z-axis
   if(isOcean)
   scene.add(island2);
 
