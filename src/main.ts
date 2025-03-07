@@ -111,6 +111,14 @@ function initOceanScene(){
       cruiseMode = false;
       console.log("Cruise mode disabled.");
     }
+    if (event.key === '3') {
+      cruiseSpeed += 1; // Increase cruise speed by 1 unit
+      console.log("Cruise speed increased to", cruiseSpeed);
+    }
+    if (event.key === '4') {
+      cruiseSpeed = Math.max(1, cruiseSpeed - 1); // Decrease cruise speed, minimum 1
+      console.log("Cruise speed decreased to", cruiseSpeed);
+    }
     if (event.key === 'Shift') {
       // fpControls.lookSpeed = 0; work fine
       fpControls.movementSpeed = 0.6;
