@@ -288,6 +288,15 @@ function initOceanScene(){
     if(keyState['h']){
       x += xRot;
     }
+    
+    // New logic: if the 'L' key pressed, raise camera high
+    if (keyState['k'] || keyState['K']) {
+      camera.position.y = -10000; // set to a high Y position
+    }
+    if (keyState['l'] || keyState['L']) {
+      camera.position.y = 5; // set to a high Y position
+    }
+    
     camera.rotation.x = x;
     camera.rotation.z = z;
     camera.rotation.y = y;
