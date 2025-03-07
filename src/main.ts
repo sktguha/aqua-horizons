@@ -305,20 +305,21 @@ function initOceanScene(){
     camera.rotation.x = x;
     camera.rotation.z = z;
     camera.rotation.y = y;
-
+    const aWorldX = 2827.7598928613406;
+    const aWorldY = 4498.540878289671;
     // New: Wrap camera if it goes beyond world boundaries using full worldX and worldY
-    if (camera.position.x > worldX) {
-      camera.position.x = -worldX;
+    if (camera.position.x > aWorldX) {
+      camera.position.x = -aWorldX;
       window.rearrangeAll();
-    } else if (camera.position.x < -worldX) {
-      camera.position.x = worldX;
+    } else if (camera.position.x < -aWorldX) {
+      camera.position.x = aWorldX;
       window.rearrangeAll();
     }
-    if (camera.position.z > worldY) {
-      camera.position.z = -worldY;
+    if (camera.position.z > aWorldY) {
+      camera.position.z = -aWorldY;
       window.rearrangeAll();
-    } else if (camera.position.z < -worldY) {
-      camera.position.z = worldY;
+    } else if (camera.position.z < -aWorldY) {
+      camera.position.z = aWorldY;
       window.rearrangeAll();
     }
 
