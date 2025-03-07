@@ -119,6 +119,9 @@ function initOceanScene(){
       cruiseSpeed = Math.max(1, cruiseSpeed - 1); // Decrease cruise speed, minimum 1
       console.log("Cruise speed decreased to", cruiseSpeed);
     }
+    if(event.key === '5'){
+      cruiseSpeed = 0.4;
+    }
     if (event.key === 'Shift') {
       // fpControls.lookSpeed = 0; work fine
       fpControls.movementSpeed = 0.6;
