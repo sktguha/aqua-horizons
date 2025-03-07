@@ -190,7 +190,7 @@ function initOceanScene(){
     }),
     sunDirection: new THREE.Vector3(1, 0.1, 0),
     sunColor: 0xffffff, // Brighter sun color
-    waterColor: 0xADD8E6, // Light blue water color
+    waterColor: 0x6DEDC1, // Light blue water color
     distortionScale: 15, // Increased from 3.7 for aggressive, choppy waves
   });
   water.rotation.x = -Math.PI / 2;
