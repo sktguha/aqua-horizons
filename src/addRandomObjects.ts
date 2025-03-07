@@ -346,7 +346,7 @@ export const addRandomObjects = (scene, isOcean = false) => {
   for (let i = 0; i < OBJECTS_TO_RENDER*0.7; i++) { // Increased number of objects
     if(DISABLE_TREES) i = OBJECTS_TO_RENDER*0.7;
     // Create tree geometry with random height
-    const treeHeight = 1000 + Math.random() * 2000;
+    const treeHeight = 1000 + Math.random() * 3000;
     const treeGeometry = new THREE.ConeGeometry(200, treeHeight, 200); // Reduced size
     const {x,z} = getBiasedCoordinate(worldX, worldY);
     const treeMaterial = new THREE.MeshStandardMaterial({ color: deepBrownShades[Math.floor(Math.random() * deepBrownShades.length)] });
@@ -557,10 +557,10 @@ for (let i = 0; i < 8; i++) {
   
   for (let i = 0; i < NUM_FISH/3; i++) {
     const fish = new THREE.Mesh(fishGeometry, fishMaterial);
-    fish.scale.set(Math.random() * 34, Math.random() * 34, Math.random() * 34);
+    fish.scale.set(Math.random() * 80, Math.random() * 80, Math.random() * 80);
     fish.position.set(
       Math.random() * worldX - worldX / 2,
-      10,
+      14,
       Math.random() * worldY - worldY / 2
     );
     fishes.push(fish);
