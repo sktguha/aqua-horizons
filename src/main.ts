@@ -99,6 +99,11 @@ function initOceanScene(){
   let cruiseMode = false;
   let cruiseSpeed = 3; // Adjust cruise speed as desired
 
+  // Add global pause variables
+  let pauseMode = false;
+  window.isPaused = pauseMode;
+  window.enterPressed = false;
+
   // toggle controls
   window.addEventListener('keydown', (event) => {
     keyState[event.key] = true;
@@ -145,6 +150,15 @@ function initOceanScene(){
       fpControls.movementSpeed = START_MOVEMENT_SPEED*11;
       cameraRotationSpeed = 2;
       // fpControls.lookSpeed = 0.001;
+    }
+    if (event.key === 'Enter' && !window.enterPressed) {
+      window.enterPressed = true;
+      pauseMode = !pauseMode;
+      window.isPaused = pauseMode;
+      console.log("Pause mode set to", pauseMode);
+    }
+    if (event.key === ';') { // When semicolon key is pressed
+      takeScreenshot();
     }
   });
   const START_MOVEMENT_SPEED = 1.8;
@@ -251,6 +265,9 @@ function initOceanScene(){
 
   window.addEventListener('keyup', (event) => {
     keyState[event.key] = false;
+    if (event.key === 'Enter') {
+      window.enterPressed = false;
+    }
   });
 
   if (isMobile()) {
@@ -287,6 +304,14 @@ function initOceanScene(){
   const xRot = 0.02;
   const animate = () => {
     stats.begin();
+    
+    // Check for pause mode; if paused, skip updating simulation but continue loop.
+    if (pauseMode) {
+      stats.end();
+      requestAnimationFrame(animate);
+      return;
+    }
+
     fpControls.update(1);
     water.material.uniforms['time'].value += 1.0 / 60.0;
 
@@ -408,6 +433,19 @@ function initOceanScene(){
   };
 
   animate();
+  
+  function takeScreenshot() {
+    // Force a render to ensure the latest frame is captured
+    renderer.render(scene, camera);
+    // Get the image data from the renderer's canvas
+    const dataURL = renderer.domElement.toDataURL('image/png');
+    // Create a temporary link element
+    const link = document.createElement('a');
+    link.download = 'screenshot-' + Date.now() + '.png';
+    link.href = dataURL;
+    link.click();
+    console.log("Screenshot taken and download triggered.");
+  }
 }
 
 function getRandomForestColor() {
