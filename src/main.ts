@@ -317,7 +317,7 @@ function initOceanScene(){
       window.rearrangeAll();
     }
     if (camera.position.z > aWorldY) {
-      camera.position.z = -aWorldY;
+      camera.position.z = -aWorldY/3;
       window.rearrangeAll();
     } else if (camera.position.z < -aWorldY) {
       camera.position.z = aWorldY;
