@@ -176,7 +176,7 @@ function initOceanScene(){
   directionalLight.position.set(10, 10, 10);
   scene.add(directionalLight);
 
-  const {balls, trees, ballSpeeds, treeSpeeds} = addRandomObjects(scene, true);
+  const {balls, trees, ballSpeeds, treeSpeeds, fishes} = addRandomObjects(scene, true);
 
   // Create X and Z speed arrays for balloons
   const ballXSpeeds: number[] = [];
@@ -308,13 +308,13 @@ function initOceanScene(){
       ball.position.z += ballZSpeeds[index] * 15;
     });
 
-    // // Move trees up and down
-    // trees.forEach((tree, index) => {
-    //   tree.position.y += treeSpeeds[index] * 4; // Increase speed by ~4x
-    //   if (tree.position.y > 200 || tree.position.y < 10) {
-    //     treeSpeeds[index] = -treeSpeeds[index];
-    //   }
-    // });
+    // Animate fish: move them along X and Z, with slight sinusoidal up/down motion
+    const timeFactor = performance.now() * 0.001; // seconds
+    fishes.forEach((fish) => {
+      fish.position.x += fish.userData.velocity.x;
+      fish.position.z += fish.userData.velocity.z;
+      fish.position.y = fish.userData.initialY + Math.sin(timeFactor + fish.userData.oscPhase) * 5;
+    });
 
     renderer.render(scene, camera);
     stats.end();

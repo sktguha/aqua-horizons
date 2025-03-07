@@ -569,10 +569,19 @@ for (let i = 0; i < 8; i++) {
       14,
       Math.random() * worldY - worldY / 2
     );
+    // Assign random velocity mainly in X and Z, with slightly randomized magnitude
+    fish.userData.velocity = new THREE.Vector3(
+      (Math.random()*3 + 2) * (Math.random() < 0.5 ? -1 : 1),
+      0,
+      (Math.random()*2 - 1) * 0.5  // small variation in Z
+    );
+    // Store the initial Y and a random phase for oscillation
+    fish.userData.initialY = fish.position.y;
+    fish.userData.oscPhase = Math.random() * Math.PI * 2;
     fishes.push(fish);
     scene.add(fish);
   }
-  }
+}
   addFishesSub(1);
   addFishesSub(2);
   addFishesSub(3);
