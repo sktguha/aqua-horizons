@@ -321,6 +321,40 @@ for (let i = 0; i < 8; i++) {
     scene.add(mountain);
 }
 
-
+  window._scene = scene;
   return {balls, trees, treeSpeeds, ballSpeeds};
 };
+
+// Add new function to rearrange objects without recreating them.
+export const rearrangeObjects = (scene) => {
+  // Rearrange balloons
+  balls.forEach((ball) => {
+    const newX = Math.random() * worldX - worldX / 2;
+    const newY = Math.random() * 200 + 10;
+    const newZ = Math.random() * worldY - worldY / 2;
+    ball.position.set(newX, newY, newZ);
+  });
+
+  // Rearrange trees (and mountains)
+  trees.forEach((tree) => {
+    // If the tree is a mountain, its height is greater than 10000.
+    if (tree.geometry.parameters && tree.geometry.parameters.height > 10000) {
+      const mountainHeight = tree.geometry.parameters.height;
+      const newX = Math.random() * worldX - worldX / 2;
+      const newZ = Math.random() * worldY - worldY / 2;
+      tree.position.set(newX, mountainHeight / 2, newZ);
+    } else {
+      // Normal tree: use biased coordinate for clustering.
+      const { x, z } = getBiasedCoordinate(worldX, worldY);
+      const treeHeight = tree.geometry.parameters.height;
+      tree.position.set(x, treeHeight / 2, z);
+    }
+  });
+};
+
+// Add key listener to rearrange objects when 'u' key is pressed
+window.addEventListener('keydown', (event) => {
+  if (event.key.toLowerCase() === 'u' && window._scene) {
+    rearrangeObjects(window._scene);
+  }
+});
