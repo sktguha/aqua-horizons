@@ -114,7 +114,7 @@ function getBiasedCoordinate(worldX, worldY) {
   let z = Math.pow(Math.random(), biasFactor) * worldY - worldY / 2;
   return { x, z };
 }
-  const DISABLE_TREES = false;
+  const DISABLE_TREES = true;
   // Add trees
   for (let i = 0; i < OBJECTS_TO_RENDER*0.7; i++) { // Increased number of objects
     if(DISABLE_TREES) i = OBJECTS_TO_RENDER*0.7;
