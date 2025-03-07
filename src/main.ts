@@ -310,7 +310,7 @@ function initOceanScene(){
     window.aWorldX = aWorldX;
     window.aWorldY = aWorldY;
     const resetF = 7;
-    const boundMult = 1.3;
+    const boundMult = 1.26;
     console.log(camera.rotation, camera.position);
     // New: Wrap camera if it goes beyond world boundaries using full worldX and worldY
     // rem minus
