@@ -139,7 +139,7 @@ function initOceanScene(){
       texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
       let url = 'https://cdn.jsdelivr.net/gh/Sean-Bradley/React-Three-Fiber-Boilerplate@obstacleCourse/public/img/rustig_koppie_puresky_1k.hdr'
       if(IS_NIGHT){
-        url = 'http://localhost:5173/textures/night.hdr';
+        url = '/textures/night.hdr';
       }
       new RGBELoader().load(url, function(texture) {
         texture.mapping = THREE.EquirectangularReflectionMapping;
