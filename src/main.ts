@@ -13,8 +13,9 @@ import { getParams } from './getParams';
 /* = Variables ================================================*/
 // Common
 let GrdSiz = 804.67;				// Size of Grid in meters
-	GrdSiz = 200;
+	GrdSiz = 120000;
 let GrdRCs = 2;
+	GrdRCs = 4;
 let WtrCol = 0x1040f0;				// Water (Tropical)
 	WtrCol = 0x081080;				// Water (Navy)
 // Animated
