@@ -442,6 +442,7 @@ export const addRandomObjects = (scene, isOcean = false) => {
     const {x,z} = getBiasedCoordinate(worldX, worldY);
     
     // Prevent trees from being generated near the user's spawn position
+    // TODO : add for fish etc also 
     const distanceFromOrigin = Math.sqrt(x * x + z * z);
     if (distanceFromOrigin < 1000) {
       continue;
