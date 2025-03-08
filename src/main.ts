@@ -390,8 +390,8 @@ function initOceanScene(){
         if (drop.position.y < minY) {
           // Reset position to top with random X and Z coordinates
           drop.position.y = maxY;
-          drop.position.x = (Math.random() - 0.5) * worldX * 0.5; // Random X position within world bounds
-          drop.position.z = (Math.random() - 0.5) * worldY * 0.5; // Random Z position within world bounds
+          // drop.position.x = (Math.random() - 0.5) * worldX * 0.5; // Random X position within world bounds
+          // drop.position.z = (Math.random() - 0.5) * worldY * 0.5; // Random Z position within world bounds
         }
       });
     }

@@ -1,8 +1,8 @@
 // @ts-nocheck
 import * as THREE from 'three';
-
+export const POS_MULTIPLIER = 50;
 export function createRaindrops(scene) {
-  const raindropCount = 100000; // Number of raindrops
+  const raindropCount = 5000; // Number of raindrops
   const raindrops = [];
   const worldSize = 10000; // Match the world size
 
@@ -18,10 +18,9 @@ export function createRaindrops(scene) {
   for (let i = 0; i < raindropCount; i++) {
     const drop = new THREE.Mesh(geometry, material);
     
-    // Random initial position
-    drop.position.x = (Math.random() - 0.5) * worldSize * 0.5;
-    drop.position.y = Math.random() * 500; // Random height
-    drop.position.z = (Math.random() - 0.5) * worldSize * 0.5;
+    drop.position.x = i*Math.floor(i/POS_MULTIPLIER);
+    drop.position.y = Math.random()*100; // Random height
+    drop.position.z = i*Math.floor(i/POS_MULTIPLIER);
     
     // Add to scene and to our array
     scene.add(drop);
