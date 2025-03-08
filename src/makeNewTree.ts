@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { deepBrownShades, getBiasedCoordinate, worldX, worldY } from './addRandomObjects';
-export default function makeNewTree(){
+import { Tree } from '@dgreenheck/ez-tree';
+ function makeNewTreeOld(){
     const treeHeight = 1000 + Math.random() * 3000;
     const treeGeometry = new THREE.ConeGeometry(200, treeHeight, 200); // Reduced size
     const {x,z} = getBiasedCoordinate(worldX, worldY);
@@ -26,3 +27,17 @@ export default function makeNewTree(){
 
     return tree;
   }
+  const tree = new Tree();
+
+  // Set parameters
+  tree.options.seed = 12345;
+//   tree.options.trunk.length = 20;
+  tree.options.branch.levels = 3;
+  function makeNewTree(){
+    
+
+// Generate tree and add to your Three.js scene
+    return tree.generate();
+  }
+
+  export default makeNewTree;
