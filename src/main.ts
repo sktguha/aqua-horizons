@@ -100,9 +100,9 @@ function initOceanScene(){
   let cruiseMode = false;
   let cruiseSpeed = 3; // Adjust cruise speed as desired
 
-  // Add global pause variables
-  let pauseMode = false;
-  window.isPaused = pauseMode;
+  // Add global pause variables for object movements only
+  let objectsPaused = false;
+  window.objectsPaused = objectsPaused;
   window.enterPressed = false;
 
   // toggle controls
@@ -154,9 +154,9 @@ function initOceanScene(){
     }
     if (event.key === 'Enter' && !window.enterPressed) {
       window.enterPressed = true;
-      pauseMode = !pauseMode;
-      window.isPaused = pauseMode;
-      console.log("Pause mode set to", pauseMode);
+      objectsPaused = !objectsPaused;
+      window.objectsPaused = objectsPaused;
+      console.log("Object movements " + (objectsPaused ? "paused" : "resumed"));
     }
     if (event.key === ';') { // When semicolon key is pressed
       takeScreenshot();
@@ -307,13 +307,7 @@ function initOceanScene(){
   const animate = () => {
     stats.begin();
     
-    // Check for pause mode; if paused, skip updating simulation but continue loop.
-    if (pauseMode) {
-      stats.end();
-      requestAnimationFrame(animate);
-      return;
-    }
-
+    // Always update controls and water, regardless of pause state
     fpControls.update(1);
     water.material.uniforms['time'].value += 1.0 / 60.0;
 
@@ -386,48 +380,51 @@ function initOceanScene(){
     }
 
     // New: If cruise mode is enabled, update camera position automatically in forward direction
-    if (cruiseMode) {
+    if (cruiseMode && !objectsPaused) {
       const forward = new THREE.Vector3();
       camera.getWorldDirection(forward);
       // Update camera position by cruiseSpeed (scaled by delta time if needed)
       camera.position.add(forward.multiplyScalar(cruiseSpeed));
     }
 
-    // Move balls up and down , sideways also
-    balls.forEach((ball, index) => {
-      ball.position.y += ballSpeeds[index] * 4; // Increase speed by ~4x
-      const MAX_BALLOON_HEIGHT_IMP = 3000;
-      if (ball.position.y > MAX_BALLOON_HEIGHT_IMP) { // Increase maximum height
-        ball.position.y = MAX_BALLOON_HEIGHT_IMP;
-        ballSpeeds[index] = -Math.abs(ballSpeeds[index]); // Ensure speed is negative
-      } else if (ball.position.y < 10) {
-        ball.position.y = 10;
-        ballSpeeds[index] = Math.abs(ballSpeeds[index]); // Ensure speed is positive
-      }
-      // Update balloon X and Z positions - increased multiplier to 15 for faster lateral movement
-      ball.position.x += ballXSpeeds[index] * 15;
-      ball.position.z += ballZSpeeds[index] * 15;
-    });
+    // Only update object positions if not paused
+    if (!objectsPaused) {
+      // Move balls up and down , sideways also
+      balls.forEach((ball, index) => {
+        ball.position.y += ballSpeeds[index] * 4; // Increase speed by ~4x
+        const MAX_BALLOON_HEIGHT_IMP = 3000;
+        if (ball.position.y > MAX_BALLOON_HEIGHT_IMP) { // Increase maximum height
+          ball.position.y = MAX_BALLOON_HEIGHT_IMP;
+          ballSpeeds[index] = -Math.abs(ballSpeeds[index]); // Ensure speed is negative
+        } else if (ball.position.y < 10) {
+          ball.position.y = 10;
+          ballSpeeds[index] = Math.abs(ballSpeeds[index]); // Ensure speed is positive
+        }
+        // Update balloon X and Z positions - increased multiplier to 15 for faster lateral movement
+        ball.position.x += ballXSpeeds[index] * 15;
+        ball.position.z += ballZSpeeds[index] * 15;
+      });
 
-    // Animate fish: move them along X and Z, with slight sinusoidal up/down motion
-    const timeFactor = performance.now() * 0.001; // seconds
-    fishes.forEach((fish) => {
-      fish.position.x += fish.userData.velocity.x;
-      fish.position.z += fish.userData.velocity.z;
-      fish.position.y = fish.userData.initialY + Math.sin(timeFactor + fish.userData.oscPhase) * 5;
+      // Animate fish: move them along X and Z, with slight sinusoidal up/down motion
+      const timeFactor = performance.now() * 0.001; // seconds
+      fishes.forEach((fish) => {
+        fish.position.x += fish.userData.velocity.x;
+        fish.position.z += fish.userData.velocity.z;
+        fish.position.y = fish.userData.initialY + Math.sin(timeFactor + fish.userData.oscPhase) * 5;
 
-      // New: Wrap fish positions if they go beyond the boundaries using the same reset factors
-      if (fish.position.x > aWorldX) {
-        fish.position.x = -aWorldX / resetF;
-      } else if (fish.position.x < -aWorldX) {
-        fish.position.x = aWorldX / resetF;
-      }
-      if (fish.position.z > aWorldY) {
-        fish.position.z = -aWorldY / resetF;
-      } else if (fish.position.z < -aWorldY) {
-        fish.position.z = aWorldY / resetF;
-      }
-    });
+        // New: Wrap fish positions if they go beyond the boundaries using the same reset factors
+        if (fish.position.x > aWorldX) {
+          fish.position.x = -aWorldX / resetF;
+        } else if (fish.position.x < -aWorldX) {
+          fish.position.x = aWorldX / resetF;
+        }
+        if (fish.position.z > aWorldY) {
+          fish.position.z = -aWorldY / resetF;
+        } else if (fish.position.z < -aWorldY) {
+          fish.position.z = aWorldY / resetF;
+        }
+      });
+    }
 
     renderer.render(scene, camera);
     stats.end();
