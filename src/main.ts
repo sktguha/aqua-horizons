@@ -367,6 +367,11 @@ function initOceanScene(){
   let x = 0;
   const zRot = 0.02;
   const xRot = 0.02;
+
+  // Add timing variables for raindrop optimization
+  let lastRaindropUpdate = 0;
+  const raindropUpdateInterval = 300; // Update rain positions every 100ms
+  
   const animate = () => {
     stats.begin();
     
@@ -377,24 +382,32 @@ function initOceanScene(){
     updateWater();
 
     // Update raindrops - make them fall and recycle
+    const currentTime = performance.now();
     if (drops && drops.length > 0 && !objectsPaused) {
       const fallSpeed = 4+Math.random()*4; // Speed of falling raindrops
       const maxY = 500; // Maximum height for recycling
       const minY = 0; // Minimum height before recycling back to top
-      // works
+      
+      // Always update Y position for falling effect
       drops.forEach(drop => {
         // Make raindrop fall down
         drop.position.y -= fallSpeed;
-        
-        // If raindrop falls below threshold, recycle it to the top
-        if (drop.position.y < minY) {
-          // Reset position to top with random X and Z coordinates around the camera
-          drop.position.y = maxY;
-          const rainRadius = 1000; // Radius of rain area around camera
-          drop.position.x = camera.position.x + (Math.random() - 0.5) * rainRadius;
-          drop.position.z = camera.position.z + (Math.random() - 0.5) * rainRadius;
-        }
       });
+      
+      // Only reposition drops around the camera less frequently
+      if (currentTime - lastRaindropUpdate > raindropUpdateInterval) {
+        lastRaindropUpdate = currentTime;
+        drops.forEach(drop => {
+          // If raindrop falls below threshold or is far from the camera, recycle it
+          if (drop.position.y < minY) {
+            // Reset position to top with random X and Z coordinates around the camera
+            drop.position.y = maxY;
+            const rainRadius = 1000; // Radius of rain area around camera
+            drop.position.x = camera.position.x + (Math.random() - 0.5) * rainRadius;
+            drop.position.z = camera.position.z + (Math.random() - 0.5) * rainRadius;
+          }
+        });
+      }
     }
 
     // camera rotation logic
