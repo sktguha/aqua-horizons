@@ -7,20 +7,14 @@ import * as BufferGeometryUtils from './bufferGeometryUtils';
 import { ConvexGeometry } from 'three/examples/jsm/geometries/ConvexGeometry.js';
 import makeNewTree from './makeNewTree';
 
-export const deepBrownShades = [
-  "#4a2e28", // Dark Redwood
-  "#3b241f", // Coffee Bean
-  "#5a3a31", // Chestnut Brown
-  "#2f1d19", // Espresso Brown
-  "#472f26", // Mahogany Shadow
-  "#593d35", // Deep Clay
-  "#36221c", // Burnt Umber
-  "#6b443a", // Warm Walnut
-  "#402a24", // Dark Cocoa
-  "#512f29", // Rich Mocha
-  "#2d1b16", // Charcoal Brown
-  "#55382e"  // Deep Oak
-];
+export const deepBrownShades = 
+  [
+    "#2d1b16", // Charcoal Brown
+    "#2f1d19", // Espresso Brown
+    "#36221c", // Burnt Umber
+    "#3b241f"  // Coffee Bean
+  ]
+
 
 export const balls: THREE.Mesh[] = [];
 export const trees: THREE.Mesh[] = [];
