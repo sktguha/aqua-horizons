@@ -456,7 +456,7 @@ export const addRandomObjects = (scene, isOcean = false) => {
   
   const DISABLE_TREES = false;
   // Add trees
-  for (let i = 0; i < 100; i++) { // Increased number of objects
+  for (let i = 0; i < 200; i++) { // Increased number of objects
     if(DISABLE_TREES) i = OBJECTS_TO_RENDER*0.7;
     // Create tree geometry with random height
     const tree = makeNewTree();

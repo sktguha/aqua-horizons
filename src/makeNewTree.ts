@@ -15,8 +15,8 @@ function makeNewTree() {
     treeContainer.add(tree);
 
     // Set the group's position
-    treeContainer.position.set(2000 + Math.random() * 2000, 0, 2000 + Math.random() * 2000);
-    treeContainer.scale.set(5 + Math.random() * 15, 5 + Math.random() * 15, 5 + Math.random() * 15);
+    treeContainer.position.set(2000 + Math.random() * 5000, 20, 2000 + Math.random() * 5000);
+    treeContainer.scale.set(5 + Math.random() * 25, 5 + Math.random() * 25, 5 + Math.random() * 25);
     return treeContainer;
 }
 
