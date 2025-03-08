@@ -181,27 +181,56 @@ function initOceanScene(){
 
   // texture loader
   const textureLoader = new THREE.TextureLoader();
+  const waterGeometry = new THREE.PlaneGeometry(worldX, worldY);
+  const water = new Water(waterGeometry, {
+    textureWidth: 512,
+    textureHeight: 512,
+    waterNormals: textureLoader.load('textures/waternormals.jpg', (texture) => {
+      texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+      const url2= getParams().url;
+      let url = url2 || 'https://cdn.jsdelivr.net/gh/Sean-Bradley/React-Three-Fiber-Boilerplate@obstacleCourse/public/img/rustig_koppie_puresky_1k.hdr'
+      // if(IS_NIGHT){
+      //   url = '/textures/night.hdr';
+      // }
+      new RGBELoader().load(url, function(texture) {
+        texture.mapping = THREE.EquirectangularReflectionMapping;
+        scene.background = texture;
+        scene.environment = texture;
+      });
+    }),
+    sunDirection: new THREE.Vector3(1, 0.1, 0),
+    sunColor: Number(getParams().sunColor) || 0xffffff, // Brighter sun color
+    waterColor: Number(getParams().water) ||0x00AA55, // Changed to a green color
+    distortionScale: 15, // Increased from 3.7 for aggressive, choppy waves
+    fog: true,
+    alpha: Number(getParams().waterOpacity) || 0.9 // Added alpha to make water more opaque (0-1 where 1 is fully opaque)
+  });
+  water.rotation.x = -Math.PI / 2;
+  
+  // Make water more opaque by adjusting material, true
+  water.material.transparent = true;
+  water.material.opacity = 0.9; // Adjust this value between 0-1 (1 = fully opaque)
 
   // REPLACE WATER WITH SOLID GREEN PLANE
-  const waterGeometry = new THREE.PlaneGeometry(worldX, worldY);
+  const waterGeometrySolid = new THREE.PlaneGeometry(worldX, worldY);
   
   // Create a solid green material - MeshBasicMaterial doesn't respond to lighting
-  const waterMaterial = new THREE.MeshBasicMaterial({
+  const waterMaterialSolid = new THREE.MeshBasicMaterial({
     color: Number(getParams().water) || 0x00AA55, // Solid green color
     side: THREE.DoubleSide, // Render both sides
   });
   
   // Create water plane with basic material
-  const waterSolid = new THREE.Mesh(waterGeometry, waterMaterial);
+  const waterSolid = new THREE.Mesh(waterGeometrySolid, waterMaterialSolid);
   waterSolid.rotation.x = -Math.PI / 2; // Rotate to be horizontal
   waterSolid.position.y = 0; // Position at y=0
-  scene.add(waterSolid);
+  scene.add(getParams().solid === 'true' ? waterSolid: water);
   
   // Small ripple effect using geometry displacement (optional)
   // Create a simple displacement function to simulate gentle ripples
   const animateWaterRipples = () => {
     const time = performance.now() * 0.001;
-    const vertices = waterGeometry.attributes.position.array;
+    const vertices = waterGeometrySolid.attributes.position.array;
     
     // Apply small ripple effect
     for (let i = 0; i < vertices.length; i += 3) {
@@ -216,7 +245,7 @@ function initOceanScene(){
       }
     }
     
-    waterGeometry.attributes.position.needsUpdate = true;
+    waterGeometrySolid.attributes.position.needsUpdate = true;
   };
   
   // This simulates the water.material.uniforms['time'].value update but for our custom material
