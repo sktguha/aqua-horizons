@@ -5,6 +5,7 @@ import { noise } from 'perlin-noise';
 import { createPatch, generatePatch } from './patchUtils';
 import * as BufferGeometryUtils from 'three/examples/jsm/utils/BufferGeometryUtils'
 import { ConvexGeometry } from 'three/examples/jsm/geometries/ConvexGeometry.js';
+import makeNewTree from './makeNewTree';
 
 export const deepBrownShades = [
   "#4a2e28", // Dark Redwood
@@ -376,32 +377,7 @@ export const addRandomObjects = (scene, isOcean = false) => {
     let normal = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
     return mean + stddev * normal;
 }
-  function makeNewTree(){
-    const treeHeight = 1000 + Math.random() * 3000;
-    const treeGeometry = new THREE.ConeGeometry(200, treeHeight, 200); // Reduced size
-    const {x,z} = getBiasedCoordinate(worldX, worldY);
-    const treeMaterial = new THREE.MeshStandardMaterial({ color: deepBrownShades[Math.floor(Math.random() * deepBrownShades.length)] });
-    const tree = new THREE.Mesh(treeGeometry, treeMaterial);
-
-    // Prevent trees from being generated near the user's spawn position (within a radius of 1000 units)
-    const distanceFromOrigin = Math.sqrt(x * x + z * z);
-    if (distanceFromOrigin < 1000) {
-      return false;
-    }
-
-    tree.position.set(x, treeHeight / 2, z);
-
-    // Consolidate crown addition: crown radius proportional to tree height (e.g. treeHeight/10)
-    const crownRadius = treeHeight / 2;
-    const crownGeometry = new THREE.SphereGeometry(crownRadius, 32, 16);
-    const crownMaterial = new THREE.MeshStandardMaterial({ color: 0x228B22 });
-    const crown = new THREE.Mesh(crownGeometry, crownMaterial);
-    // Position crown at the top of the tree
-    crown.position.set(0, treeHeight / 2, 0);
-    tree.add(crown);
-
-    return tree;
-  }
+  
   const DISABLE_TREES = false;
   // Add trees
   for (let i = 0; i < OBJECTS_TO_RENDER*0.7; i++) { // Increased number of objects
