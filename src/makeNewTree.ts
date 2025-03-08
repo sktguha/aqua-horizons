@@ -46,7 +46,7 @@ const treeContainer = new THREE.Group();
     treeContainer.add(tree);
 
     // Set the group's position
-    treeContainer.position.set( Math.random() * 2000, 0, Math.random() * 2000);
+    treeContainer.position.set( 2000+Math.random() * 2000, 0, 2000+Math.random() * 2000);
     treeContainer.scale.set(5, 5, 5);
     return treeContainer;
   }
