@@ -170,38 +170,48 @@ function initOceanScene(){
   // texture loader
   const textureLoader = new THREE.TextureLoader();
 
-  // water geometry and material
+  // REPLACE WATER WITH SOLID GREEN PLANE
   const waterGeometry = new THREE.PlaneGeometry(worldX, worldY);
-  const water = new Water(waterGeometry, {
-    textureWidth: 512,
-    textureHeight: 512,
-    waterNormals: textureLoader.load('textures/waternormals.jpg', (texture) => {
-      texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-      const url2= getParams().url;
-      let url = url2 || 'https://cdn.jsdelivr.net/gh/Sean-Bradley/React-Three-Fiber-Boilerplate@obstacleCourse/public/img/rustig_koppie_puresky_1k.hdr'
-      // if(IS_NIGHT){
-      //   url = '/textures/night.hdr';
-      // }
-      new RGBELoader().load(url, function(texture) {
-        texture.mapping = THREE.EquirectangularReflectionMapping;
-        scene.background = texture;
-        scene.environment = texture;
-      });
-    }),
-    sunDirection: new THREE.Vector3(1, 0.1, 0),
-    sunColor: Number(getParams().sunColor) || 0xffffff, // Brighter sun color
-    waterColor: Number(getParams().water) ||0x00AA55, // Changed to a green color
-    distortionScale: 15, // Increased from 3.7 for aggressive, choppy waves
-    fog: true,
-    alpha: Number(getParams().waterOpacity) || 0.9 // Added alpha to make water more opaque (0-1 where 1 is fully opaque)
+  
+  // Create a solid green material - MeshBasicMaterial doesn't respond to lighting
+  const waterMaterial = new THREE.MeshBasicMaterial({
+    color: Number(getParams().water) || 0x00AA55, // Solid green color
+    side: THREE.DoubleSide, // Render both sides
   });
-  water.rotation.x = -Math.PI / 2;
   
-  // Make water more opaque by adjusting material, true
-  water.material.transparent = getParams().solid === 'true' ? false : true;
-  water.material.opacity = 0.9; // Adjust this value between 0-1 (1 = fully opaque)
-  
+  // Create water plane with basic material
+  const water = new THREE.Mesh(waterGeometry, waterMaterial);
+  water.rotation.x = -Math.PI / 2; // Rotate to be horizontal
+  water.position.y = 0; // Position at y=0
   scene.add(water);
+  
+  // Small ripple effect using geometry displacement (optional)
+  // Create a simple displacement function to simulate gentle ripples
+  const animateWaterRipples = () => {
+    const time = performance.now() * 0.001;
+    const vertices = waterGeometry.attributes.position.array;
+    
+    // Apply small ripple effect
+    for (let i = 0; i < vertices.length; i += 3) {
+      // Skip updating edge vertices to avoid visual glitches at boundaries
+      const x = vertices[i];
+      const z = vertices[i+2];
+      
+      // Only displace vertices near the camera to improve performance
+      if (Math.abs(x) < 1000 && Math.abs(z) < 1000) {
+        // Small ripple effect
+        vertices[i+1] = Math.sin(time + x * 0.01) * Math.cos(time + z * 0.01) * 5;
+      }
+    }
+    
+    waterGeometry.attributes.position.needsUpdate = true;
+  };
+  
+  // This simulates the water.material.uniforms['time'].value update but for our custom material
+  const updateWater = () => {
+    // Only apply ripples if needed - you can comment this out for a completely flat surface
+    // animateWaterRipples();
+  };
 
   // Add a gigantic tree
   const trunkHeight = 1000;
@@ -316,7 +326,9 @@ function initOceanScene(){
     
     // Always update controls and water, regardless of pause state
     fpControls.update(1);
-    water.material.uniforms['time'].value += 1.0 / 60.0;
+    
+    // Update water (replaces water.material.uniforms['time'].value update)
+    updateWater();
 
     // camera rotation logic
     if (keyState['ArrowLeft'] || keyState['A'] || keyState['q']) {
