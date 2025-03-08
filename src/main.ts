@@ -376,6 +376,26 @@ function initOceanScene(){
     // Update water (replaces water.material.uniforms['time'].value update)
     updateWater();
 
+    // Update raindrops - make them fall and recycle
+    if (drops && drops.length > 0 && !objectsPaused) {
+      const fallSpeed = 10; // Speed of falling raindrops
+      const maxY = 500; // Maximum height for recycling
+      const minY = -200; // Minimum height before recycling back to top
+      
+      drops.forEach(drop => {
+        // Make raindrop fall down
+        drop.position.y -= fallSpeed;
+        
+        // If raindrop falls below threshold, recycle it to the top
+        if (drop.position.y < minY) {
+          // Reset position to top with random X and Z coordinates
+          drop.position.y = maxY;
+          drop.position.x = (Math.random() - 0.5) * worldX * 0.5; // Random X position within world bounds
+          drop.position.z = (Math.random() - 0.5) * worldY * 0.5; // Random Z position within world bounds
+        }
+      });
+    }
+
     // camera rotation logic
     if (keyState['ArrowLeft'] || keyState['A'] || keyState['q']) {
       y += cameraRotationSpeed;
