@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { deepBrownShades, getBiasedCoordinate, worldX, worldY } from './addRandomObjects';
 import { Tree } from '@dgreenheck/ez-tree';
 
-  function makeNewTree(){
+function makeNewTree() {
     const tree = new Tree();
     // Set parameters
     tree.options.seed = 12345;
@@ -15,9 +15,9 @@ import { Tree } from '@dgreenheck/ez-tree';
     treeContainer.add(tree);
 
     // Set the group's position
-    treeContainer.position.set( 2000+Math.random() * 2000, 0, 2000+Math.random() * 2000);
-    treeContainer.scale.set(5 + Math.random()*15, 5+Math.random()*15, 5+Math.random()*15);
+    treeContainer.position.set(2000 + Math.random() * 2000, 0, 2000 + Math.random() * 2000);
+    treeContainer.scale.set(5 + Math.random() * 15, 5 + Math.random() * 15, 5 + Math.random() * 15);
     return treeContainer;
-  }
+}
 
-  export default makeNewTree;
+export default makeNewTree;
