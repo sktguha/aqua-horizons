@@ -104,7 +104,7 @@ function initOceanScene(){
   let objectsPaused = false;
   window.objectsPaused = objectsPaused;
   window.enterPressed = false;
-
+// http://localhost:5173/?mountains=35&view=20000&bright=0.001&grass=0.7&waterOpacity=1&solid=true&water=0xff0000&url=https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/4k/sunny_vondelpark_4k.hdr
   let url = getParams().url || 'https://cdn.jsdelivr.net/gh/Sean-Bradley/React-Three-Fiber-Boilerplate@obstacleCourse/public/img/rustig_koppie_puresky_1k.hdr'
       // if(IS_NIGHT){
       //   url = '/textures/night.hdr';
