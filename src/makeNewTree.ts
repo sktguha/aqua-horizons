@@ -10,7 +10,12 @@ function makeNewTree() {
     tree.options.branch.levels = 3;
     
     // Set trunk length (level 0)
-    tree.options.branch.length[0] = 10.0 + Math.random()*10; // Adjust this value to change trunk length
+    // For 20% of trees, make the trunk very small
+    if (Math.random() < 0.2) {
+        tree.options.branch.length[0] = 0.5 + Math.random() * 2; // Very small trunk
+    } else {
+        tree.options.branch.length[0] = 10.0 + Math.random() * 10; // Regular trunk length
+    }
     
     // Generate tree
     tree.generate();
