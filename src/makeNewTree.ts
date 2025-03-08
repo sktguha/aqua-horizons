@@ -16,6 +16,9 @@ function makeNewTree() {
     const treeContainer = new THREE.Group();
     treeContainer.add(tree);
 
+    // Apply color to the overall tree by traversing and adjusting materials
+    colorizeTree(treeContainer);
+
     // Use entire worldX and worldY for better distribution
     const x = Math.random() * worldX - worldX / 2; // Full world range
     const z = Math.random() * worldY - worldY / 2; // Full world range
@@ -25,6 +28,76 @@ function makeNewTree() {
     const MIN_SCALE = 50;
     treeContainer.scale.set(MIN_SCALE + Math.random() * SCALE_VARIATION, MIN_SCALE + Math.random() * SCALE_VARIATION, MIN_SCALE + Math.random() * SCALE_VARIATION);
     return treeContainer;
+}
+
+// Function to colorize the tree by traversing the object and modifying materials
+function colorizeTree(treeObj) {
+    // Create color variations for trunk and leaves
+    const trunkColor = new THREE.Color(
+        0.4 + Math.random() * 0.2,  // Red - brownish
+        0.2 + Math.random() * 0.2,  // Green
+        0.05 + Math.random() * 0.1  // Blue
+    );
+    
+    const leafColor = new THREE.Color(
+        0.1 + Math.random() * 0.2,  // Red
+        0.5 + Math.random() * 0.3,  // Green - dominant green
+        0.1 + Math.random() * 0.2   // Blue
+    );
+    
+    // Traverse the tree object and modify materials
+    treeObj.traverse((object) => {
+        if (object.isMesh) {
+            // Check if this is likely a leaf or branch based on geometry or existing material
+            const isLeaf = object.name.includes('leaf') || 
+                          (object.material && object.material.name && object.material.name.includes('leaf'));
+            
+            // Clone the material to avoid affecting other trees
+            if (object.material) {
+                // Handle both single materials and material arrays
+                if (Array.isArray(object.material)) {
+                    object.material = object.material.map(mat => {
+                        const newMat = mat.clone();
+                        // Apply color based on whether it's a leaf or bark
+                        newMat.color = isLeaf ? leafColor : trunkColor;
+                        return newMat;
+                    });
+                } else {
+                    const newMaterial = object.material.clone();
+                    // Apply color based on whether it's a leaf or bark
+                    newMaterial.color = isLeaf ? leafColor : trunkColor;
+                    object.material = newMaterial;
+                }
+            }
+        }
+    });
+    
+    // Create an ambient light to illuminate the tree and attach it to the tree container
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    treeObj.add(ambientLight);
+    
+    // Optionally add a subtle outline to make the tree more visible
+    const treeOutline = new THREE.Group();
+    treeObj.traverse((object) => {
+        if (object.isMesh) {
+            const outlineMaterial = new THREE.MeshBasicMaterial({
+                color: object.material?.color || 0x000000,
+                transparent: true,
+                opacity: 0.1,
+                side: THREE.BackSide
+            });
+            
+            const outlineMesh = new THREE.Mesh(object.geometry.clone(), outlineMaterial);
+            outlineMesh.scale.multiplyScalar(1.05);
+            object.getWorldPosition(outlineMesh.position);
+            object.getWorldQuaternion(outlineMesh.quaternion);
+            object.getWorldScale(outlineMesh.scale);
+            outlineMesh.scale.multiplyScalar(1.05);
+            treeOutline.add(outlineMesh);
+        }
+    });
+    
+    treeObj.add(treeOutline);
 }
 
 export default makeNewTree;
