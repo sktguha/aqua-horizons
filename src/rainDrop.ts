@@ -2,7 +2,7 @@
 import * as THREE from 'three';
 export const POS_MULTIPLIER = 50;
 export function createRaindrops(scene) {
-  const raindropCount = 50000; // Number of raindrops
+  const raindropCount = 50000/9; // Number of raindrops
   const raindrops = [];
   const worldSize = 10000; // Match the world size
 
