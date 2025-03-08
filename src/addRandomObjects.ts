@@ -376,12 +376,7 @@ export const addRandomObjects = (scene, isOcean = false) => {
     let normal = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
     return mean + stddev * normal;
 }
-
-  const DISABLE_TREES = false;
-  // Add trees
-  for (let i = 0; i < OBJECTS_TO_RENDER*0.7; i++) { // Increased number of objects
-    if(DISABLE_TREES) i = OBJECTS_TO_RENDER*0.7;
-    // Create tree geometry with random height
+  function makeNewTree(){
     const treeHeight = 1000 + Math.random() * 3000;
     const treeGeometry = new THREE.ConeGeometry(200, treeHeight, 200); // Reduced size
     const {x,z} = getBiasedCoordinate(worldX, worldY);
@@ -391,13 +386,13 @@ export const addRandomObjects = (scene, isOcean = false) => {
     // Prevent trees from being generated near the user's spawn position (within a radius of 1000 units)
     const distanceFromOrigin = Math.sqrt(x * x + z * z);
     if (distanceFromOrigin < 1000) {
-      continue;
+      return false;
     }
 
     tree.position.set(x, treeHeight / 2, z);
 
     // Consolidate crown addition: crown radius proportional to tree height (e.g. treeHeight/10)
-    const crownRadius = treeHeight / 5;
+    const crownRadius = treeHeight / 2;
     const crownGeometry = new THREE.SphereGeometry(crownRadius, 32, 16);
     const crownMaterial = new THREE.MeshStandardMaterial({ color: 0x228B22 });
     const crown = new THREE.Mesh(crownGeometry, crownMaterial);
@@ -405,8 +400,15 @@ export const addRandomObjects = (scene, isOcean = false) => {
     crown.position.set(0, treeHeight / 2, 0);
     tree.add(crown);
 
-    trees.push(tree);
-    treeSpeeds.push((Math.random() * 0.02) + 0.01); // Random speed
+    return tree;
+  }
+  const DISABLE_TREES = false;
+  // Add trees
+  for (let i = 0; i < OBJECTS_TO_RENDER*0.7; i++) { // Increased number of objects
+    if(DISABLE_TREES) i = OBJECTS_TO_RENDER*0.7;
+    // Create tree geometry with random height
+    const tree = makeNewTree();
+    if(!tree) continue;
     scene.add(tree);
   }
 
