@@ -384,9 +384,9 @@ function initOceanScene(){
     // Update raindrops - make them fall and recycle
     const currentTime = performance.now();
     if (drops && drops.length > 0 && !objectsPaused) {
-      const fallSpeed = 4+Math.random()*4; // Speed of falling raindrops
-      const maxY = 500; // Maximum height for recycling
-      const minY = 0; // Minimum height before recycling back to top
+      const fallSpeed = 1+Math.random()*4; // Speed of falling raindrops
+      const maxY = camera.position.y + 150; // Maximum height for recycling
+      let minY = camera.position.y - 10; // Minimum height before recycling back to top
       
       // Always update Y position for falling effect
       drops.forEach(drop => {
@@ -404,6 +404,7 @@ function initOceanScene(){
             drop.position.y = maxY;
             const rainRadius = 1000; // Radius of rain area around camera
             drop.position.x = camera.position.x + (Math.random() - 0.5) * rainRadius;
+            drop.position.y = camera.position.y + (Math.random()) * 70;
             drop.position.z = camera.position.z + (Math.random() - 0.5) * rainRadius;
           }
         });

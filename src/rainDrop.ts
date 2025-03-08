@@ -23,7 +23,7 @@ export function createRaindrops(scene) {
         drop.position.x = (Math.random() - 0.5) * 200;
 
         // Y: position in a lower height range
-        drop.position.y = Math.random() * 500 + 50;
+        drop.position.y = Math.random() * 70;
 
         // Z: tightly focused in front of player (-20 to 150)
         drop.position.z = -20 + Math.random() * 200;
