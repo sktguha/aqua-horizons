@@ -4,18 +4,20 @@ import { Tree } from '@dgreenheck/ez-tree';
 
 function makeNewTree() {
     const tree = new Tree();
-    // Set parameters
-    tree.options.seed = 12345;
-    // tree.options.trunk.length = 20;
+    // Set random seed for each tree
+    tree.options.seed = Math.floor(Math.random() * 100000);
     tree.options.branch.levels = 3;
 
-    // Generate tree and add to your Three.js scene
+    // Generate tree
     tree.generate();
     const treeContainer = new THREE.Group();
     treeContainer.add(tree);
 
-    // Set the group's position
-    treeContainer.position.set(2000 + Math.random() * 5000, 20, 2000 + Math.random() * 5000);
+    // Use entire worldX and worldY for better distribution
+    const x = Math.random() * worldX - worldX / 2; // Full world range
+    const z = Math.random() * worldY - worldY / 2; // Full world range
+    
+    treeContainer.position.set(x, 20, z);
     treeContainer.scale.set(5 + Math.random() * 25, 5 + Math.random() * 25, 5 + Math.random() * 25);
     return treeContainer;
 }
