@@ -251,7 +251,9 @@ function initOceanScene(){
   // This simulates the water.material.uniforms['time'].value update but for our custom material
   const updateWater = () => {
     // Only apply ripples if needed - you can comment this out for a completely flat surface
-    // animateWaterRipples();
+    if(getParams().waterStill !== 'true'){
+      animateWaterRipples();
+    }
   };
 
   // Add a gigantic tree
