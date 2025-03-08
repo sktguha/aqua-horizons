@@ -198,7 +198,7 @@ function initOceanScene(){
   water.rotation.x = -Math.PI / 2;
   
   // Make water more opaque by adjusting material, true
-  water.material.transparent = true;
+  water.material.transparent = getParams().solid === 'true' ? false : true;
   water.material.opacity = 0.9; // Adjust this value between 0-1 (1 = fully opaque)
   
   scene.add(water);
