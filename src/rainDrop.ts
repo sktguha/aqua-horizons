@@ -18,7 +18,7 @@ export function createRaindrops(scene) {
   for (let i = 0; i < raindropCount; i++) {
     const drop = new THREE.Mesh(geometry, material);
     
-    drop.position.x = i*Math.floor(i/POS_MULTIPLIER);
+    drop.position.x = 10;;
     drop.position.y = Math.random()*100; // Random height
     drop.position.z = i*Math.floor(i/POS_MULTIPLIER);
     
