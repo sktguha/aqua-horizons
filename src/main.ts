@@ -388,10 +388,11 @@ function initOceanScene(){
         
         // If raindrop falls below threshold, recycle it to the top
         if (drop.position.y < minY) {
-          // Reset position to top with random X and Z coordinates
+          // Reset position to top with random X and Z coordinates around the camera
           drop.position.y = maxY;
-          // drop.position.x = (Math.random() - 0.5) * worldX * 0.5; // Random X position within world bounds
-          // drop.position.z = (Math.random() - 0.5) * worldY * 0.5; // Random Z position within world bounds
+          const rainRadius = 1000; // Radius of rain area around camera
+          drop.position.x = camera.position.x + (Math.random() - 0.5) * rainRadius;
+          drop.position.z = camera.position.z + (Math.random() - 0.5) * rainRadius;
         }
       });
     }
