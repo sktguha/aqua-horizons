@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import { noise } from 'perlin-noise';
 // import { colors, worldX, worldY, balls, speedRanges, ballSpeeds, scene, trees, treeSpeeds, squares, rectangles } from './main';
 import { createPatch, generatePatch } from './patchUtils';
-import * as BufferGeometryUtils from 'three/addons/utils/BufferGeometryUtils.js';
+import * as BufferGeometryUtils from './bufferGeometryUtils';
 import { ConvexGeometry } from 'three/examples/jsm/geometries/ConvexGeometry.js';
 import makeNewTree from './makeNewTree';
 
@@ -193,83 +193,7 @@ export function createFish() {
   bodyGeom.setAttribute("position", new THREE.Float32BufferAttribute(pts, 3));
   bodyGeom.setAttribute("parts", new THREE.Float32BufferAttribute(parts, 1));
   bodyGeom.computeVertexNormals();
-  // Basic example implementation of mergeBufferGeometries
-function mergeBufferGeometries(geometries, useGroups = false) {
-  if (!Array.isArray(geometries) || geometries.length === 0) return null;
-
-  const isIndexed = geometries[0].index !== null;
-  const mergedGeometry = new THREE.BufferGeometry();
-
-  // Collect attributes
-  const attributes = {};
-  const morphAttributes = {};
-  let offset = 0;
-  let totalIndices = 0;
-  let totalVertices = 0;
-
-  for (let i = 0; i < geometries.length; i++) {
-    const geom = geometries[i];
-    // Keep track of index size if geometry is indexed
-    if (isIndexed) totalIndices += geom.index.count;
-    // Track vertex count
-    totalVertices += geom.attributes.position.count;
-
-    // List out possible attribute names
-    for (const name in geom.attributes) {
-      if (!attributes[name]) attributes[name] = [];
-      attributes[name].push(geom.attributes[name]);
-    }
-
-    // Morph attributes
-    for (const name in geom.morphAttributes) {
-      if (!morphAttributes[name]) morphAttributes[name] = [];
-      morphAttributes[name].push(...geom.morphAttributes[name]);
-    }
-
-    if (useGroups) {
-      mergedGeometry.addGroup(offset, isIndexed ? geom.index.count : geom.attributes.position.count, i);
-      offset += isIndexed ? geom.index.count : geom.attributes.position.count;
-    }
-  }
-
-  // Merge index
-  if (isIndexed) {
-    const mergedIndex = new Uint32Array(totalIndices);
-    let indexOffset = 0;
-    let vertexOffset = 0;
-
-    for (let i = 0; i < geometries.length; i++) {
-      const idx = geometries[i].index.array;
-      for (let j = 0; j < idx.length; j++) {
-        mergedIndex[indexOffset++] = idx[j] + vertexOffset;
-      }
-      vertexOffset += geometries[i].attributes.position.count;
-    }
-    mergedGeometry.setIndex(new THREE.BufferAttribute(mergedIndex, 1));
-  }
-
-  // Merge attributes
-  for (const name in attributes) {
-    // Assume consistent itemSize, arrayType
-    let itemSize = attributes[name][0].itemSize;
-    let arrayType = attributes[name][0].array.constructor;
-    let mergedArray = new arrayType(itemSize * totalVertices);
-
-    let offsetAttr = 0;
-    for (let i = 0; i < attributes[name].length; i++) {
-      mergedArray.set(attributes[name][i].array, offsetAttr);
-      offsetAttr += attributes[name][i].array.length;
-    }
-    mergedGeometry.setAttribute(name, new THREE.BufferAttribute(mergedArray, itemSize));
-  }
-
-  // Merge morph attributes similarly if needed
-  // ...
-
-  return mergedGeometry;
-}
-// ...existing code...
-  let mainGeom = mergeBufferGeometries([bodyGeom, gTail, gDorsal, gRect, gPelvicL, gPelvicR]);
+  let mainGeom = BufferGeometryUtils.mergeBufferGeometries([bodyGeom, gTail, gDorsal, gRect, gPelvicL, gPelvicR]);
   
   return mainGeom;
 
