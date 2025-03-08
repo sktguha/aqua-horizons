@@ -7,7 +7,10 @@ function makeNewTree() {
     // Set random seed for each tree
     tree.options.seed = Math.floor(Math.random() * 100000);
     tree.options.branch.levels = 3;
-
+    
+    // Set trunk length (level 0)
+    tree.options.branch.length[0] = 50.0; // Adjust this value to change trunk length
+    
     // Generate tree
     tree.generate();
     const treeContainer = new THREE.Group();
