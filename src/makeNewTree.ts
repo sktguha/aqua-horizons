@@ -73,7 +73,7 @@ function colorizeTree(treeObj) {
     });
     
     // Create an ambient light with reduced intensity to illuminate the tree
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.1); // Reduced from 0.5 to 0.1
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.01/2); // Reduced from 0.5 to 0.1
     treeObj.add(ambientLight);
 }
 
