@@ -192,10 +192,10 @@ function initOceanScene(){
   });
   
   // Create water plane with basic material
-  const water = new THREE.Mesh(waterGeometry, waterMaterial);
-  water.rotation.x = -Math.PI / 2; // Rotate to be horizontal
-  water.position.y = 0; // Position at y=0
-  scene.add(water);
+  const waterSolid = new THREE.Mesh(waterGeometry, waterMaterial);
+  waterSolid.rotation.x = -Math.PI / 2; // Rotate to be horizontal
+  waterSolid.position.y = 0; // Position at y=0
+  scene.add(waterSolid);
   
   // Small ripple effect using geometry displacement (optional)
   // Create a simple displacement function to simulate gentle ripples
