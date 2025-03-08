@@ -105,7 +105,19 @@ function initOceanScene(){
   window.objectsPaused = objectsPaused;
   window.enterPressed = false;
 
-  // toggle controls
+  let url = getParams().url || 'https://cdn.jsdelivr.net/gh/Sean-Bradley/React-Three-Fiber-Boilerplate@obstacleCourse/public/img/rustig_koppie_puresky_1k.hdr'
+      // if(IS_NIGHT){
+      //   url = '/textures/night.hdr';
+      // }
+      new RGBELoader().load(url, function(texture) {
+        texture.mapping = THREE.EquirectangularReflectionMapping;
+        scene.background = texture;
+        scene.environment = texture;
+      });
+
+  // toggle controls, TODO: seperate in new file, and add folder structure 
+  // objects/ and controls/ constants later, also useful, and GET parameter wise
+  // main render loop also can be seperated, animations can be seperated
   window.addEventListener('keydown', (event) => {
     keyState[event.key] = true;
     // Toggle cruise mode: Press "2" to enable, "1" to disable
