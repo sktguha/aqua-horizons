@@ -333,7 +333,7 @@ function loadTreeModels(callback) {
   const treeModelPaths = [
     'models/tree1.glb',
     'models/tree2.glb',
-    'models/pine_tree.glb'
+    'models/tree3.glb'
   ];
   
   let loadedCount = 0;
@@ -373,7 +373,48 @@ export const getRandomColorBallon = () => colors[Math.floor(Math.random() * colo
 // Add random objects
 export const addRandomObjects = (scene, isOcean = false) => {
   // Start loading tree models early
-  loadTreeModels();
+  loadTreeModels(()=>{
+    const DISABLE_TREES = false;
+  // Add trees
+  for (let i = 0; i < OBJECTS_TO_RENDER*0.7; i++) { // Increased number of objects
+    if(DISABLE_TREES) i = OBJECTS_TO_RENDER*0.7;
+    
+    // Create tree with random height
+    const treeHeight = 1000 + Math.random() * 3000;
+    const {x,z} = getBiasedCoordinate(worldX, worldY);
+    
+    // Prevent trees from being generated near the user's spawn position
+    // TODO : add for fish etc also 
+    const distanceFromOrigin = Math.sqrt(x * x + z * z);
+    if (distanceFromOrigin < 1000) {
+      continue;
+    }
+
+    // Use GLTF model if available, otherwise create geometric tree
+    console.log('added from glb before', treeModels);
+    if (treeModels.length > 0) {
+      // Create tree from model
+      console.log('added from glb');
+      const randomIndex = Math.floor(Math.random() * treeModels.length);
+      const treeModel = treeModels[randomIndex].clone();
+      
+      // Scale based on desired tree height
+      const scale = treeHeight / 1000; // Adjust scaling factor based on model size
+      treeModel.scale.set(scale, scale, scale);
+      
+      // Position tree
+      treeModel.position.set(x, 0, z);
+      
+      // Add random rotation for variety
+      treeModel.rotation.y = Math.random() * Math.PI * 2;
+      
+      trees.push(treeModel);
+      treeSpeeds.push((Math.random() * 0.02) + 0.01);
+      console.log('added from glb');
+      scene.add(treeModel);
+    } 
+  }
+  });
   
   const geometry = new THREE.SphereGeometry(200, 32, 32); // Balloon shape
   const OBJECTS_TO_RENDER = 5000;
@@ -432,67 +473,6 @@ export const addRandomObjects = (scene, isOcean = false) => {
     return mean + stddev * normal;
 }
 
-  const DISABLE_TREES = false;
-  // Add trees
-  for (let i = 0; i < OBJECTS_TO_RENDER*0.7; i++) { // Increased number of objects
-    if(DISABLE_TREES) i = OBJECTS_TO_RENDER*0.7;
-    
-    // Create tree with random height
-    const treeHeight = 1000 + Math.random() * 3000;
-    const {x,z} = getBiasedCoordinate(worldX, worldY);
-    
-    // Prevent trees from being generated near the user's spawn position
-    // TODO : add for fish etc also 
-    const distanceFromOrigin = Math.sqrt(x * x + z * z);
-    if (distanceFromOrigin < 1000) {
-      continue;
-    }
-
-    // Use GLTF model if available, otherwise create geometric tree
-    if (modelsLoaded && treeModels.length > 0) {
-      // Create tree from model
-      const randomIndex = Math.floor(Math.random() * treeModels.length);
-      const treeModel = treeModels[randomIndex].clone();
-      
-      // Scale based on desired tree height
-      const scale = treeHeight / 1000; // Adjust scaling factor based on model size
-      treeModel.scale.set(scale, scale, scale);
-      
-      // Position tree
-      treeModel.position.set(x, 0, z);
-      
-      // Add random rotation for variety
-      treeModel.rotation.y = Math.random() * Math.PI * 2;
-      
-      trees.push(treeModel);
-      treeSpeeds.push((Math.random() * 0.02) + 0.01);
-      scene.add(treeModel);
-    } 
-    else {
-      // Fallback to geometric tree
-      const treeGeometry = new THREE.ConeGeometry(200, treeHeight, 200);
-      const treeMaterial = new THREE.MeshStandardMaterial({ 
-        color: deepBrownShades[Math.floor(Math.random() * deepBrownShades.length)] 
-      });
-      
-      const tree = new THREE.Mesh(treeGeometry, treeMaterial);
-      tree.position.set(x, treeHeight / 2, z);
-
-      // Consolidate crown addition: crown radius proportional to tree height
-      const crownRadius = treeHeight / 5;
-      const crownGeometry = new THREE.SphereGeometry(crownRadius, 32, 16);
-      const crownMaterial = new THREE.MeshStandardMaterial({ color: 0x228B22 });
-      const crown = new THREE.Mesh(crownGeometry, crownMaterial);
-      
-      // Position crown at the top of the tree
-      crown.position.set(0, treeHeight / 2, 0);
-      tree.add(crown);
-
-      trees.push(tree);
-      treeSpeeds.push((Math.random() * 0.02) + 0.01); // Random speed
-      scene.add(tree);
-    }
-  }
 
   // Add squares
   for (let i = 0; i < 0; i++) {
