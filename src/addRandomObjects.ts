@@ -553,7 +553,7 @@ function prepareFishOrBoat(fish, isBoat = false){
 for (let i = 0; i < 8; i++) {
     const mountainHeight = 15000 + Math.random() * 3000;
     const mountainRadius = mountainHeight * 0.9;
-    const mountainGeometry = new THREE.ConeGeometry(mountainRadius, mountainHeight, 16);
+    const mountainGeometry = new THREE.ConeGeometry(mountainRadius, mountainHeight, 32);
     const mountainMaterial = new THREE.MeshStandardMaterial({
         color: deepBrownShades[Math.floor(Math.random() * deepBrownShades.length)],
         roughness: 0.5 + Math.random() / 2
