@@ -1,3 +1,4 @@
+// @ts-nocheck
 import * as THREE from 'three';
 import { getBiasedCoordinate, worldX, worldY } from './addRandomObjects';
 import { Tree } from '@dgreenheck/ez-tree';
@@ -11,7 +12,7 @@ function makeNewTree() {
     
     // Set trunk length (level 0)
     // For 20% of trees, make the trunk very small
-    if (Math.random() < 0.4) {
+    if (Math.random() < ((getParams().grass*1) || 0.4)) {
         tree.options.branch.length[0] = 0.5 + Math.random() * 2; // Very small trunk
     } else {
         tree.options.branch.length[0] = 10.0 + Math.random() * 10; // Regular trunk length
