@@ -8,6 +8,7 @@ import { addRandomObjects } from './addRandomObjects';
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
 import { initDesertScene } from './main2Desert';
 import { getParams } from './getParams';
+import { createRaindrops } from './rainDrop';
 
 export function isMobile() {
   // return 1;
@@ -115,7 +116,9 @@ function initOceanScene(){
         scene.environment = texture;
       });
 
-  // toggle controls, TODO: seperate in new file, and add folder structure 
+    const drops = createRaindrops(scene);
+
+  // TODO: toggle controls, TODO: seperate in new file, and add folder structure 
   // objects/ and controls/ constants later, also useful, and GET parameter wise
   // main render loop also can be seperated, animations can be seperated
   window.addEventListener('keydown', (event) => {
