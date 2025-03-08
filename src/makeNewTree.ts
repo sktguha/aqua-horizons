@@ -72,32 +72,9 @@ function colorizeTree(treeObj) {
         }
     });
     
-    // Create an ambient light to illuminate the tree and attach it to the tree container
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    // Create an ambient light with reduced intensity to illuminate the tree
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.1); // Reduced from 0.5 to 0.1
     treeObj.add(ambientLight);
-    
-    // Optionally add a subtle outline to make the tree more visible
-    const treeOutline = new THREE.Group();
-    treeObj.traverse((object) => {
-        if (object.isMesh) {
-            const outlineMaterial = new THREE.MeshBasicMaterial({
-                color: object.material?.color || 0x000000,
-                transparent: true,
-                opacity: 0.1,
-                side: THREE.BackSide
-            });
-            
-            const outlineMesh = new THREE.Mesh(object.geometry.clone(), outlineMaterial);
-            outlineMesh.scale.multiplyScalar(1.05);
-            object.getWorldPosition(outlineMesh.position);
-            object.getWorldQuaternion(outlineMesh.quaternion);
-            object.getWorldScale(outlineMesh.scale);
-            outlineMesh.scale.multiplyScalar(1.05);
-            treeOutline.add(outlineMesh);
-        }
-    });
-    
-    treeObj.add(treeOutline);
 }
 
 export default makeNewTree;
