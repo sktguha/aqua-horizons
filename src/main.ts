@@ -381,7 +381,7 @@ function initOceanScene(){
       const fallSpeed = 10; // Speed of falling raindrops
       const maxY = 500; // Maximum height for recycling
       const minY = 0; // Minimum height before recycling back to top
-      
+      // works
       drops.forEach(drop => {
         // Make raindrop fall down
         drop.position.y -= fallSpeed;
