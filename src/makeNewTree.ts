@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { deepBrownShades, getBiasedCoordinate, worldX, worldY } from './addRandomObjects';
+import { getBiasedCoordinate, worldX, worldY } from './addRandomObjects';
 import { Tree } from '@dgreenheck/ez-tree';
 
 function makeNewTree() {
@@ -20,8 +20,7 @@ function makeNewTree() {
     colorizeTree(treeContainer);
 
     // Use entire worldX and worldY for better distribution
-    const x = Math.random() * worldX - worldX / 2; // Full world range
-    const z = Math.random() * worldY - worldY / 2; // Full world range
+    const {x, z} = getBiasedCoordinate(worldX, worldY);
     
     treeContainer.position.set(x, 20, z);
     const SCALE_VARIATION = 350;

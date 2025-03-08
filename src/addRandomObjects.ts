@@ -374,7 +374,7 @@ export const addRandomObjects = (scene, isOcean = false) => {
   
   const DISABLE_TREES = false;
   // Add trees
-  for (let i = 0; i < 200; i++) { // Increased number of objects
+  for (let i = 0; i < 900; i++) { // Increased number of objects
     if(DISABLE_TREES) i = OBJECTS_TO_RENDER*0.7;
     // Create tree geometry with random height
     const tree = makeNewTree();
@@ -544,9 +544,9 @@ function prepareFishOrBoat(fish, isBoat = false){
   fishes.push(fish);
   scene.add(fish);
 }
-for (let i = 0; i < 8; i++) {
+for (let i = 0; i < 18; i++) {
     const mountainHeight = 15000 + Math.random() * 3000;
-    const mountainRadius = mountainHeight * 0.9;
+    const mountainRadius = mountainHeight * 0.4;
     const mountainGeometry = new THREE.ConeGeometry(mountainRadius, mountainHeight, 32);
     const mountainMaterial = new THREE.MeshStandardMaterial({
         color: deepBrownShades[Math.floor(Math.random() * deepBrownShades.length)],
