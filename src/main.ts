@@ -189,11 +189,11 @@ function initOceanScene(){
       });
     }),
     sunDirection: new THREE.Vector3(1, 0.1, 0),
-    sunColor: 0xffffff, // Brighter sun color
-    waterColor: 0x00AA55, // Changed to a green color
+    sunColor: Number(getParams().sunColor) || 0xffffff, // Brighter sun color
+    waterColor: Number(getParams().water) ||0x00AA55, // Changed to a green color
     distortionScale: 15, // Increased from 3.7 for aggressive, choppy waves
     fog: true,
-    alpha: 0.9 // Added alpha to make water more opaque (0-1 where 1 is fully opaque)
+    alpha: Number(getParams().waterOpacity) || 0.9 // Added alpha to make water more opaque (0-1 where 1 is fully opaque)
   });
   water.rotation.x = -Math.PI / 2;
   
