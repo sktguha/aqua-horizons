@@ -1,6 +1,10 @@
 // @ts-nocheck
 import * as THREE from 'three';
 export function createRaindrops(scene, count = 5000) {
+    // add flag to make snow , hail etc sizes later, easy to customize
+    // add key listerner to change the weather based different keys, 
+    // 6,7,8,9 , 8 and 9 can control intensity of rain snow etc, 
+    // 6 and 7 can control rain and snow respectively
     // Rain material
     const rainMaterial = new THREE.MeshBasicMaterial({
       color: 0xffffff,
