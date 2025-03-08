@@ -6,6 +6,7 @@ import { createPatch, generatePatch } from './patchUtils';
 import * as BufferGeometryUtils from './bufferGeometryUtils';
 import { ConvexGeometry } from 'three/examples/jsm/geometries/ConvexGeometry.js';
 import makeNewTree from './makeNewTree';
+import { getParams } from './getParams';
 
 export const deepBrownShades = 
   [
@@ -544,8 +545,8 @@ function prepareFishOrBoat(fish, isBoat = false){
   fishes.push(fish);
   scene.add(fish);
 }
-for (let i = 0; i < 18; i++) {
-    const mountainHeight = 15000 + Math.random() * 3000;
+for (let i = 0; i < (18 || getParams().mountains); i++) {
+    const mountainHeight = (15000 || getParams().mountainHeight) + Math.random() * 3000;
     const mountainRadius = mountainHeight * 0.4;
     const mountainGeometry = new THREE.ConeGeometry(mountainRadius, mountainHeight, 32);
     const mountainMaterial = new THREE.MeshStandardMaterial({

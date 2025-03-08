@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { getBiasedCoordinate, worldX, worldY } from './addRandomObjects';
 import { Tree } from '@dgreenheck/ez-tree';
+import { getParams } from './getParams';
 
 function makeNewTree() {
     const tree = new Tree();
@@ -72,7 +73,7 @@ function colorizeTree(treeObj) {
     });
     
     // Create an ambient light with reduced intensity to illuminate the tree
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.007); // Reduced from 0.5 to 0.1
+    const ambientLight = new THREE.AmbientLight(0xffffff, (Number(getParams().bright))||0.007); // Reduced from 0.5 to 0.1
     treeObj.add(ambientLight);
 }
 
