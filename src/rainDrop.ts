@@ -18,9 +18,15 @@ export function createRaindrops(scene) {
   for (let i = 0; i < raindropCount; i++) {
     const drop = new THREE.Mesh(geometry, material);
     
-    drop.position.x = 10;;
-    drop.position.y = Math.random()*100; // Random height
-    drop.position.z = i*Math.floor(i/POS_MULTIPLIER);
+    // Position raindrops in a very narrow volume in front of player
+    // X: distribute left/right around player (-50 to 50)
+    drop.position.x = (Math.random() - 0.5) * 100;
+    
+    // Y: position in a lower height range
+    drop.position.y = Math.random() * 200 + 50;
+    
+    // Z: tightly focused in front of player (-20 to 150)
+    drop.position.z = -20 + Math.random() * 170;
     
     // Add to scene and to our array
     scene.add(drop);
