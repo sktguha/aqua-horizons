@@ -116,7 +116,7 @@ function initOceanScene(){
         scene.environment = texture;
       });
 
-    const drops = createRaindrops(scene);
+    const drops = getParams().rain ? createRaindrops(scene): [];
 
   // TODO: toggle controls, TODO: seperate in new file, and add folder structure 
   // objects/ and controls/ constants later, also useful, and GET parameter wise
@@ -370,7 +370,7 @@ function initOceanScene(){
 
   // Add timing variables for raindrop optimization
   let lastRaindropUpdate = 0;
-  const raindropUpdateInterval = 300; // Update rain positions every 100ms
+  const raindropUpdateInterval = 100; // Update rain positions every 100ms
   
   const animate = () => {
     stats.begin();
