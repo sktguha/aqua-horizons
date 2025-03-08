@@ -18,7 +18,9 @@ function makeNewTree() {
     const z = Math.random() * worldY - worldY / 2; // Full world range
     
     treeContainer.position.set(x, 20, z);
-    treeContainer.scale.set(5 + Math.random() * 25, 5 + Math.random() * 25, 5 + Math.random() * 25);
+    const SCALE_VARIATION = 350;
+    const MIN_SCALE = 50;
+    treeContainer.scale.set(MIN_SCALE + Math.random() * SCALE_VARIATION, MIN_SCALE + Math.random() * SCALE_VARIATION, MIN_SCALE + Math.random() * SCALE_VARIATION);
     return treeContainer;
 }
 
