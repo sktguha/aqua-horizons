@@ -293,7 +293,7 @@ function initOceanScene(){
   });
 
   // Add this near the top of the file with other constant declarations
-  const WING_FLAP_INTERVAL = 500; // milliseconds between wing flaps
+  // const WING_FLAP_INTERVAL = 500; // milliseconds between wing flaps
 
   // renderer
   const renderer = new THREE.WebGLRenderer({ canvas });
@@ -513,10 +513,10 @@ function initOceanScene(){
             ball.userData.lastFlapTime = currentTime;
           }
           
-          if (currentTime - ball.userData.lastFlapTime > WING_FLAP_INTERVAL) {
+          if (currentTime - ball.userData.lastFlapTime > (ball.userData.wingSpeed)) {
             // ball.userData.bodyMesh.position.z = ball.userData.isFlapup ? 100 : 0;
             ball.userData.isFlapup = !ball.userData.isFlapup;
-            const rotAngle = Math.PI / 23;
+            const rotAngle = ball.userData.rotAngle;
             ball.userData.leftWing.rotation.y = ball.userData.isFlapup ? rotAngle : -rotAngle;
             ball.userData.rightWing.rotation.y = ball.userData.isFlapup ? rotAngle : -rotAngle;
             ball.userData.lastFlapTime = currentTime;
