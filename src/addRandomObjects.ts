@@ -382,32 +382,43 @@ export const addRandomObjects = (scene, isOcean = false) => {
     function createWing(birdSize, isLeft = true) {
       // Direction multiplier: 1 for left wing (up), -1 for right wing (down)
       const dir = isLeft ? 1 : -1;
-
+    
       const wing = new THREE.Shape();
       wing.moveTo(birdSize * 1.5, 0);
-
+    
       // Extract constant multipliers for wing curves
       const destX = 6.3;
       const destY = 4;
       const multx = 2;
-      const multy = 0.5*4;
+      const multy = 0.5 * 4;
       const wingCurveMultipliers = {
-        curve1: { cp1x: multx, cp1y: multy*3, destX: destX*2, destY},
+        curve1: { cp1x: multx, cp1y: multy * 3, destX: destX * 2, destY },
         curve2: { cp1x: multx, cp1y: multy, destX, destY: 0 }
       };
-
+    
+      // Draw first quadratic curve
       wing.quadraticCurveTo(
         birdSize * wingCurveMultipliers.curve1.cp1x,
         birdSize * wingCurveMultipliers.curve1.cp1y * dir,
         birdSize * wingCurveMultipliers.curve1.destX,
         birdSize * wingCurveMultipliers.curve1.destY * dir
       );
+    
+      // Add an arc at the tip of the first curve to simulate a fatter end
+      const tipRadius = birdSize * 0.2; // Adjust thickness by modifying this value
+      const tipX = birdSize * wingCurveMultipliers.curve1.destX;
+      const tipY = birdSize * wingCurveMultipliers.curve1.destY * dir;
+      // Draw a half-circle arc at the tip; the start and end angles may be adjusted as needed
+      wing.absarc(tipX, tipY, tipRadius, Math.PI, 0, isLeft);
+    
+      // Continue with the second quadratic curve
       wing.quadraticCurveTo(
         birdSize * wingCurveMultipliers.curve2.cp1x,
         birdSize * wingCurveMultipliers.curve2.cp1y * dir,
         birdSize * wingCurveMultipliers.curve2.destX,
         birdSize * wingCurveMultipliers.curve2.destY
       );
+    
       return wing;
     }
 
