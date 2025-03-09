@@ -369,7 +369,7 @@ export const addRandomObjects = (scene, isOcean = false) => {
   }
 
   // Add balloon-shaped balls
-  for (let i = 0; i < OBJECTS_TO_RENDER / 1.4; i++) { // Increased number of objects
+  for (let i = 0; i < OBJECTS_TO_RENDER ; i++) { // Increased number of objects
     const color = getRandomColorBallon();
     const material = new THREE.MeshStandardMaterial({ color, emissive: color, emissiveIntensity: 0.2 });
     const isBird = Math.random() < 0.5;
