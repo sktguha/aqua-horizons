@@ -365,6 +365,7 @@ export const addRandomObjects = (scene, isOcean = false) => {
     bird.rotation.x = (Math.PI / 2 - 0.3)+(Math.random()*0.5); // Rotate 90 degrees
     const scale = 1000;
     bird.scale.set(scale, scale, scale);
+    bird.speed = [0.3, 0.2];
     return bird;
   }
 
@@ -381,7 +382,7 @@ export const addRandomObjects = (scene, isOcean = false) => {
       Math.random() * worldY - worldY / 2 // Adjusted spread
     );
     balls.push(balloon);
-    const [minSpeed, maxSpeed] = !isBird ? speedRanges[color] : [0.3, 0.2];
+    const [minSpeed, maxSpeed] = !isBird ? speedRanges[color] : balloon.speed;
     ballSpeeds.push((Math.random() * (maxSpeed - minSpeed)) + minSpeed); // Random speed within range
     scene.add(balloon);
   }
