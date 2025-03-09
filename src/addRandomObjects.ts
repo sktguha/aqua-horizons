@@ -368,7 +368,7 @@ export const addRandomObjects = (scene, isOcean = false) => {
       0xcc9900  // Bronze
     ];
     
-    const birdSize = 20 + Math.random() * 20;
+    const birdSize = 20+30 + Math.random() * 20;
     
     // Create bird body
     const bodyShape = new THREE.Shape();
@@ -441,6 +441,11 @@ export const addRandomObjects = (scene, isOcean = false) => {
     bird.add(bodyMesh);
     bird.add(leftWingMesh);
     bird.add(rightWingMesh);
+    
+    // Store wing references for animation
+    bird.userData.leftWing = leftWingMesh;
+    bird.userData.rightWing = rightWingMesh;
+    bird.userData.isFlapping = true;
     
     // Rotate and scale the entire bird
     bird.rotation.x = (Math.PI / 2 - 0.3) + (Math.random() * 0.5);
