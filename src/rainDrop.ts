@@ -2,7 +2,7 @@
 import * as THREE from 'three';
 export const POS_MULTIPLIER = 50;
 export function createRaindrops(scene) {
-    const raindropCount = 50000 / 1; // Number of raindrops
+    const raindropCount = 50000 / 0.8; // Number of raindrops
     const raindrops = [];
     const worldSize = 10000; // Match the world size
 
@@ -25,13 +25,13 @@ export function createRaindrops(scene) {
         const drop = new THREE.Mesh(geometry, material);
         // Position raindrops in a very narrow volume in front of player
         // X: distribute left/right around player (-50 to 50)
-        drop.position.x = (Math.random() - 0.5) * 200;
+        drop.position.x = (Math.random() - 0.5) * 300;
 
         // Y: position in a lower height range
-        drop.position.y = Math.random() * 70;
+        drop.position.y = Math.random() * 170;
 
         // Z: tightly focused in front of player (-20 to 150)
-        drop.position.z = -20 + Math.random() * 200;
+        drop.position.z = -20 + Math.random() * 300;
 
         // Add to scene and to our array
         scene.add(drop);
