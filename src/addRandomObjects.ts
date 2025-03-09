@@ -360,9 +360,9 @@ export const addRandomObjects = (scene, isOcean = false) => {
     const birdTexture = textureLoader.load('textures/fish' + Math.floor(Math.random()*7) + '.jpg');
     const material = new THREE.MeshStandardMaterial({
       map: birdTexture,
-      // color: col,
-      // emissive: 0x444444,
-      emissiveIntensity: 0.3
+      // // color: col,
+      // // emissive: 0x444444,
+      // emissiveIntensity: 0.3
     });
     const bird = new THREE.Mesh(geometry, material);
     bird.rotation.x = (Math.PI / 2 - 0.3)+(Math.random()*0.5); // Rotate 90 degrees
