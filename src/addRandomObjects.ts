@@ -324,11 +324,11 @@ export const addRandomObjects = (scene, isOcean = false) => {
     // const rectMat = new THREE.MeshStandardMaterial({ color: getRandomColorBallon() });
     // const rect = new THREE.Mesh(rectGeo, rectMat);
     const birdColors = [
-      0x4169e1, // Royal Blue
-      0xffd700, // Gold
-      0x008000, // Green
-      0xdc143c, // Crimson
-      0xfa8072  // Salmon
+      0xff0000, // Red
+      0xff1a1a, // Lighter Red
+      0xff3333, // Another Red
+      0xff4d4d, // Brighter Red
+      0xff6666  // Soft Red
     ];
     const shape = new THREE.Shape();
     const birdSize = 20 + Math.random() * 20;
