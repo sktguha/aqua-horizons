@@ -8,7 +8,7 @@ import { ConvexGeometry } from 'three/examples/jsm/geometries/ConvexGeometry.js'
 import makeNewTree from './makeNewTree';
 import { getParams } from './getParams';
 
-export const deepBrownShades = 
+export const deepBrownShades =
   [
     "#2d1b16", // Charcoal Brown
     "#2f1d19", // Espresso Brown
@@ -189,7 +189,7 @@ export function createFish() {
   bodyGeom.setAttribute("parts", new THREE.Float32BufferAttribute(parts, 1));
   bodyGeom.computeVertexNormals();
   let mainGeom = BufferGeometryUtils.mergeBufferGeometries([bodyGeom, gTail, gDorsal, gRect, gPelvicL, gPelvicR]);
-  
+
   return mainGeom;
 
   function createFin(basePoints, contourPoints, isTop) {
@@ -291,9 +291,9 @@ function createBoat() {
   ];
 
   const hullGeometry = new THREE.LatheGeometry(shape, 20);
-  const hullMaterial = new THREE.MeshStandardMaterial({ 
-    color: 0x8b4513, 
-    flatShading: true 
+  const hullMaterial = new THREE.MeshStandardMaterial({
+    color: 0x8b4513,
+    flatShading: true
   });
   const hullMain = new THREE.Mesh(hullGeometry, hullMaterial);
   hullMain.rotation.x = Math.PI; // Flip for correct boat orientation
@@ -320,77 +320,38 @@ export const addRandomObjects = (scene, isOcean = false) => {
   const OBJECTS_TO_RENDER = 5000;
 
   function createBird() {
-    // Bird body
-    const bodyGeometry = new THREE.ConeGeometry(1, 4, 8);
-    bodyGeometry.rotateX(Math.PI / 2);
-    
-    // Wings
-    const wingGeometry = new THREE.PlaneGeometry(5, 2);
-    
-    // Materials
-    const bodyMaterial = new THREE.MeshPhongMaterial({ 
-      color: 0x2a52be, // Navy blue
-      shininess: 10
-    });
-    
-    const wingMaterial = new THREE.MeshPhongMaterial({ 
-      color: 0x4169e1, // Royal blue
-      side: THREE.DoubleSide,
-      flatShading: true
-    });
-    
-    // Create body mesh
-    const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
-    
-    // Create wings
-    const leftWing = new THREE.Mesh(wingGeometry, wingMaterial);
-    leftWing.position.set(-1.5, 0, 0);
-    leftWing.rotation.z = Math.PI / 6;
-    
-    const rightWing = new THREE.Mesh(wingGeometry, wingMaterial);
-    rightWing.position.set(1.5, 0, 0);
-    rightWing.rotation.z = -Math.PI / 6;
-    
-    // Create bird group and add components
-    const bird = new THREE.Group();
-    bird.add(body);
-    bird.add(leftWing);
-    bird.add(rightWing);
-    
-    // Position the bird
-    // bird.position.set(0, 15, -20);
-    
-    // Add to scene
-    // scene.add(bird);
-    console.log("gen bird");
-    const rectGeo = new THREE.BoxGeometry(200, 1000, 100);
-    const rectMat = new THREE.MeshStandardMaterial({ color: getRandomColorBallon() });
-    const rect = new THREE.Mesh(rectGeo, rectMat);
+    // const rectGeo = new THREE.BoxGeometry(200, 1000, 100);
+    // const rectMat = new THREE.MeshStandardMaterial({ color: getRandomColorBallon() });
+    // const rect = new THREE.Mesh(rectGeo, rectMat);
+    const birdColors = [
+      0x4169e1, // Royal Blue
+      0xffd700, // Gold
+      0x008000, // Green
+      0xdc143c, // Crimson
+      0xfa8072  // Salmon
+    ];
     const shape = new THREE.Shape();
-    // ...existing code...
-    const birdSize = 20+Math.random()*20;
-shape.moveTo(0, 0);
-shape.lineTo(birdSize*2, birdSize*2);
-shape.lineTo(birdSize*4, 0);
-shape.lineTo(birdSize*3, -birdSize*2);
-shape.lineTo(birdSize, -birdSize);
-shape.lineTo(0, 0);
-// ...existing code...
-
+    const birdSize = 20 + Math.random() * 20;
+    shape.moveTo(0, 0);
+    shape.lineTo(birdSize * 2, birdSize * 2);
+    shape.lineTo(birdSize * 4, 0);
+    shape.lineTo(birdSize * 3, -birdSize * 2);
+    shape.lineTo(birdSize, -birdSize);
+    shape.lineTo(0, 0);
     const geometry = new THREE.ShapeGeometry(shape);
-    const bird2 = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({ color: 0x00ff00 }));
+    const col = birdColors[Math.floor(birdColors.length * Math.random())];
+    const bird = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({ color: col }));
     const scale = 1000;
-    bird2.scale.set(scale, scale, scale);
-    // scene.add(bird);
-    return bird2;
+    bird.scale.set(scale, scale, scale);
+    return bird;
   }
 
   // Add balloon-shaped balls
-  for (let i = 0; i < OBJECTS_TO_RENDER/2; i++) { // Increased number of objects
+  for (let i = 0; i < OBJECTS_TO_RENDER / 1.4; i++) { // Increased number of objects
     const color = getRandomColorBallon();
     const material = new THREE.MeshStandardMaterial({ color, emissive: color, emissiveIntensity: 0.2 });
-    const isBird = 1;
-    const balloon = isBird ? createBird(): new THREE.Mesh(geometry, material);
+    const isBird = Math.random() < 0.5;
+    const balloon = isBird ? createBird() : new THREE.Mesh(geometry, material);
     balloon.scale.set(1, 1.5, 1); // Make it balloon-shaped
     balloon.position.set(
       Math.random() * worldX - worldX / 2, // Adjusted spread
@@ -408,49 +369,49 @@ shape.lineTo(0, 0);
     const color2 = 0x2B1B17; // Brown
     let normalizedX = (x + worldX / 2) / worldX;
     let normalizedZ = (z + worldY / 2) / worldY;
-  
+
     // Clamp normalized values
     normalizedX = Math.max(0, Math.min(1, normalizedX));
     normalizedZ = Math.max(0, Math.min(1, normalizedZ));
-  
+
     let factor = (normalizedX + normalizedZ) / 2;
     factor = Math.max(0, Math.min(1, factor)); // Clamp factor
-  
+
     const r1 = (color1 >> 16) & 0xff;
     const g1 = (color1 >> 8) & 0xff;
     const b1 = color1 & 0xff;
-  
+
     const r2 = (color2 >> 16) & 0xff;
     const g2 = (color2 >> 8) & 0xff;
     const b2 = color2 & 0xff;
-  
+
     const r = Math.round(r1 + factor * (r2 - r1));
     const g = Math.round(g1 + factor * (g2 - g1));
     const b = Math.round(b1 + factor * (b2 - b1));
-  
+
     return varyColor((r << 16) + (g << 8) + b);
   }
-  
+
   function gaussianRandom(mean, stddev) {
     let u = 1 - Math.random();
     let v = 1 - Math.random();
     let normal = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
     return mean + stddev * normal;
-}
-  
+  }
+
   const DISABLE_TREES = false;
   // Add trees
   for (let i = 0; i < 900; i++) { // Increased number of objects
-    if(DISABLE_TREES) i = OBJECTS_TO_RENDER*0.7;
+    if (DISABLE_TREES) i = OBJECTS_TO_RENDER * 0.7;
     // Create tree geometry with random height
     const tree = makeNewTree();
-    if(!tree) continue;
+    if (!tree) continue;
     scene.add(tree);
   }
 
   // Add squares
   for (let i = 0; i < 0; i++) {
-    const squareGeo = new THREE.BoxGeometry(100, 100*10, 100);
+    const squareGeo = new THREE.BoxGeometry(100, 100 * 10, 100);
     const squareMat = new THREE.MeshStandardMaterial({ color: getRandomColorBallon() });
     const square = new THREE.Mesh(squareGeo, squareMat);
     square.position.set(
@@ -480,36 +441,36 @@ shape.lineTo(0, 0);
   const islandGeometry = new THREE.BoxGeometry(10000, 50, 2000); // Reduced height
   const islandMaterial = new THREE.MeshStandardMaterial({
     color: '#333333',
-      dithering: true
+    dithering: true
   });
-  
+
   const island = new THREE.Mesh(islandGeometry, islandMaterial);
-  
+
   const material = new THREE.MeshStandardMaterial({
-      color: '#ffbe67',
-      dithering: true
-    });
-  
-    let lods = [];
-    for (let i = 0; i < 4; i++) {
-      let m = createPatch(scene, material, isOcean);
-      let scl = (i + 1) ** 3;
-      m.scale.x = scl;
-      m.scale.z = scl;
-      m.scale.y = i + 1;
-      lods.push(m);
-      generatePatch(m, 0, i);
-    }
+    color: '#ffbe67',
+    dithering: true
+  });
+
+  let lods = [];
+  for (let i = 0; i < 4; i++) {
+    let m = createPatch(scene, material, isOcean);
+    let scl = (i + 1) ** 3;
+    m.scale.x = scl;
+    m.scale.z = scl;
+    m.scale.y = i + 1;
+    lods.push(m);
+    generatePatch(m, 0, i);
+  }
 
   island.position.set(-20, -10, -20); // Adjusted position to match reduced height
-  if(isOcean)
-  scene.add(island);
+  if (isOcean)
+    scene.add(island);
 
   // Add a second island
   const island2 = new THREE.Mesh(islandGeometry, islandMaterial.clone());
   island2.position.set(-20, -10, -2020); // Moved further along z-axis
-  if(isOcean)
-  scene.add(island2);
+  if (isOcean)
+    scene.add(island2);
 
   // Add trees on the single island
   const islandTreeGeometry = new THREE.ConeGeometry(25, 125, 32); // Reduced size
@@ -527,7 +488,7 @@ shape.lineTo(0, 0);
   function getRandomForestColor() {
     return Math.floor(Math.random() * 0xffffff); // Random 24-bit color
   }
-  
+
   function varyColor(baseColor: number) {
     // More aggressive variation for each RGB component
     const variation = 100; // Increased variation range
@@ -536,7 +497,7 @@ shape.lineTo(0, 0);
     const b = Math.min(255, Math.max(0, (baseColor & 0xff) + (Math.random() * (2 * variation) - variation)));
     return (r << 16) + (g << 8) + b;
   }
-  
+
   // Add forest clusters
   const forestTreeGeometry = new THREE.ConeGeometry(50, 250, 32); // Reduced size
   const forestTreeMaterial = new THREE.MeshStandardMaterial({ color: 0x228B22 }); // Forest green color
@@ -563,77 +524,77 @@ shape.lineTo(0, 0);
 
   // Add clusters of small objects
   for (let i = 0; i < 100; i++) { // Number of clusters
-    const smallObjectGeometry = new THREE.SphereGeometry(50/2, 16/2, 16/2); // Smaller size
-  const smallObjectMaterial = new THREE.MeshStandardMaterial({ color: getRandomColorBallon() });
-  
+    const smallObjectGeometry = new THREE.SphereGeometry(50 / 2, 16 / 2, 16 / 2); // Smaller size
+    const smallObjectMaterial = new THREE.MeshStandardMaterial({ color: getRandomColorBallon() });
+
     const cluster = new THREE.Group();
     for (let j = 0; j < 10; j++) { // Number of objects per cluster
       const smallObject = new THREE.Mesh(smallObjectGeometry, smallObjectMaterial);
       smallObject.position.set(
-        Math.random() * 500 , // Cluster spread
-        Math.random() * 500 ,
-        Math.random() * 500 
+        Math.random() * 500, // Cluster spread
+        Math.random() * 500,
+        Math.random() * 500
       );
       cluster.add(smallObject);
     }
     cluster.position.set(
-      Math.random() * 20*20,
-      Math.random() * 20*20,
-      Math.random() * 20*20
+      Math.random() * 20 * 20,
+      Math.random() * 20 * 20,
+      Math.random() * 20 * 20
     );
     scene.add(cluster);
   }
 
   // Add very large trees (mountains)
-const mountains = [];
-const minSpacing = 10000; // Minimum distance between mountains
+  const mountains = [];
+  const minSpacing = 10000; // Minimum distance between mountains
 
-function prepareFishOrBoat(fish, isBoat = false){
-  fish.scale.set(Math.random() * 80, Math.random() * 80, Math.random() * 80);
-  fish.position.set(
-    Math.random() * worldX - worldX / 2,
-    isBoat ? 250 : 14,
-    Math.random() * worldY - worldY / 2
-  );
-  if(isBoat){
-    console.log(fish.position.y);
+  function prepareFishOrBoat(fish, isBoat = false) {
+    fish.scale.set(Math.random() * 80, Math.random() * 80, Math.random() * 80);
+    fish.position.set(
+      Math.random() * worldX - worldX / 2,
+      isBoat ? 250 : 14,
+      Math.random() * worldY - worldY / 2
+    );
+    if (isBoat) {
+      console.log(fish.position.y);
+    }
+    // Assign random velocity mainly in X and Z, with slightly randomized magnitude
+    fish.userData.velocity = new THREE.Vector3(
+      (Math.random() * 5 + 2) * (Math.random() < 0.5 ? -1 : 1),
+      0,
+      (Math.random() * 2 - 1) * 0.5  // small variation in Z
+    );
+    // Store the initial Y and a random phase for oscillation
+    fish.userData.initialY = fish.position.y;
+    fish.userData.oscPhase = Math.random() * Math.PI * 2;
+    fishes.push(fish);
+    scene.add(fish);
   }
-  // Assign random velocity mainly in X and Z, with slightly randomized magnitude
-  fish.userData.velocity = new THREE.Vector3(
-    (Math.random()*5 + 2) * (Math.random() < 0.5 ? -1 : 1),
-    0,
-    (Math.random()*2 - 1) * 0.5  // small variation in Z
-  );
-  // Store the initial Y and a random phase for oscillation
-  fish.userData.initialY = fish.position.y;
-  fish.userData.oscPhase = Math.random() * Math.PI * 2;
-  fishes.push(fish);
-  scene.add(fish);
-}
-for (let i = 0; i < (18 || getParams().mountains); i++) {
+  for (let i = 0; i < (18 || getParams().mountains); i++) {
     const mountainHeight = (15000 || getParams().mountainHeight) + Math.random() * 3000;
     const mountainRadius = mountainHeight * 0.4;
     const mountainGeometry = new THREE.ConeGeometry(mountainRadius, mountainHeight, 32);
     const mountainMaterial = new THREE.MeshStandardMaterial({
-        color: deepBrownShades[Math.floor(Math.random() * deepBrownShades.length)],
-        roughness: 0.5 + Math.random() / 2
+      color: deepBrownShades[Math.floor(Math.random() * deepBrownShades.length)],
+      roughness: 0.5 + Math.random() / 2
     });
     const mountain = new THREE.Mesh(mountainGeometry, mountainMaterial);
 
     let mountainX, mountainZ, validPosition;
     let attempts = 0;
-    
-    do {
-        mountainX = Math.random() * worldX - worldX / 2;
-        mountainZ = Math.random() * worldY - worldY / 2;
-        validPosition = mountains.every(m => {
-            const dx = m.position.x - mountainX;
-            const dz = m.position.z - mountainZ;
-            return Math.sqrt(dx * dx + dz * dz) > minSpacing;
-        });
 
-        attempts++;
-        if (attempts > 300) break; // Prevent infinite loops
+    do {
+      mountainX = Math.random() * worldX - worldX / 2;
+      mountainZ = Math.random() * worldY - worldY / 2;
+      validPosition = mountains.every(m => {
+        const dx = m.position.x - mountainX;
+        const dz = m.position.z - mountainZ;
+        return Math.sqrt(dx * dx + dz * dz) > minSpacing;
+      });
+
+      attempts++;
+      if (attempts > 300) break; // Prevent infinite loops
     } while (!validPosition);
 
     mountain.position.set(mountainX, mountainHeight / 2, mountainZ);
@@ -641,27 +602,27 @@ for (let i = 0; i < (18 || getParams().mountains); i++) {
     trees.push(mountain);
     treeSpeeds.push(0); // Mountain trees remain static
     scene.add(mountain);
-}
+  }
 
-  const NUM_FISH = OBJECTS_TO_RENDER/2;
+  const NUM_FISH = OBJECTS_TO_RENDER / 2;
   const fishColors = [0x008080, 0x20B2AA, 0x40E0D0, 0x5F9EA0, 0x66CDAA]; // Teal/shades array
-  function addFishesSub(img=false){
-  const fishGeometry = createFish();
-  let fishMaterial: THREE.MeshStandardMaterial;
-  if (img) {
-    const textureLoader = new THREE.TextureLoader();
-    const fishTexture = textureLoader.load('textures/fish'+img+'.jpg');
-    fishMaterial = new THREE.MeshStandardMaterial({ map: fishTexture, side: THREE.DoubleSide });
-  } else {
-    const randomFishColor = fishColors[Math.floor(Math.random() * fishColors.length)];
-    fishMaterial = new THREE.MeshStandardMaterial({ color: randomFishColor, side: THREE.DoubleSide });
+  function addFishesSub(img = false) {
+    const fishGeometry = createFish();
+    let fishMaterial: THREE.MeshStandardMaterial;
+    if (img) {
+      const textureLoader = new THREE.TextureLoader();
+      const fishTexture = textureLoader.load('textures/fish' + img + '.jpg');
+      fishMaterial = new THREE.MeshStandardMaterial({ map: fishTexture, side: THREE.DoubleSide });
+    } else {
+      const randomFishColor = fishColors[Math.floor(Math.random() * fishColors.length)];
+      fishMaterial = new THREE.MeshStandardMaterial({ color: randomFishColor, side: THREE.DoubleSide });
+    }
+
+    for (let i = 0; i < NUM_FISH / 7; i++) {
+      const fish = new THREE.Mesh(fishGeometry, fishMaterial);
+      prepareFishOrBoat(fish);
+    }
   }
-  
-  for (let i = 0; i < NUM_FISH/7; i++) {
-    const fish = new THREE.Mesh(fishGeometry, fishMaterial);
-    prepareFishOrBoat(fish);
-  }
-}
   addFishesSub(1);
   addFishesSub(2);
   addFishesSub(3);
@@ -670,13 +631,13 @@ for (let i = 0; i < (18 || getParams().mountains); i++) {
   addFishesSub(6);
   addFishesSub(7);
 
-  for (let i = 0; i < NUM_FISH/7; i++) {
+  for (let i = 0; i < NUM_FISH / 7; i++) {
     // const boat = createBoat();
     // prepareFishOrBoat(boat, true);
   }
 
   window._scene = scene;
-  return {balls, trees, treeSpeeds, ballSpeeds, fishes, rearrangeAll};
+  return { balls, trees, treeSpeeds, ballSpeeds, fishes, rearrangeAll };
 };
 
 // Add function to rearrange balloons
@@ -690,7 +651,7 @@ export const rearrangeBalloons = (scene) => {
 };
 
 // Revised function to rearrange trees with debugging and fallback
-export const rearrangeTrees = (scene, isMon=false) => {
+export const rearrangeTrees = (scene, isMon = false) => {
   trees.forEach((tree, index) => {
     let height = tree.geometry.parameters?.height;
     if (!height) {
@@ -700,11 +661,11 @@ export const rearrangeTrees = (scene, isMon=false) => {
     if (height > 10000 && isMon) { // Assume mountain
       const newX = Math.random() * worldX - worldX / 2;
       const newZ = Math.random() * worldY - worldY / 2;
-      console.log(`Rearranging mountain tree at index ${index} to (${newX.toFixed(2)}, ${height/2}, ${newZ.toFixed(2)})`);
+      console.log(`Rearranging mountain tree at index ${index} to (${newX.toFixed(2)}, ${height / 2}, ${newZ.toFixed(2)})`);
       tree.position.set(newX, height / 2, newZ);
-    } else if(!isMon) {
+    } else if (!isMon) {
       const { x, z } = getBiasedCoordinate(worldX, worldY);
-      console.log(`Rearranging normal tree at index ${index} to (${x.toFixed(2)}, ${height/2}, ${z.toFixed(2)})`);
+      console.log(`Rearranging normal tree at index ${index} to (${x.toFixed(2)}, ${height / 2}, ${z.toFixed(2)})`);
       tree.position.set(x, height / 2, z);
     }
   });
@@ -731,7 +692,7 @@ export const rearrangeFishes = (scene) => {
 //   rearrangeFishes(window._scene);
 // }, 30*60);
 
-function rearrangeAll(){
+function rearrangeAll() {
   rearrangeBalloons(window._scene);
   rearrangeTrees(window._scene, true);
   rearrangeTrees(window._scene);
