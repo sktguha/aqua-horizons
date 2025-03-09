@@ -338,9 +338,22 @@ export const addRandomObjects = (scene, isOcean = false) => {
     shape.quadraticCurveTo(birdSize * 3, birdSize / 2, birdSize * 2, birdSize / 4);
     shape.quadraticCurveTo(birdSize, 0, 0, 0);
 
-    const geometry = new THREE.ExtrudeGeometry(shape, {
-      depth: birdSize / 2,
-      bevelEnabled: false
+    // Create left wing
+    const leftWing = new THREE.Shape();
+    leftWing.moveTo(birdSize * 1.5, 0);
+    leftWing.quadraticCurveTo(birdSize * 2, birdSize * 1.5, birdSize * 3, birdSize);
+    leftWing.quadraticCurveTo(birdSize * 2, birdSize * 0.5, birdSize * 1.5, 0);
+
+    // Create right wing
+    const rightWing = new THREE.Shape();
+    rightWing.moveTo(birdSize * 1.5, 0);
+    rightWing.quadraticCurveTo(birdSize * 2, -birdSize * 1.5, birdSize * 3, -birdSize);
+    rightWing.quadraticCurveTo(birdSize * 2, -birdSize * 0.5, birdSize * 1.5, 0);
+
+    // Combine shapes
+    const geometry = new THREE.ExtrudeGeometry([shape, leftWing, rightWing], {
+        depth: birdSize / 2,
+        bevelEnabled: false
     });
     const col = birdColors[Math.floor(birdColors.length * Math.random())];
     const material = new THREE.MeshStandardMaterial({
@@ -349,6 +362,7 @@ export const addRandomObjects = (scene, isOcean = false) => {
       emissiveIntensity: 0.3
     });
     const bird = new THREE.Mesh(geometry, material);
+    // bird.rotation.z = Math.PI / 2; // Rotate 90 degrees
     const scale = 1000;
     bird.scale.set(scale, scale, scale);
     return bird;
