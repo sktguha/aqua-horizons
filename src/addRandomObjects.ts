@@ -317,7 +317,7 @@ export const getRandomColorBallon = () => colors[Math.floor(Math.random() * colo
 // Add random objects
 export const addRandomObjects = (scene, isOcean = false) => {
   const geometry = new THREE.SphereGeometry(200, 32, 32); // Balloon shape
-  const OBJECTS_TO_RENDER = (getParams().obj*1) || 5000;
+  const OBJECTS_TO_RENDER = (getParams().obj * 1) || 5000;
 
   function createBird() {
     const birdColors = [
@@ -326,50 +326,50 @@ export const addRandomObjects = (scene, isOcean = false) => {
       0xff3333, // Light Red
       0xff6666, // Soft Red
       0xcc0000, // Dark Red
-      
+
       // Oranges
       0xff8000, // Orange
       0xffaa00, // Amber
       0xffcc00, // Golden Orange
-      
+
       // Yellows
       0xffff00, // Yellow
       0xffffaa, // Light Yellow
       0xdddd00, // Gold Yellow
-      
+
       // Greens
       0x00ff00, // Bright Green
       0x33cc33, // Medium Green
       0x66ff66, // Light Green
       0x009900, // Dark Green
       0x00cc99, // Teal Green
-      
+
       // Blues
       0x0000ff, // Blue
       0x3399ff, // Sky Blue
       0x0099cc, // Ocean Blue
       0x6666ff, // Periwinkle Blue
       0x0066cc, // Royal Blue
-      
+
       // Purples
       0x9900ff, // Purple
       0xcc66ff, // Light Purple
       0x9933cc, // Medium Purple
-      
+
       // Blues-Greens
       0x00cccc, // Turquoise
       0x33ffcc, // Aqua
       0x66ffff, // Cyan
-      
+
       // Others
       0xff99cc, // Pink
       0xff66ff, // Magenta
       0x996633, // Brown
       0xcc9900  // Bronze
     ];
-    
-    const birdSize = (Math.random()*50) + 10;
-    
+
+    const birdSize = (Math.random() * 50) + 10;
+
     // Create bird body
     const bodyShape = new THREE.Shape();
     bodyShape.moveTo(0, 0);
@@ -382,81 +382,91 @@ export const addRandomObjects = (scene, isOcean = false) => {
     function createWing(birdSize, isLeft = true) {
       // Direction multiplier: 1 for left wing (up), -1 for right wing (down)
       const dir = isLeft ? 1 : -1;
-      
+
       const wing = new THREE.Shape();
       wing.moveTo(birdSize * 1.5, 0);
+
+      // Extract constant multipliers for wing curves
+      const destX = 8;
+      const destY = 2;
+      const multx = 2;
+      const multy = 0.5;
+      const wingCurveMultipliers = {
+        curve1: { cp1x: multx, cp1y: multy*3, destX: destX*2, destY},
+        curve2: { cp1x: multx, cp1y: multy, destX, destY: 0 }
+      };
+
       wing.quadraticCurveTo(
-        birdSize * 2, 
-        birdSize * 1.5 * dir, 
-        birdSize * 3, 
-        birdSize * dir
+        birdSize * wingCurveMultipliers.curve1.cp1x,
+        birdSize * wingCurveMultipliers.curve1.cp1y * dir,
+        birdSize * wingCurveMultipliers.curve1.destX,
+        birdSize * wingCurveMultipliers.curve1.destY * dir
       );
       wing.quadraticCurveTo(
-        birdSize * 2, 
-        birdSize * 0.5 * dir, 
-        birdSize * 1.5, 
-        0
+        birdSize * wingCurveMultipliers.curve2.cp1x,
+        birdSize * wingCurveMultipliers.curve2.cp1y * dir,
+        birdSize * wingCurveMultipliers.curve2.destX,
+        birdSize * wingCurveMultipliers.curve2.destY
       );
-      
       return wing;
     }
-    
+
     // Usage:
     const leftWing = createWing(birdSize, true);  // or just createWing(birdSize)
     const rightWing = createWing(birdSize, false);
 
     // Create geometries separately
     const bodyGeometry = new THREE.ExtrudeGeometry(bodyShape, {
-        depth: birdSize / 2,
-        bevelEnabled: false
+      depth: birdSize / 2,
+      bevelEnabled: false
     });
-    
+
     const leftWingGeometry = new THREE.ExtrudeGeometry(leftWing, {
-        depth: birdSize / 12,
-        bevelEnabled: false
+      depth: birdSize / 12,
+      bevelEnabled: false
     });
-    
+
     const rightWingGeometry = new THREE.ExtrudeGeometry(rightWing, {
-        depth: birdSize / 12,
-        bevelEnabled: false
+      depth: birdSize / 12,
+      bevelEnabled: false
     });
-    
+
     // Get different colors for each part
     const getRandomBirdColor = () => birdColors[Math.floor(Math.random() * birdColors.length)];
     const bodyColor = getRandomBirdColor();
     const leftWingColor = getRandomBirdColor();
     const rightWingColor = getRandomBirdColor();
-    
+
     // Create materials
     const bodyMaterial = new THREE.MeshStandardMaterial({
       color: bodyColor,
       emissive: 0x444444,
       emissiveIntensity: 0.3
     });
-    
+
     const leftWingMaterial = new THREE.MeshStandardMaterial({
       color: leftWingColor,
       emissive: 0x444444,
       emissiveIntensity: 0.3
     });
-    
+
     const rightWingMaterial = new THREE.MeshStandardMaterial({
       color: rightWingColor,
       emissive: 0x444444,
       emissiveIntensity: 0.3
     });
-    
+
     // Create meshes
     const bodyMesh = new THREE.Mesh(bodyGeometry, bodyMaterial);
     const leftWingMesh = new THREE.Mesh(leftWingGeometry, leftWingMaterial);
     const rightWingMesh = new THREE.Mesh(rightWingGeometry, rightWingMaterial);
-    
+
     // Create a group to hold all parts
     const bird = new THREE.Group();
     bird.add(bodyMesh);
     bird.add(leftWingMesh);
     bird.add(rightWingMesh);
-    
+
     // Store wing references for animation
     bird.userData.leftWing = leftWingMesh;
     bird.userData.rightWing = rightWingMesh;
@@ -464,22 +474,22 @@ export const addRandomObjects = (scene, isOcean = false) => {
     bird.userData.isFlapup = false;
     // wingspeed is more is less speed
     const BIRD_SIZE_PENALTY = 3;
-    bird.userData.wingSpeed = 200+(Math.random()*500)-(birdSize*BIRD_SIZE_PENALTY);
-    bird.userData.rotAngle = Math.PI / (17+(Math.random()*8));
+    bird.userData.wingSpeed = 200 + (Math.random() * 500) - (birdSize * BIRD_SIZE_PENALTY);
+    bird.userData.rotAngle = Math.PI / (17 + (Math.random() * 8));
     // Rotate and scale the entire bird
     bird.rotation.x = (Math.PI / 2 - 0.3) + (Math.random() * 0.5);
-    const scale = 100+Math.random()*900;
+    const scale = 100 + Math.random() * 900;
     bird.scale.set(scale, scale, scale);
     bird.speed = [0.3, 0.2];
-    
+
     return bird;
-}
+  }
 
   // Add balloon-shaped balls
-  for (let i = 0; i < OBJECTS_TO_RENDER ; i++) { // Increased number of objects
+  for (let i = 0; i < OBJECTS_TO_RENDER; i++) { // Increased number of objects
     const color = getRandomColorBallon();
     const material = new THREE.MeshStandardMaterial({ color, emissive: color, emissiveIntensity: 0.2 });
-    const BIRD_PROB = getParams().bird*1 || 0.7;
+    const BIRD_PROB = getParams().bird * 1 || 0.7;
     const isBird = Math.random() < BIRD_PROB;
     const balloon = isBird ? createBird() : new THREE.Mesh(geometry, material);
     balloon.scale.set(1, 1.5, 1); // Make it balloon-shaped
