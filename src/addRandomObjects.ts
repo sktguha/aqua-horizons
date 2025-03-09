@@ -317,7 +317,7 @@ export const getRandomColorBallon = () => colors[Math.floor(Math.random() * colo
 // Add random objects
 export const addRandomObjects = (scene, isOcean = false) => {
   const geometry = new THREE.SphereGeometry(200, 32, 32); // Balloon shape
-  const OBJECTS_TO_RENDER = 5000;
+  const OBJECTS_TO_RENDER = (getParams().obj*1) || 5000;
 
   function createBird() {
     const birdColors = [
