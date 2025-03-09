@@ -447,7 +447,7 @@ export const addRandomObjects = (scene, isOcean = false) => {
     bird.userData.rightWing = rightWingMesh;
     bird.userData.bodyMesh = bodyMesh;
     bird.userData.isFlapup = false;
-    bird.userData.wingSpeed = 100+(Math.random()*500);
+    bird.userData.wingSpeed = Math.max(200+(Math.random()*500)-(birdSize*10), 690);
     bird.userData.rotAngle = Math.PI / (17+(Math.random()*8));
     // Rotate and scale the entire bird
     bird.rotation.x = (Math.PI / 2 - 0.3) + (Math.random() * 0.5);
