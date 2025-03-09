@@ -379,18 +379,14 @@ export const addRandomObjects = (scene, isOcean = false) => {
     bodyShape.quadraticCurveTo(birdSize, 0, 0, 0);
 
     // Create left wing
-    function createWing(birdSize, isLeft = true, scale = 1) {
+    function createWing(birdSize, isLeft = true, scale = 1, destX, destY, multx, multy) {
       // Direction multiplier: 1 for left wing (up), -1 for right wing (down)
       const dir = isLeft ? 1 : -1;
     
       const wing = new THREE.Shape();
       wing.moveTo(birdSize * 1.5, 0);
     
-      // Extract constant multipliers for wing curves with randomness
-      const destX = 6.3 - 2 + (Math.random() * 4.5);
-      const destY = 4 - 2 + (Math.random() * 3.7);
-      const multx = 1 + (Math.random() * 3);
-      const multy = 1 + (Math.random() * 3);
+      
       const wingCurveMultipliers = {
         curve1: { cp1x: multx, cp1y: multy * 3, destX: destX * 2, destY },
         curve2: { cp1x: multx, cp1y: multy, destX, destY: 0 }
@@ -441,8 +437,13 @@ export const addRandomObjects = (scene, isOcean = false) => {
     }
 
     // Usage:
-    const leftWing = createWing(birdSize, true, 0.4+(Math.random()*0.6));  // or just createWing(birdSize)
-    const rightWing = createWing(birdSize, false, 0.4+(Math.random()*0.6));
+    const wingScale = 0.4+(Math.random()*0.6);
+    const destX = 6.3 - 2 + (Math.random() * 4.5);
+      const destY = 4 - 2 + (Math.random() * 3.7);
+      const multx = 1 + (Math.random() * 3);
+      const multy = 1 + (Math.random() * 3);
+    const leftWing = createWing(birdSize, true, wingScale, destX, destY, multx, multy)
+    const rightWing = createWing(birdSize, false,wingScale ,destX, destY, multx, multy);
 
     // Create geometries separately
     const bodyGeometry = new THREE.ExtrudeGeometry(bodyShape, {
