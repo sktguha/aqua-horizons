@@ -362,8 +362,11 @@ export const addRandomObjects = (scene, isOcean = false) => {
     
     // Add to scene
     // scene.add(bird);
-    
-    return bird;
+    console.log("gen bird");
+    const rectGeo = new THREE.BoxGeometry(200, 1000, 100);
+    const rectMat = new THREE.MeshStandardMaterial({ color: getRandomColorBallon() });
+    const rect = new THREE.Mesh(rectGeo, rectMat);
+    return rect;
   }
 
   // Add balloon-shaped balls
@@ -379,7 +382,7 @@ export const addRandomObjects = (scene, isOcean = false) => {
       Math.random() * worldY - worldY / 2 // Adjusted spread
     );
     balls.push(balloon);
-    const [minSpeed, maxSpeed] = speedRanges[color];
+    const [minSpeed, maxSpeed] = speedRanges[color] || [0.2, 0.1];
     ballSpeeds.push((Math.random() * (maxSpeed - minSpeed)) + minSpeed); // Random speed within range
     scene.add(balloon);
   }
