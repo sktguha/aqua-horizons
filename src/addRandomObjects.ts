@@ -745,6 +745,10 @@ export const addRandomObjects = (scene, isOcean = false) => {
   addFishesSub(5);
   addFishesSub(6);
   addFishesSub(7);
+  addFishesSub(8);
+  addFishesSub(9);
+  addFishesSub(10);
+  addFishesSub(11);
 
   for (let i = 0; i < NUM_FISH / 7; i++) {
     // const boat = createBoat();
