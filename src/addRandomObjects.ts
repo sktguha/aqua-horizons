@@ -368,7 +368,7 @@ export const addRandomObjects = (scene, isOcean = false) => {
       0xcc9900  // Bronze
     ];
     
-    const birdSize = 20+30 + 10;
+    const birdSize = 20+ (Math.random()*30) + 10;
     
     // Create bird body
     const bodyShape = new THREE.Shape();
