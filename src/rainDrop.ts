@@ -6,18 +6,23 @@ export function createRaindrops(scene) {
     const raindrops = [];
     const worldSize = 10000; // Match the world size
 
-    // Create a simple raindrop geometry
-    const geometry = new THREE.SphereGeometry(0.5, 4, 4);
+    // Create a more elongated and pointed raindrop geometry
+    // Use a custom geometry or a stretched cylinder with tapered ends
+    const geometry = new THREE.CylinderGeometry(0.1, 0, 7, 5); // Tapered cylinder (thin at bottom)
+    
+    // Rotate the geometry to point downwards
+    geometry.rotateX(Math.PI); // Flip to make the pointed end down
+    
+    // Blue-ish, slightly transparent material
     const material = new THREE.MeshBasicMaterial({
-        color: 0xaaddff,
+        color: 0xadd8e6, // Light blue
         transparent: true,
-        opacity: 0.6
+        opacity: 0.6,
     });
 
     // Create the raindrops
     for (let i = 0; i < raindropCount; i++) {
         const drop = new THREE.Mesh(geometry, material);
-
         // Position raindrops in a very narrow volume in front of player
         // X: distribute left/right around player (-50 to 50)
         drop.position.x = (Math.random() - 0.5) * 200;
