@@ -362,7 +362,7 @@ export const addRandomObjects = (scene, isOcean = false) => {
       emissiveIntensity: 0.3
     });
     const bird = new THREE.Mesh(geometry, material);
-    bird.rotation.x = Math.PI / 2; // Rotate 90 degrees
+    bird.rotation.x = (Math.PI / 2 - 0.3)+(Math.random()*0.5); // Rotate 90 degrees
     const scale = 1000;
     bird.scale.set(scale, scale, scale);
     return bird;
