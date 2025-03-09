@@ -436,6 +436,8 @@ export const addRandomObjects = (scene, isOcean = false) => {
     const leftWingMesh = new THREE.Mesh(leftWingGeometry, leftWingMaterial);
     const rightWingMesh = new THREE.Mesh(rightWingGeometry, rightWingMaterial);
     
+    leftWingMesh.rotation.y = Math.PI / 3;  // 45 degrees in radians
+    rightWingMesh.rotation.y = Math.PI / 3; 
     // Create a group to hold all parts
     const bird = new THREE.Group();
     bird.add(bodyMesh);
