@@ -352,20 +352,40 @@ export const addRandomObjects = (scene, isOcean = false) => {
 
     // Combine shapes
     const geometry = new THREE.ExtrudeGeometry([shape, leftWing, rightWing], {
-        depth: birdSize / 2,
-        bevelEnabled: false
+      depth: birdSize / 2,
+      bevelEnabled: false
     });
     const col = birdColors[Math.floor(birdColors.length * Math.random())];
     const textureLoader = new THREE.TextureLoader();
-    const birdTexture = textureLoader.load('textures/bird' + (1+Math.floor(Math.random()*6)) + '.jpg');
-    const material = new THREE.MeshStandardMaterial({
-      map: birdTexture,
-      // // color: col,
-      // // emissive: 0x444444,
-      // emissiveIntensity: 0.3
-    });
+
+    // Add loading managers to debug texture loading
+    textureLoader.manager.onError = function (url) {
+      console.error('Error loading texture:', url);
+    };
+
+    // Generate random bird number
+    const birdNumber = 1 + Math.floor(Math.random() * 6);
+    const texturePath = `textures/bird${birdNumber}.jpg`;
+
+    // Load texture with proper callback handling
+    const material = new THREE.MeshStandardMaterial();
+    textureLoader.load(
+      texturePath,
+      function (texture) {
+        material.map = texture;
+        material.needsUpdate = true;
+      },
+      undefined,
+      function (error) {
+        console.error('Error loading texture:', error);
+      }
+    );
+
+    // Optional: Add some basic material properties
+    material.roughness = 0.7;
+    material.metalness = 0.3;
     const bird = new THREE.Mesh(geometry, material);
-    bird.rotation.x = (Math.PI / 2 - 0.3)+(Math.random()*0.5); // Rotate 90 degrees
+    bird.rotation.x = (Math.PI / 2 - 0.3) + (Math.random() * 0.5); // Rotate 90 degrees
     const scale = 1000;
     bird.scale.set(scale, scale, scale);
     bird.speed = [0.3, 0.2];
@@ -374,7 +394,7 @@ export const addRandomObjects = (scene, isOcean = false) => {
   }
 
   // Add balloon-shaped balls
-  for (let i = 0; i < OBJECTS_TO_RENDER ; i++) { // Increased number of objects
+  for (let i = 0; i < OBJECTS_TO_RENDER; i++) { // Increased number of objects
     const color = getRandomColorBallon();
     const material = new THREE.MeshStandardMaterial({ color, emissive: color, emissiveIntensity: 0.2 });
     const isBird = Math.random() < 0.5;
