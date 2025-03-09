@@ -357,7 +357,7 @@ export const addRandomObjects = (scene, isOcean = false) => {
     });
     const col = birdColors[Math.floor(birdColors.length * Math.random())];
     const textureLoader = new THREE.TextureLoader();
-    const birdTexture = textureLoader.load('textures/fish' + Math.floor(Math.random()*7) + '.jpg');
+    const birdTexture = textureLoader.load('textures/bird' + (1+Math.floor(Math.random()*6)) + '.jpg');
     const material = new THREE.MeshStandardMaterial({
       map: birdTexture,
       // // color: col,
