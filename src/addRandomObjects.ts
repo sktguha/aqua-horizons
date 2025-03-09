@@ -340,7 +340,12 @@ export const addRandomObjects = (scene, isOcean = false) => {
     shape.lineTo(0, 0);
     const geometry = new THREE.ShapeGeometry(shape);
     const col = birdColors[Math.floor(birdColors.length * Math.random())];
-    const bird = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({ color: col }));
+    const material = new THREE.MeshStandardMaterial({
+      color: col,
+      emissive: 0x444444,
+      emissiveIntensity: 0.3
+    });
+    const bird = new THREE.Mesh(geometry, material);
     const scale = 1000;
     bird.scale.set(scale, scale, scale);
     return bird;
