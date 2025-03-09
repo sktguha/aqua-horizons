@@ -379,16 +379,31 @@ export const addRandomObjects = (scene, isOcean = false) => {
     bodyShape.quadraticCurveTo(birdSize, 0, 0, 0);
 
     // Create left wing
-    const leftWing = new THREE.Shape();
-    leftWing.moveTo(birdSize * 1.5, 0);
-    leftWing.quadraticCurveTo(birdSize * 2, birdSize * 1.5, birdSize * 3, birdSize);
-    leftWing.quadraticCurveTo(birdSize * 2, birdSize * 0.5, birdSize * 1.5, 0);
-
-    // Create right wing
-    const rightWing = new THREE.Shape();
-    rightWing.moveTo(birdSize * 1.5, 0);
-    rightWing.quadraticCurveTo(birdSize * 2, -birdSize * 1.5, birdSize * 3, -birdSize);
-    rightWing.quadraticCurveTo(birdSize * 2, -birdSize * 0.5, birdSize * 1.5, 0);
+    function createWing(birdSize, isLeft = true) {
+      // Direction multiplier: 1 for left wing (up), -1 for right wing (down)
+      const dir = isLeft ? 1 : -1;
+      
+      const wing = new THREE.Shape();
+      wing.moveTo(birdSize * 1.5, 0);
+      wing.quadraticCurveTo(
+        birdSize * 2, 
+        birdSize * 1.5 * dir, 
+        birdSize * 3, 
+        birdSize * dir
+      );
+      wing.quadraticCurveTo(
+        birdSize * 2, 
+        birdSize * 0.5 * dir, 
+        birdSize * 1.5, 
+        0
+      );
+      
+      return wing;
+    }
+    
+    // Usage:
+    const leftWing = createWing(birdSize, true);  // or just createWing(birdSize)
+    const rightWing = createWing(birdSize, false);
 
     // Create geometries separately
     const bodyGeometry = new THREE.ExtrudeGeometry(bodyShape, {
@@ -397,12 +412,12 @@ export const addRandomObjects = (scene, isOcean = false) => {
     });
     
     const leftWingGeometry = new THREE.ExtrudeGeometry(leftWing, {
-        depth: birdSize / 2,
+        depth: birdSize / 12,
         bevelEnabled: false
     });
     
     const rightWingGeometry = new THREE.ExtrudeGeometry(rightWing, {
-        depth: birdSize / 2,
+        depth: birdSize / 12,
         bevelEnabled: false
     });
     
