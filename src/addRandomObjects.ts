@@ -319,13 +319,59 @@ export const addRandomObjects = (scene, isOcean = false) => {
   const geometry = new THREE.SphereGeometry(200, 32, 32); // Balloon shape
   const OBJECTS_TO_RENDER = 5000;
 
-
+  function createBird() {
+    // Bird body
+    const bodyGeometry = new THREE.ConeGeometry(1, 4, 8);
+    bodyGeometry.rotateX(Math.PI / 2);
+    
+    // Wings
+    const wingGeometry = new THREE.PlaneGeometry(5, 2);
+    
+    // Materials
+    const bodyMaterial = new THREE.MeshPhongMaterial({ 
+      color: 0x2a52be, // Navy blue
+      shininess: 10
+    });
+    
+    const wingMaterial = new THREE.MeshPhongMaterial({ 
+      color: 0x4169e1, // Royal blue
+      side: THREE.DoubleSide,
+      flatShading: true
+    });
+    
+    // Create body mesh
+    const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
+    
+    // Create wings
+    const leftWing = new THREE.Mesh(wingGeometry, wingMaterial);
+    leftWing.position.set(-1.5, 0, 0);
+    leftWing.rotation.z = Math.PI / 6;
+    
+    const rightWing = new THREE.Mesh(wingGeometry, wingMaterial);
+    rightWing.position.set(1.5, 0, 0);
+    rightWing.rotation.z = -Math.PI / 6;
+    
+    // Create bird group and add components
+    const bird = new THREE.Group();
+    bird.add(body);
+    bird.add(leftWing);
+    bird.add(rightWing);
+    
+    // Position the bird
+    // bird.position.set(0, 15, -20);
+    
+    // Add to scene
+    // scene.add(bird);
+    
+    return bird;
+  }
 
   // Add balloon-shaped balls
   for (let i = 0; i < OBJECTS_TO_RENDER/2; i++) { // Increased number of objects
     const color = getRandomColorBallon();
     const material = new THREE.MeshStandardMaterial({ color, emissive: color, emissiveIntensity: 0.2 });
-    const balloon = new THREE.Mesh(geometry, material);
+    const isBird = Math.random()>0.5;
+    const balloon = isBird ? createBird(): new THREE.Mesh(geometry, material);
     balloon.scale.set(1, 1.5, 1); // Make it balloon-shaped
     balloon.position.set(
       Math.random() * worldX - worldX / 2, // Adjusted spread

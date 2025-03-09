@@ -116,7 +116,7 @@ function initOceanScene(){
         scene.environment = texture;
       });
 
-    const drops = getParams().rain ? createRaindrops(scene): [];
+    const drops = getParams().rain === "true" ? createRaindrops(scene): [];
 
   // TODO: toggle controls, TODO: seperate in new file, and add folder structure 
   // objects/ and controls/ constants later, also useful, and GET parameter wise
