@@ -292,6 +292,9 @@ function initOceanScene(){
     ballZSpeeds.push(Math.random() * 2 - 1);
   });
 
+  // Add this near the top of the file with other constant declarations
+  const WING_FLAP_INTERVAL = 500; // milliseconds between wing flaps
+
   // renderer
   const renderer = new THREE.WebGLRenderer({ canvas });
   renderer.setSize(sizes.width, sizes.height);
@@ -503,14 +506,19 @@ function initOceanScene(){
         // Update balloon X and Z positions - increased multiplier to 15 for faster lateral movement
         ball.position.x += ballXSpeeds[index] * 15;
         ball.position.z += ballZSpeeds[index] * 15;
-        if(ball.userData.leftWing && !ball.userData.isFlapup) {
-          ball.userData.leftWing.rotation.y = Math.PI / 3;  // 45 degrees in radians
-          ball.userData.rightWing.rotation.y = Math.PI / 3; 
-          ball.userData.isFlapup = true;
-        } else if(ball.userData.leftWing) {
-          ball.userData.leftWing.rotation.y = 0;  // 45 degrees in radians
-          ball.userData.rightWing.rotation.y = 0; 
-          ball.userData.isFlapup = false;
+        // New time-based wing flapping
+        const currentTime = performance.now();
+        if (ball.userData.leftWing) {
+          if (!ball.userData.lastFlapTime) {
+            ball.userData.lastFlapTime = currentTime;
+          }
+          
+          if (currentTime - ball.userData.lastFlapTime > WING_FLAP_INTERVAL) {
+            ball.userData.isFlapup = !ball.userData.isFlapup;
+            ball.userData.leftWing.rotation.y = ball.userData.isFlapup ? Math.PI / 3 : 0;
+            ball.userData.rightWing.rotation.y = ball.userData.isFlapup ? Math.PI / 3 : 0;
+            ball.userData.lastFlapTime = currentTime;
+          }
         }
       });
 
