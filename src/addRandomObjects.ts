@@ -359,7 +359,7 @@ export const addRandomObjects = (scene, isOcean = false) => {
       Math.random() * worldY - worldY / 2 // Adjusted spread
     );
     balls.push(balloon);
-    const [minSpeed, maxSpeed] = speedRanges[color] || [0.2, 0.1];
+    const [minSpeed, maxSpeed] = !isBird ? speedRanges[color] : [0.3, 0.2];
     ballSpeeds.push((Math.random() * (maxSpeed - minSpeed)) + minSpeed); // Random speed within range
     scene.add(balloon);
   }
