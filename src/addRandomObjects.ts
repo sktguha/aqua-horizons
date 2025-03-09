@@ -369,6 +369,7 @@ export const addRandomObjects = (scene, isOcean = false) => {
     const scale = 1000;
     bird.scale.set(scale, scale, scale);
     bird.speed = [0.3, 0.2];
+    bird.isBird = true;
     return bird;
   }
 
