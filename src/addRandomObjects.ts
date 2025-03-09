@@ -366,14 +366,30 @@ export const addRandomObjects = (scene, isOcean = false) => {
     const rectGeo = new THREE.BoxGeometry(200, 1000, 100);
     const rectMat = new THREE.MeshStandardMaterial({ color: getRandomColorBallon() });
     const rect = new THREE.Mesh(rectGeo, rectMat);
-    return rect;
+    const shape = new THREE.Shape();
+    // ...existing code...
+    const birdSize = 20+Math.random()*20;
+shape.moveTo(0, 0);
+shape.lineTo(birdSize*2, birdSize*2);
+shape.lineTo(birdSize*4, 0);
+shape.lineTo(birdSize*3, -birdSize*2);
+shape.lineTo(birdSize, -birdSize);
+shape.lineTo(0, 0);
+// ...existing code...
+
+    const geometry = new THREE.ShapeGeometry(shape);
+    const bird2 = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({ color: 0x00ff00 }));
+    const scale = 1000;
+    bird2.scale.set(scale, scale, scale);
+    // scene.add(bird);
+    return bird2;
   }
 
   // Add balloon-shaped balls
   for (let i = 0; i < OBJECTS_TO_RENDER/2; i++) { // Increased number of objects
     const color = getRandomColorBallon();
     const material = new THREE.MeshStandardMaterial({ color, emissive: color, emissiveIntensity: 0.2 });
-    const isBird = Math.random()>0.5;
+    const isBird = 1;
     const balloon = isBird ? createBird(): new THREE.Mesh(geometry, material);
     balloon.scale.set(1, 1.5, 1); // Make it balloon-shaped
     balloon.position.set(
