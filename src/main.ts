@@ -514,6 +514,7 @@ function initOceanScene(){
           }
           
           if (currentTime - ball.userData.lastFlapTime > WING_FLAP_INTERVAL) {
+            ball.userData.bodyMesh.position.z = ball.userData.isFlapup ? 100 : 0;
             ball.userData.isFlapup = !ball.userData.isFlapup;
             ball.userData.leftWing.rotation.y = ball.userData.isFlapup ? Math.PI / 3 : 0;
             ball.userData.rightWing.rotation.y = ball.userData.isFlapup ? Math.PI / 3 : 0;
