@@ -436,8 +436,6 @@ export const addRandomObjects = (scene, isOcean = false) => {
     const leftWingMesh = new THREE.Mesh(leftWingGeometry, leftWingMaterial);
     const rightWingMesh = new THREE.Mesh(rightWingGeometry, rightWingMaterial);
     
-    leftWingMesh.rotation.y = Math.PI / 3;  // 45 degrees in radians
-    rightWingMesh.rotation.y = Math.PI / 3; 
     // Create a group to hold all parts
     const bird = new THREE.Group();
     bird.add(bodyMesh);
@@ -447,7 +445,7 @@ export const addRandomObjects = (scene, isOcean = false) => {
     // Store wing references for animation
     bird.userData.leftWing = leftWingMesh;
     bird.userData.rightWing = rightWingMesh;
-    bird.userData.isFlapping = true;
+    bird.userData.isFlapup = false;
     
     // Rotate and scale the entire bird
     bird.rotation.x = (Math.PI / 2 - 0.3) + (Math.random() * 0.5);

@@ -503,6 +503,15 @@ function initOceanScene(){
         // Update balloon X and Z positions - increased multiplier to 15 for faster lateral movement
         ball.position.x += ballXSpeeds[index] * 15;
         ball.position.z += ballZSpeeds[index] * 15;
+        if(ball.userData.leftWing && !ball.userData.isFlapup) {
+          ball.userData.leftWing.rotation.y = Math.PI / 3;  // 45 degrees in radians
+          ball.userData.rightWing.rotation.y = Math.PI / 3; 
+          ball.userData.isFlapup = true;
+        } else if(ball.userData.leftWing) {
+          ball.userData.leftWing.rotation.y = 0;  // 45 degrees in radians
+          ball.userData.rightWing.rotation.y = 0; 
+          ball.userData.isFlapup = false;
+        }
       });
 
       // Animate fish: move them along X and Z, with slight sinusoidal up/down motion
