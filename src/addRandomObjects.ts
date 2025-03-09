@@ -387,10 +387,10 @@ export const addRandomObjects = (scene, isOcean = false) => {
       wing.moveTo(birdSize * 1.5, 0);
 
       // Extract constant multipliers for wing curves
-      const destX = 8;
-      const destY = 2;
+      const destX = 6.3;
+      const destY = 4;
       const multx = 2;
-      const multy = 0.5;
+      const multy = 0.5*4;
       const wingCurveMultipliers = {
         curve1: { cp1x: multx, cp1y: multy*3, destX: destX*2, destY},
         curve2: { cp1x: multx, cp1y: multy, destX, destY: 0 }
