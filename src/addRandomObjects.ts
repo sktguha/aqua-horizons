@@ -379,18 +379,18 @@ export const addRandomObjects = (scene, isOcean = false) => {
     bodyShape.quadraticCurveTo(birdSize, 0, 0, 0);
 
     // Create left wing
-    function createWing(birdSize, isLeft = true) {
+    function createWing(birdSize, isLeft = true, scale = 1) {
       // Direction multiplier: 1 for left wing (up), -1 for right wing (down)
       const dir = isLeft ? 1 : -1;
     
       const wing = new THREE.Shape();
       wing.moveTo(birdSize * 1.5, 0);
     
-      // Extract constant multipliers for wing curves
-      const destX = 6.3-2+(Math.random()*4.5);
-      const destY = 4-2+(Math.random()*3.7);
-      const multx = 1+(Math.random()*3);
-      const multy = 1+(Math.random()*3);
+      // Extract constant multipliers for wing curves with randomness
+      const destX = 6.3 - 2 + (Math.random() * 4.5);
+      const destY = 4 - 2 + (Math.random() * 3.7);
+      const multx = 1 + (Math.random() * 3);
+      const multy = 1 + (Math.random() * 3);
       const wingCurveMultipliers = {
         curve1: { cp1x: multx, cp1y: multy * 3, destX: destX * 2, destY },
         curve2: { cp1x: multx, cp1y: multy, destX, destY: 0 }
@@ -408,7 +408,6 @@ export const addRandomObjects = (scene, isOcean = false) => {
       const tipRadius = birdSize * 0.2; // Adjust thickness by modifying this value
       const tipX = birdSize * wingCurveMultipliers.curve1.destX;
       const tipY = birdSize * wingCurveMultipliers.curve1.destY * dir;
-      // Draw a half-circle arc at the tip; the start and end angles may be adjusted as needed
       wing.absarc(tipX, tipY, tipRadius, Math.PI, 0, isLeft);
     
       // Continue with the second quadratic curve
@@ -419,12 +418,31 @@ export const addRandomObjects = (scene, isOcean = false) => {
         birdSize * wingCurveMultipliers.curve2.destY
       );
     
+      // Since THREE.Shape doesn't provide an applyMatrix4 method,
+      // apply scaling by iterating through the curves' key points.
+      if (scale !== 1) {
+        const scaleMatrix = new THREE.Matrix3().set(
+          scale, 0, 0,
+          0, scale, 0,
+          0, 0, 1
+        );
+    
+        wing.curves.forEach(curve => {
+          if (curve.v0) curve.v0.applyMatrix3(scaleMatrix);
+          if (curve.v1) curve.v1.applyMatrix3(scaleMatrix);
+          if (curve.v2) curve.v2.applyMatrix3(scaleMatrix);
+        });
+    
+        // Also scale currentPoint if needed
+        wing.currentPoint.multiplyScalar(scale);
+      }
+    
       return wing;
     }
 
     // Usage:
-    const leftWing = createWing(birdSize, true);  // or just createWing(birdSize)
-    const rightWing = createWing(birdSize, false);
+    const leftWing = createWing(birdSize, true, 0.4+(Math.random()*0.6));  // or just createWing(birdSize)
+    const rightWing = createWing(birdSize, false, 0.4+(Math.random()*0.6));
 
     // Create geometries separately
     const bodyGeometry = new THREE.ExtrudeGeometry(bodyShape, {
