@@ -333,12 +333,15 @@ export const addRandomObjects = (scene, isOcean = false) => {
     const shape = new THREE.Shape();
     const birdSize = 20 + Math.random() * 20;
     shape.moveTo(0, 0);
-    shape.lineTo(birdSize * 2, birdSize * 2);
-    shape.lineTo(birdSize * 4, 0);
-    shape.lineTo(birdSize * 3, -birdSize * 2);
-    shape.lineTo(birdSize, -birdSize);
-    shape.lineTo(0, 0);
-    const geometry = new THREE.ShapeGeometry(shape);
+    shape.quadraticCurveTo(birdSize, birdSize / 2, birdSize * 2, 0);
+    shape.quadraticCurveTo(birdSize * 3, -birdSize / 2, birdSize * 4, 0);
+    shape.quadraticCurveTo(birdSize * 3, birdSize / 2, birdSize * 2, birdSize / 4);
+    shape.quadraticCurveTo(birdSize, 0, 0, 0);
+
+    const geometry = new THREE.ExtrudeGeometry(shape, {
+      depth: birdSize / 2,
+      bevelEnabled: false
+    });
     const col = birdColors[Math.floor(birdColors.length * Math.random())];
     const material = new THREE.MeshStandardMaterial({
       color: col,
