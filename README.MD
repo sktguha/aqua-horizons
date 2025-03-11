@@ -43,4 +43,4 @@ npm run build
 
 ### License
 
-Copyright (c) 2023 Jonas Boone. MIT License.
+Copyright (c) 2025 Saikat Guha. MIT License.
