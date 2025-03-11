@@ -10,7 +10,7 @@ q and e to rotate camera sideways left and right
 
 r and f to increase height
 
-let me know how it is, please try out, www.twitter.com/sktguha please s
+let me know how it is, please try out, www.twitter.com/sktguha please share feedback
 
 ## Stack
 
