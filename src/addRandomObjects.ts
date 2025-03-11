@@ -561,7 +561,7 @@ export const addRandomObjects = (scene, isOcean = false) => {
 
     return varyColor((r << 16) + (g << 8) + b);
   }
-
+  
   function gaussianRandom(mean, stddev) {
     let u = 1 - Math.random();
     let v = 1 - Math.random();
@@ -578,6 +578,7 @@ export const addRandomObjects = (scene, isOcean = false) => {
     if (!tree) continue;
     scene.add(tree);
   }
+  createNewBigForest(15000, 2000);
 
   // Add squares
   for (let i = 0; i < 0; i++) {
@@ -669,28 +670,24 @@ export const addRandomObjects = (scene, isOcean = false) => {
   }
 
   // Add forest clusters
-  const forestTreeGeometry = new THREE.ConeGeometry(50, 250, 32); // Reduced size
-  const forestTreeMaterial = new THREE.MeshStandardMaterial({ color: 0x228B22 }); // Forest green color
-  const forestPositions = [
-    { x: -5000, z: -5000 },
-    { x: 5000, z: -5000 },
-    { x: -5000, z: 5000 },
-    { x: 5000, z: 5000 }
-  ];
-  forestPositions.forEach(pos => {
-    const clusterBaseColor = getRandomForestColor(); // Different base color for each cluster
-    for (let i = 0; i < 200; i++) {
-      const treeColor = varyColor(clusterBaseColor); // Vary the cluster color
-      const tree = new THREE.Mesh(forestTreeGeometry, new THREE.MeshStandardMaterial({ color: treeColor }));
-      tree.position.set(
-        pos.x + (Math.random() * 2000 - 1000), // Cluster around the position
-        10,
-        pos.z + (Math.random() * 2000 - 1000)
-      );
-      trees.push(tree);
-      scene.add(tree);
-    }
-  });
+  const forestCenter = { x: 4000, z: 4000 };
+  const forestRadius = 1500;
+  const forestTreeCount = 200;
+
+  for (let i = 0; i < forestTreeCount; i++) {
+    // Angle and distance from center
+    const angle = Math.random() * Math.PI * 2;
+    const distance = Math.random() * forestRadius;
+    const x = forestCenter.x + distance * Math.cos(angle);
+    const z = forestCenter.z + distance * Math.sin(angle);
+
+    const treeGeometry = new THREE.ConeGeometry(50, 250, 32);
+    const forestTreeMaterial = new THREE.MeshStandardMaterial({ color: 0x228B22 });
+    const forestTree = new THREE.Mesh(treeGeometry, forestTreeMaterial);
+    forestTree.position.set(x, 10, z);
+    trees.push(forestTree);
+    scene.add(forestTree);
+  }
 
   // Add clusters of small objects
   for (let i = 0; i < 100; i++) { // Number of clusters
