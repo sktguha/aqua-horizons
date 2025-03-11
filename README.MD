@@ -1,23 +1,22 @@
-# ⚡ Three.js starter project with Vite & TypeScript
+for low spec systems: 
+https://incredible-truffle-723815.netlify.app/?obj=700&jurassic=false&bird=0.7&mountains=10&mountainHeight=15000&view=7000&url=&rain=false&sunColor=0xffffff&water=0x00AA55&waterOpacity=0.9&solid=true&waterStill=true&grass=0.4&bright=0.0014
 
-![GitHub package.json version](https://img.shields.io/github/package-json/v/JonasBne/threejs-vite-ts-starter?style=flat-square)
-![GitHub last commit](https://img.shields.io/github/last-commit/JonasBne/threejs-vite-ts-starter?style=flat-square)
+https://incredible-truffle-723815.netlify.app/configure.html
+configure, increase number of objects etc, change to reflective water etc
 
-### Description
+controls: w a s d, 
 
-This is a template starter project to scaffold a new Three.js project with TypeScript and Vite.
+q and e to rotate camera sideways left and right
+
+r and f to increase height
+
+let me know how it is, please try out, www.twitter.com/sktguha please s
 
 ## Stack
 
 - Three.js
 - Vite
 - Prettier
-
-### Getting started
-
-## Use template
-
-Simply click on `Use this template` on the right top corner of this page to get started.
 
 ## Available scripts
 
