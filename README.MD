@@ -8,6 +8,9 @@ https://incredible-truffle-723815.netlify.app/?obj=700&jurassic=false&bird=0.7&m
 https://incredible-truffle-723815.netlify.app/configure.html
 configure, increase number of objects etc, change to reflective water etc
 
+Low spec normal water: 
+https://incredible-truffle-723815.netlify.app/?obj=700&jurassic=false&bird=0.7&mountains=10&mountainHeight=15000&view=7000&url=&rain=false&sunColor=0xffffff&water=0x00AA55&waterOpacity=0.9&solid=false&waterStill=false&grass=0.4&bright=0.0014
+
 controls: w a s d, 
 
 q and e to rotate camera sideways left and right
