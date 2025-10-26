@@ -2,6 +2,7 @@ Gameplay video: https://www.loom.com/share/ccb73a2fba9e4d989a135d9b9a35c841
 
 or please check files starting with IMG in root folder itself for screenshots 
 
+Please note: the page may show not responding , it is loading . If it shows not responsding dialog, please ignore it. It will start eventually.
 for low spec systems: 
 https://incredible-truffle-723815.netlify.app/?obj=700&jurassic=false&bird=0.7&mountains=10&mountainHeight=15000&view=7000&url=&rain=false&sunColor=0xffffff&water=0x00AA55&waterOpacity=0.9&solid=true&waterStill=true&grass=0.4&bright=0.0014
 
