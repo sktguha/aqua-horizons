@@ -41,7 +41,7 @@ let me know how it is, please try out, www.twitter.com/sktguha please share f
 
 ```bash
 # clone the repository
-git clone  https://github.com/JonasBne/threejs-vite-starter-project.git <your-optional-repo-name-here>
+git clone  https://github.com/sktguha/aqua-horizons
 ```
 
 ```bash
